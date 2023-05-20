@@ -46,3 +46,6 @@ group :production do
 end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem "castle-rb", "~> 7.2"
+
+gem "dotenv-rails", "~> 2.8"
