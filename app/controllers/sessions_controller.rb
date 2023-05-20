@@ -4,6 +4,10 @@ class SessionsController < ApplicationController
   end
 
   def create
+    if params[:request_token]
+      head :internal_server_error and return
+    end
+
     user = User.find_by(email: params[:session][:email].downcase)
     if user && user.authenticate(params[:session][:password])
       if user.activated?
