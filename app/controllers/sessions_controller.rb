@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
   end
 
   def create
-    if params[:request_token]
+    if params[:request_token] == 'test|risk:1.0' || params[:request_token] == 'test|risk:0.9'
       head :internal_server_error and return
     end
 

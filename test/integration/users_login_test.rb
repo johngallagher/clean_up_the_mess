@@ -52,7 +52,8 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     assert_empty cookies[:remember_token]
   end
 
-  test 'blocks hackers from logging in' do
+  test 'when the user has a high likelihood of being a hacker' \
+       'block them from logging in' do
     post login_path, params: {
       request_token: 'test|risk:1.0',
       session: {
@@ -63,5 +64,33 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     }
     assert_not is_logged_in?, 'Expected not to be logged in'
     assert response.status == 500, 'Expected 500, got ' + response.status.to_s
+  end
+
+  test 'when the user has a medium-high likelihood of being a hacker' \
+       'block them from logging in' do
+    post login_path, params: {
+      request_token: 'test|risk:0.9',
+      session: {
+        email: @user.email,
+        password: 'password',
+        remember_me: '1'
+      }
+    }
+    assert_not is_logged_in?, 'Expected not to be logged in'
+    assert response.status == 500, 'Expected 500, got ' + response.status.to_s
+  end
+
+  test 'when the user has a low likelihood of being a hacker' \
+       'allow them to log in' do
+    post login_path, params: {
+      request_token: 'test|risk:0.0',
+      session: {
+        email: @user.email,
+        password: 'password',
+        remember_me: '1'
+      }
+    }
+    assert is_logged_in?, 'Expected to be logged in'
+    assert response.status == 302, 'Expected 302, got ' + response.status.to_s
   end
 end
