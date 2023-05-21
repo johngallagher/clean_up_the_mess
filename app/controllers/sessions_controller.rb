@@ -1,7 +1,36 @@
 class SessionsController < ApplicationController
   def new; end
 
-  def allow_login?
+  def create
+    user = User.find_by(email: params[:session][:email].downcase)
+
+    head :internal_server_error and return if login_denied?
+
+    if user && user.authenticate(params[:session][:password])
+      if user.activated?
+        log_in user
+        params[:session][:remember_me] == '1' ? remember(user) : forget(user)
+        redirect_back_or user
+      else
+        message  = 'Account not activated. '
+        message += 'Check your email for the activation link.'
+        flash[:warning] = message
+        redirect_to root_url
+      end
+    else
+      flash.now[:danger] = 'Invalid email/password combination'
+      render 'new'
+    end
+  end
+
+  def destroy
+    log_out if logged_in?
+    redirect_to root_url
+  end
+  
+  private
+
+  def login_denied?
     castle = ::Castle::Client.new
 
     begin
@@ -44,40 +73,7 @@ class SessionsController < ApplicationController
         }
       )
 
-      res[:risk] < 0.8
-    rescue Castle::InvalidRequestTokenError
-      false
-    rescue Castle::Error => e
-      true
+      res[:risk] >= 0.8
     end
-  end
-
-  def create
-    user = User.find_by(email: params[:session][:email].downcase)
-
-    unless allow_login?
-      head :internal_server_error and return
-    end
-
-    if user && user.authenticate(params[:session][:password])
-      if user.activated?
-        log_in user
-        params[:session][:remember_me] == '1' ? remember(user) : forget(user)
-        redirect_back_or user
-      else
-        message  = 'Account not activated. '
-        message += 'Check your email for the activation link.'
-        flash[:warning] = message
-        redirect_to root_url
-      end
-    else
-      flash.now[:danger] = 'Invalid email/password combination'
-      render 'new'
-    end
-  end
-
-  def destroy
-    log_out if logged_in?
-    redirect_to root_url
   end
 end
