@@ -8,13 +8,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
   test 'login with valid email/invalid password' do
     get login_path
     assert_template 'sessions/new'
-    post login_path, params: {
-      castle_request_token: 'test|device:chrome_on_mac|risk:0.0',
-      session: {
-        email: @user.email,
-        password: 'invalid'
-      }
-    }
+    log_in_as(@user, password: 'invalid')
     assert_not is_logged_in?
     assert_template 'sessions/new'
     assert_not flash.empty?
@@ -24,13 +18,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
 
   test 'login with valid information followed by logout' do
     get login_path
-    post login_path, params: {
-      castle_request_token: 'test|device:chrome_on_mac|risk:0.0',
-      session: {
-        email: @user.email,
-        password: 'password'
-      }
-    }
+    log_in_as(@user, password: 'password')
     assert is_logged_in?
     assert_redirected_to @user
     follow_redirect!
@@ -64,42 +52,21 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
 
   test 'when the user has a high likelihood of being a hacker' \
        'block them from logging in' do
-    post login_path, params: {
-      castle_request_token: 'test|device:chrome_on_mac|risk:1.0',
-      session: {
-        email: @user.email,
-        password: 'password',
-        remember_me: '1'
-      }
-    }
+    log_in_as(@user, likelihood_of_being_a_hacker: 1.0)
     assert_not is_logged_in?, 'Expected not to be logged in'
     assert response.status == 500, 'Expected 500, got ' + response.status.to_s
   end
 
   test 'when the user has a medium-high likelihood of being a hacker' \
        'block them from logging in' do
-    post login_path, params: {
-      castle_request_token: 'test|device:chrome_on_mac|risk:0.9',
-      session: {
-        email: @user.email,
-        password: 'password',
-        remember_me: '1'
-      }
-    }
+    log_in_as(@user, likelihood_of_being_a_hacker: 0.9)
     assert_not is_logged_in?, 'Expected not to be logged in'
     assert response.status == 500, 'Expected 500, got ' + response.status.to_s
   end
 
   test 'when the user has a low likelihood of being a hacker' \
        'allow them to log in' do
-    post login_path, params: {
-      castle_request_token: 'test|device:chrome_on_mac|risk:0.0',
-      session: {
-        email: @user.email,
-        password: 'password',
-        remember_me: '1'
-      }
-    }
+    log_in_as(@user, likelihood_of_being_a_hacker: 0.0)
     assert is_logged_in?, 'Expected to be logged in'
     assert response.status == 302, 'Expected 302, got ' + response.status.to_s
   end
