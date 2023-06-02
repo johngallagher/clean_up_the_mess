@@ -31,7 +31,7 @@ class ActionDispatch::IntegrationTest
 end
 
 VCR.configure do |config|
-  config.cassette_library_dir = "spec/vcr"
+  config.cassette_library_dir = "test/vcr"
   config.hook_into :webmock
   config.filter_sensitive_data('<API_KEY>') { ENV['API_KEY'] }
 end

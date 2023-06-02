@@ -72,7 +72,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     assert response.status == 302, 'Expected 302, got ' + response.status.to_s
   end
 
-  test "when the hacker has the wrong password " \
+  test 'when the hacker has the wrong password ' \
        "render new and don't log them in" do
     log_in_as(@user_with_invalid_password, likelihood_of_being_a_hacker: 1.0)
     assert_not is_logged_in?, 'Expected to be logged out'
