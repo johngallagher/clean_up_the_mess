@@ -3,6 +3,7 @@ require 'test_helper'
 class UsersLoginTest < ActionDispatch::IntegrationTest
   def setup
     @user = users(:michael)
+    @user_with_invalid_password = users(:with_invalid_password)
   end
 
   test 'login with valid email/invalid password' do
@@ -60,7 +61,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
   test 'when the user has a medium-high likelihood of being a hacker' \
        'block them from logging in' do
     log_in_as(@user, likelihood_of_being_a_hacker: 0.9)
-    assert_not is_logged_in?, 'Expected not to be logged in'
+    assert_not is_logged_in?, 'Expected to be logged out'
     assert response.status == 500, 'Expected 500, got ' + response.status.to_s
   end
 
@@ -69,5 +70,12 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     log_in_as(@user, likelihood_of_being_a_hacker: 0.0)
     assert is_logged_in?, 'Expected to be logged in'
     assert response.status == 302, 'Expected 302, got ' + response.status.to_s
+  end
+
+  test "when the hacker has the wrong password " \
+       "render new and don't log them in" do
+    log_in_as(@user_with_invalid_password, likelihood_of_being_a_hacker: 1.0)
+    assert_not is_logged_in?, 'Expected to be logged out'
+    assert response.status == 200, 'Expected 200, got ' + response.status.to_s
   end
 end
