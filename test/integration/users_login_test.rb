@@ -84,7 +84,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
 
   test "sends the user's details to be risk assessed " \
        'so that we can accurately detect hackers' do
-    user = create(:user, name: 'Joe Bloggs', email: 'joe@example.org', activated_at: Time.zone.parse('2012-12-02 00:30:08.276 UTC'))
+    user = FactoryBot.create(:user, name: 'Joe Bloggs', email: 'joe@example.org', activated_at: Time.zone.parse('2012-12-02 00:30:08.276 UTC'))
     log_in_as(user)
     expected_user = {
       id: @user.id.to_s,
