@@ -91,7 +91,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
       activated_at: Time.zone.parse('2012-12-02 00:30:08.276 UTC')
     )
     log_in_as(user)
-    assert_details_sent_to_fraud_detection_ai(
+    assert_user_details_sent_to_fraud_detection_ai(
       id: user.id.to_s,
       registered_at: '2012-12-02T00:30:08.276Z',
       email: 'joe@example.org',
@@ -101,7 +101,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
 
   private
 
-  def assert_details_sent_to_fraud_detection_ai(expected_user)
+  def assert_user_details_sent_to_fraud_detection_ai(expected_user)
     assert_requested(:post, 'https://api.castle.io/v1/risk') do |request|
       assert_equal JSON.parse(request.body).dig('user').deep_symbolize_keys, expected_user.deep_symbolize_keys
     end

@@ -55,13 +55,6 @@ class SessionsController < ApplicationController
           registered_at: user.activated_at,
           email: user.email,
           name: user.name
-        },
-        authentication_method: { # Optional. See link below
-          type: '$password' # The most common type
-        },
-        properties: { # Custom event data for visualization purposes
-          solved_captcha: true,
-          attempts: 3
         }
       )
 
