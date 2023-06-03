@@ -87,7 +87,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     user = FactoryBot.create(:user, name: 'Joe Bloggs', email: 'joe@example.org', activated_at: Time.zone.parse('2012-12-02 00:30:08.276 UTC'))
     log_in_as(user)
     expected_user = {
-      id: @user.id.to_s,
+      id: user.id.to_s,
       registered_at: '2012-12-02T00:30:08.276Z',
       email: 'joe@example.org',
       name: 'Joe Bloggs'

@@ -6,11 +6,11 @@ class SessionsController < ApplicationController
 
 
     if user && user.authenticate(params[:session][:password])
-      if user.activated? && user_is_genuine?
+      if user.activated? && user_is_genuine?(user: user)
         log_in user
         params[:session][:remember_me] == '1' ? remember(user) : forget(user)
         redirect_back_or user
-      elsif user_is_a_hacker?
+      elsif user_is_a_hacker?(user: user)
         head :internal_server_error
       else
         message  = 'Account not activated. '
@@ -31,11 +31,11 @@ class SessionsController < ApplicationController
   
   private
 
-  def user_is_genuine?
-    !user_is_a_hacker?
+  def user_is_genuine? user:
+    !user_is_a_hacker? user: user
   end
 
-  def user_is_a_hacker?
+  def user_is_a_hacker? user:
     castle = ::Castle::Client.new
 
     begin
@@ -51,23 +51,10 @@ class SessionsController < ApplicationController
           headers: context[:headers]
         },
         user: {
-          id: 'ca1242f498', # Required. A unique, persistent user identifier
-          registered_at: '2012-12-02T00:30:08.276Z', # Recommended
-          email: 'mgray@example.com', # Recommended
-          phone: '+1415232183', # Optional. E.164 format
-          name: 'Mike Gray', # Optional
-          address: { # Optional
-            line1: '200 Fell St',
-            line2: 'Apt 1028',
-            city: 'San Francisco',
-            postal_code: '94103',
-            region_code: 'CA',
-            country_code: 'US' # Required. ISO-3166 country code
-          },
-          traits: { # Custom user data for visualization purposes
-            nationality: 'US',
-            birth_date: '1976-02-02'
-          }
+          id: user.id.to_s,
+          registered_at: user.activated_at,
+          email: user.email,
+          name: user.name
         },
         authentication_method: { # Optional. See link below
           type: '$password' # The most common type
