@@ -99,6 +99,15 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     )
   end
 
+  test "sends the user's IP address to be risk assessed " \
+  "so that we can accurately detect hackers" do
+    log_in_as(@user)
+    assert_context_sent_to_fraud_detection_ai(
+      ip: 'something',
+      headers: { }
+    )
+  end
+
   private
 
   def assert_user_details_sent_to_fraud_detection_ai(expected_user)
