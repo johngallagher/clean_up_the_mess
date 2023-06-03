@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'webmock/minitest'
 
 class UsersLoginTest < ActionDispatch::IntegrationTest
   def setup
