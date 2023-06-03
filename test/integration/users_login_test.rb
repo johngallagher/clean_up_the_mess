@@ -2,6 +2,8 @@ require 'test_helper'
 require 'webmock/minitest'
 
 class UsersLoginTest < ActionDispatch::IntegrationTest
+  make_my_diffs_pretty!
+
   def setup
     @user = users(:michael)
     @user_with_invalid_password = users(:with_invalid_password)
@@ -81,8 +83,28 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
   end
 
   test "sends the user's details to be risk assessed " \
-       "so that we can accurately detect hackers" do
+       'so that we can accurately detect hackers' do
     log_in_as(@user)
-    assert_requested :post, "http://www.example.com", headers: {'Content-Length' => 3}, body: "abc", times: 1
+    expected_user = {
+      id: 'ca1242f498', # Required. A unique, persistent user identifier
+      registered_at: '2012-12-02T00:30:08.276Z', # Recommended
+      email: 'mgray@example.com', # Recommended
+      phone: '+1415232183', # Optional. E.164 format
+      name: 'Mike Gray', # Optional
+      address: { # Optional
+        line1: '200 Fell St',
+        line2: 'Apt 1028',
+        city: 'San Francisco',
+        postal_code: '94103',
+        region_code: 'CA',
+        country_code: 'US' # Required. ISO-3166 country code
+      },
+      traits: { # Custom user data for visualization purposes
+        nationality: 'US',
+      }
+    }
+    assert_requested(:post, 'https://api.castle.io/v1/risk') do |request|
+      assert_equal JSON.parse(request.body).dig('user').deep_symbolize_keys, expected_user.deep_symbolize_keys
+    end
   end
 end
