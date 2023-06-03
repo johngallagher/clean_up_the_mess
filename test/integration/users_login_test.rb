@@ -117,6 +117,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
 
   private
 
+  # Leave this duplication for now - only two instances. When we get a third, then refactor.
   def assert_context_sent_to_fraud_detection_ai(expected_context)
     assert_requested(:post, 'https://api.castle.io/v1/risk') do |request|
       assert_equal JSON.parse(request.body).dig('context').deep_symbolize_keys, expected_context.deep_symbolize_keys
