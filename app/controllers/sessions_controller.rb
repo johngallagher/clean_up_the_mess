@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
         log_in user
         params[:session][:remember_me] == '1' ? remember(user) : forget(user)
         redirect_back_or user
-      elsif user_is_a_hacker?(user: user)
+      elsif user.activated? && user_is_a_hacker?(user: user)
         head :internal_server_error
       else
         message  = 'Account not activated. '
@@ -51,7 +51,7 @@ class SessionsController < ApplicationController
         },
         user: {
           id: user.id.to_s,
-          registered_at: user.activated_at,
+          registered_at: user.activated_at.iso8601,
           email: user.email,
           name: user.name
         }
