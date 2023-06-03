@@ -84,24 +84,13 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
 
   test "sends the user's details to be risk assessed " \
        'so that we can accurately detect hackers' do
-    log_in_as(@user)
+    user = create(:user, name: 'Joe Bloggs', email: 'joe@example.org', activated_at: Time.zone.parse('2012-12-02 00:30:08.276 UTC'))
+    log_in_as(user)
     expected_user = {
-      id: 'ca1242f498', # Required. A unique, persistent user identifier
-      registered_at: '2012-12-02T00:30:08.276Z', # Recommended
-      email: 'mgray@example.com', # Recommended
-      phone: '+1415232183', # Optional. E.164 format
-      name: 'Mike Gray', # Optional
-      address: { # Optional
-        line1: '200 Fell St',
-        line2: 'Apt 1028',
-        city: 'San Francisco',
-        postal_code: '94103',
-        region_code: 'CA',
-        country_code: 'US' # Required. ISO-3166 country code
-      },
-      traits: { # Custom user data for visualization purposes
-        nationality: 'US',
-      }
+      id: @user.id.to_s,
+      registered_at: '2012-12-02T00:30:08.276Z',
+      email: 'joe@example.org',
+      name: 'Joe Bloggs'
     }
     assert_requested(:post, 'https://api.castle.io/v1/risk') do |request|
       assert_equal JSON.parse(request.body).dig('user').deep_symbolize_keys, expected_user.deep_symbolize_keys

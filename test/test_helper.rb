@@ -3,6 +3,7 @@ require_relative '../config/environment'
 require 'rails/test_help'
 
 class ActiveSupport::TestCase
+  include FactoryBot::Syntax::Methods
   fixtures :all
 
   # Returns true if a test user is logged in.
