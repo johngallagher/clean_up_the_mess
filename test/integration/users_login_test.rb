@@ -78,4 +78,10 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     assert_not is_logged_in?, 'Expected to be logged out'
     assert response.status == 200, 'Expected 200, got ' + response.status.to_s
   end
+
+  test "sends the user's details to be risk assessed " \
+       "so that we can accurately detect hackers" do
+    log_in_as(@user)
+    assert_requested :post, "http://www.example.com", headers: {'Content-Length' => 3}, body: "abc", times: 1
+  end
 end
