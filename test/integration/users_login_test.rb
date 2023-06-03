@@ -88,6 +88,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
       :user,
       name: 'Joe Bloggs',
       email: 'joe@example.org',
+      activated: true,
       activated_at: Time.zone.parse('2012-12-02 00:30:08.276 UTC')
     )
     log_in_as(user)
