@@ -100,11 +100,18 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
   end
 
   test "sends the user's IP address to be risk assessed " \
-  "so that we can accurately detect hackers" do
+  'so that we can accurately detect hackers' do
     log_in_as(@user)
     assert_context_sent_to_fraud_detection_ai(
-      ip: 'something',
-      headers: { }
+      ip: '127.0.0.1',
+      headers: {
+        "Content-Length": '150',
+        "Remote-Addr": '127.0.0.1',
+        Version: 'HTTP/1.0',
+        Host: 'www.example.com',
+        Accept: 'text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5',
+        Cookie: true
+      }
     )
   end
 
