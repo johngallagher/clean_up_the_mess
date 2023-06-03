@@ -33,8 +33,8 @@ group :development do
 end
 group :test do
   gem 'capybara',                 '3.35.3'
-  gem 'selenium-webdriver',       '3.142.7'
-  gem 'webdrivers',               '4.6.0'
+  gem 'selenium-webdriver'
+  gem "webdrivers", "~> 5.2.0"
   gem 'rails-controller-testing', '1.0.5'
   gem 'minitest',                 '5.11.3'
   gem 'guard',                    '2.16.2'
