@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+DISABLE_SPRING=true bin/rails test $*

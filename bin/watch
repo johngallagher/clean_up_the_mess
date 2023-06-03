@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+watchexec --shell="zsh -ic" -e rb -c -r --no-vcs-ignore bin/test
