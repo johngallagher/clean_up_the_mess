@@ -100,8 +100,22 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     )
   end
 
+  test "when user isn't activated yet " \
+       "don't send their details to be risk assessed" \
+       "as they can't log in yet" do
+    inactive_user = FactoryBot.create(
+      :user,
+      name: 'Joe Bloggs',
+      email: 'joe@example.org',
+      activated: false,
+      activated_at: nil
+    )
+    log_in_as(inactive_user)
+    assert_fraud_detection_not_called
+  end
+
   test "sends the user's IP address to be risk assessed " \
-       "so that we can accurately detect hackers" do
+       'so that we can accurately detect hackers' do
     log_in_as(@user)
     assert_context_sent_to_fraud_detection_ai(
       ip: '127.0.0.1',
@@ -129,5 +143,9 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     assert_requested(:post, 'https://api.castle.io/v1/risk') do |request|
       assert_equal JSON.parse(request.body).dig('user').deep_symbolize_keys, expected_user.deep_symbolize_keys
     end
+  end
+
+  def assert_fraud_detection_not_called
+    assert_not_requested(:post, 'https://api.castle.io/v1/risk')
   end
 end
