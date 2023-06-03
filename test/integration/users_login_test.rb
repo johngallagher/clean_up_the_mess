@@ -98,4 +98,12 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
       name: 'Joe Bloggs'
     )
   end
+
+  private
+
+  def assert_details_sent_to_fraud_detection_ai(expected_user)
+    assert_requested(:post, 'https://api.castle.io/v1/risk') do |request|
+      assert_equal JSON.parse(request.body).dig('user').deep_symbolize_keys, expected_user.deep_symbolize_keys
+    end
+  end
 end
