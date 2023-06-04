@@ -130,6 +130,28 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     )
   end
 
+  test 'notifies fraud detection when a genuinue user has failed login ' \
+       'so that the fraud detection learns about hackers' do
+    log_in_as(@user, password: 'invalid', likelihood_of_being_a_hacker: 0.0)
+    assert_fraud_detection_notified_of_failed_login_with(
+      params: {
+        email: @user.email
+      },
+      matching_user_id: @user.id.to_s,
+      context: {
+        ip: '127.0.0.1',
+        headers: {
+          "Content-Length": '150',
+          "Remote-Addr": '127.0.0.1',
+          Version: 'HTTP/1.0',
+          Host: 'www.example.com',
+          Accept: 'text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5',
+          Cookie: true
+        }
+      }
+    )
+  end
+
   private
 
   # Leave this duplication for now - only two instances. When we get a third, then refactor.
