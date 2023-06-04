@@ -101,7 +101,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
       context: {
         ip: '127.0.0.1',
         headers: {
-          "Content-Length": '150',
+          "Content-Length": '146',
           "Remote-Addr": '127.0.0.1',
           Version: 'HTTP/1.0',
           Host: 'www.example.com',
@@ -149,22 +149,19 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
 
   private
 
-  # Leave this duplication for now - only two instances. When we get a third, then refactor.
-  def assert_context_sent_to_fraud_detection_ai(expected_context)
+  def assert_fraud_detection_notified_of_login_succeeded_with(properties)
     assert_requested(:post, 'https://api.castle.io/v1/risk') do |request|
-      assert_equal JSON.parse(request.body).dig('context').deep_symbolize_keys, expected_context.deep_symbolize_keys
-    end
-  end
-
-  def assert_user_details_sent_to_fraud_detection_ai(expected_user)
-    assert_requested(:post, 'https://api.castle.io/v1/risk') do |request|
-      assert_equal JSON.parse(request.body).dig('user').deep_symbolize_keys, expected_user.deep_symbolize_keys
+      parsed_body = JSON.parse(request.body).deep_symbolize_keys
+      assert_equal parsed_body.slice(:type, :status), ({ type: '$login', status: '$succeeded' })
+      assert_equal parsed_body.slice(*properties.keys), properties.deep_symbolize_keys
     end
   end
 
   def assert_fraud_detection_notified_of_failed_login_with(properties)
     assert_requested(:post, 'https://api.castle.io/v1/filter') do |request|
-      assert_equal JSON.parse(request.body).deep_symbolize_keys.slice(*properties.keys), properties.deep_symbolize_keys
+      parsed_body = JSON.parse(request.body).deep_symbolize_keys
+      assert_equal parsed_body.slice(:type, :status), ({ type: '$login', status: '$failed' })
+      assert_equal parsed_body.slice(*properties.keys), properties.deep_symbolize_keys
     end
   end
 
