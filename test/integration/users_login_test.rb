@@ -172,6 +172,27 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     )
   end
 
+  test "notifies fraud detection of attempted valid login " \
+       "so that the fraud detection has more information to learn from" do
+    log_in_as(@user)
+    assert_fraud_detection_notified_of_login_attempted_with(
+      params: {
+        email: @user.email
+      },
+      context: {
+        ip: '127.0.0.1',
+        headers: {
+          "Content-Length": '149',
+          "Remote-Addr": '127.0.0.1',
+          Version: 'HTTP/1.0',
+          Host: 'www.example.com',
+          Accept: 'text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5',
+          Cookie: true
+        }
+      }
+    )
+  end
+
   private
 
   def assert_fraud_detection_notified_of_login_succeeded_with(properties)
