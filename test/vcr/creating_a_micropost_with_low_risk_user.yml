@@ -1,0 +1,108 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.castle.io/v1/filter
+    body:
+      encoding: UTF-8
+      string: '{"type":"$login","status":"$attempted","request_token":"GBFAU0pMTW9fK3lCfEtaYCF-YmtzbEhwKWkhT11aVHptalBXTE3MDdveXQ2iEXhXPbtxj2Abqhf-0xV7B3cPbAIZYVVSLxEoIPnne9F_v1UfSQVGEzvzfFhwD8dgfY01aAZmFGsdIE0pTC9QSh1sEWkIYAtvRy8xaQhqFCcxbhsnM1xYX1w-SFhNOicwVS85dwxjHVAZbTNuCCBNNEshSzFcJzNPKEI0K1xjEWwZLz9iH2QXLlxHHWYYYx10D0wQdRNiHShNPkspTCFNMUs9VjZOOVhUHWkZdRUgTTRLIUsxEAlMPks9GmMLDH-MfJtwMU8-STNKbh2jaD5XNlM-QTBMI1g2Rj9IPUw_WEYxoHAHyS69raHEeNR90vuhmw-TBItCMuVjZ4etFox7B3ACPXIOYAhiU0MXaRhgFhN5ahYqKVw6B3wPOlYsD3gHLA94BzxPOEc8TzhHfA94BzwPOEd8D3gHPE84RyxPeAd8D3gHPE84R3wPOEc8DmAGfBd4B30Phx4","params":{"email":"joe@example.org"},"context":{"ip":"127.0.0.1","headers":{"Version":"HTTP/1.1","Host":"127.0.0.1:64649","Connection":"keep-alive","Content-Length":"635","Cache-Control":"max-age=0","Sec-Ch-Ua":"\"HeadlessChrome\";v=\"113\",
+        \"Chromium\";v=\"113\", \"Not-A.Brand\";v=\"24\"","Sec-Ch-Ua-Mobile":"?0","Sec-Ch-Ua-Platform":"\"macOS\"","Upgrade-Insecure-Requests":"1","Origin":"http://127.0.0.1:64649","User-Agent":"Mozilla/5.0
+        (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko)
+        HeadlessChrome/113.0.5672.126 Safari/537.36","Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7","Sec-Fetch-Site":"same-origin","Sec-Fetch-Mode":"navigate","Sec-Fetch-User":"?1","Sec-Fetch-Dest":"document","Referer":"http://127.0.0.1:64649/login","Accept-Encoding":"gzip,
+        deflate, br","Cookie":true,"Remote-Addr":"127.0.0.1"}},"timestamp":"2023-06-04T16:58:06.282Z","sent_at":"2023-06-04T16:58:06.282Z"}'
+    headers:
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Authorization:
+      - Basic <BASIC_AUTH_ENCODED_CASTLE_API_SECRET>
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Date:
+      - Sun, 04 Jun 2023 16:57:43 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Ratelimit-Limit:
+      - '10'
+      X-Ratelimit-Remaining:
+      - '9'
+      X-Ratelimit-Reset:
+      - '1'
+      Etag:
+      - W/"0a650c89820538fc3cdfcf3e32c264c2"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 723c39e3-0dab-4f8e-a0c1-7c1a20f5a4e7
+      Server:
+      - castle.io
+    body:
+      encoding: UTF-8
+      string: '{"risk":0.0,"scores":{"account_abuse":{"score":0.0},"account_takeover":{"score":0.0},"bot":{"score":0.0}},"signals":{"bot_behavior":{},"headless_browser":{}},"policy":{"action":"allow","id":"b7f26fb8-1e12-414d-a44e-7097c5c112b4","revision_id":"","name":"Default"},"device":{"token":null,"fingerprint":"m_jK-atQRZeDYOChxum8Fg"}}'
+  recorded_at: Sun, 04 Jun 2023 16:58:06 GMT
+- request:
+    method: post
+    uri: https://api.castle.io/v1/risk
+    body:
+      encoding: UTF-8
+      string: '{"type":"$login","status":"$succeeded","request_token":"GBFAU0pMTW9fK3lCfEtaYCF-YmtzbEhwKWkhT11aVHptalBXTE3MDdveXQ2iEXhXPbtxj2Abqhf-0xV7B3cPbAIZYVVSLxEoIPnne9F_v1UfSQVGEzvzfFhwD8dgfY01aAZmFGsdIE0pTC9QSh1sEWkIYAtvRy8xaQhqFCcxbhsnM1xYX1w-SFhNOicwVS85dwxjHVAZbTNuCCBNNEshSzFcJzNPKEI0K1xjEWwZLz9iH2QXLlxHHWYYYx10D0wQdRNiHShNPkspTCFNMUs9VjZOOVhUHWkZdRUgTTRLIUsxEAlMPks9GmMLDH-MfJtwMU8-STNKbh2jaD5XNlM-QTBMI1g2Rj9IPUw_WEYxoHAHyS69raHEeNR90vuhmw-TBItCMuVjZ4etFox7B3ACPXIOYAhiU0MXaRhgFhN5ahYqKVw6B3wPOlYsD3gHLA94BzxPOEc8TzhHfA94BzwPOEd8D3gHPE84RyxPeAd8D3gHPE84R3wPOEc8DmAGfBd4B30Phx4","context":{"ip":"127.0.0.1","headers":{"Version":"HTTP/1.1","Host":"127.0.0.1:64649","Connection":"keep-alive","Content-Length":"635","Cache-Control":"max-age=0","Sec-Ch-Ua":"\"HeadlessChrome\";v=\"113\",
+        \"Chromium\";v=\"113\", \"Not-A.Brand\";v=\"24\"","Sec-Ch-Ua-Mobile":"?0","Sec-Ch-Ua-Platform":"\"macOS\"","Upgrade-Insecure-Requests":"1","Origin":"http://127.0.0.1:64649","User-Agent":"Mozilla/5.0
+        (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko)
+        HeadlessChrome/113.0.5672.126 Safari/537.36","Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7","Sec-Fetch-Site":"same-origin","Sec-Fetch-Mode":"navigate","Sec-Fetch-User":"?1","Sec-Fetch-Dest":"document","Referer":"http://127.0.0.1:64649/login","Accept-Encoding":"gzip,
+        deflate, br","Cookie":true,"Remote-Addr":"127.0.0.1"}},"user":{"id":"1046959424","registered_at":"2023-06-04T16:58:06Z","email":"joe@example.org","name":"Joe
+        Bloggs"},"timestamp":"2023-06-04T16:58:06.856Z","sent_at":"2023-06-04T16:58:06.856Z"}'
+    headers:
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Authorization:
+      - Basic <BASIC_AUTH_ENCODED_CASTLE_API_SECRET>
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Date:
+      - Sun, 04 Jun 2023 16:57:44 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Ratelimit-Limit:
+      - '10'
+      X-Ratelimit-Remaining:
+      - '8'
+      X-Ratelimit-Reset:
+      - '1'
+      Etag:
+      - W/"9787e9d1c357b3a2babd1435a35831a7"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 3575753b-be1d-4195-b463-0ce890d6a0dc
+      Server:
+      - castle.io
+    body:
+      encoding: UTF-8
+      string: '{"risk":0.0,"scores":{"account_abuse":{"score":0.0},"account_takeover":{"score":0.0},"bot":{"score":0.0}},"signals":{"bot_behavior":{},"headless_browser":{}},"policy":{"action":"allow","id":"b7f26fb8-1e12-414d-a44e-7097c5c112b4","revision_id":"","name":"Default"},"device":{"token":"eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlbiI6InRxME9MMnNRSTlnM2tqY1lKOUpmVlh5QWZHUFIiLCJxdWFsaWZpZXIiOiJBUUlEQ2pJeE5UVTJOalkzT1RFIiwiYW5vbnltb3VzIjpmYWxzZSwidmVyc2lvbiI6MC4zfQ.R9lsK-tNK82dVFISa2C2n-tLJ_L3PVdoaHu-0iEKq5E","fingerprint":"m_jK-atQRZeDYOChxum8Fg"}}'
+  recorded_at: Sun, 04 Jun 2023 16:58:07 GMT
+recorded_with: VCR 6.1.0

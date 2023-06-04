@@ -11,14 +11,14 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
     assert_select 'div.pagination'
     # Invalid submission
     assert_no_difference 'Micropost.count' do
-      post microposts_path, params: { micropost: { content: '' } }
+      create_micropost('')
     end
     assert_select 'div#error_explanation'
     assert_select 'a[href=?]', '/?page=2' # Correct pagination link
     # Valid submission
     content = 'This micropost really ties the room together'
     assert_difference 'Micropost.count', 1 do
-      post microposts_path, params: { micropost: { content: content } }
+      create_micropost(content)
     end
     assert_redirected_to root_url
     follow_redirect!
@@ -32,5 +32,23 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
     # Visit different user (no delete links)
     get user_path(users(:archer))
     assert_select 'a', text: 'delete', count: 0
+  end
+
+  test "prevents microposts from being created by hackers" do
+    log_in_as(@user)
+    assert_no_difference 'Micropost.count' do
+      create_micropost('Content', likelihood_of_being_a_hacker: 1.0)
+    end
+  end
+
+  private
+
+  def create_micropost(content, likelihood_of_being_a_hacker: 0.0)
+    VCR.use_cassette("create_micropost_with_hacker_risk_#{likelihood_of_being_a_hacker}") do
+      post microposts_path, params: {
+        castle_request_token: "test|device:chrome_on_mac|risk:#{likelihood_of_being_a_hacker}",
+        micropost: { content: content }
+      }
+    end
   end
 end
