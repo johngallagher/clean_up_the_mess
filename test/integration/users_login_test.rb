@@ -114,6 +114,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     assert_fraud_detection_not_called
   end
 
+  # TODO: Update this test assert to be more descriptive - should say notified of login succeeded
   test "sends the user's IP address to be risk assessed " \
        'so that we can accurately detect hackers' do
     log_in_as(@user)
@@ -164,6 +165,12 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
   def assert_user_details_sent_to_fraud_detection_ai(expected_user)
     assert_requested(:post, 'https://api.castle.io/v1/risk') do |request|
       assert_equal JSON.parse(request.body).dig('user').deep_symbolize_keys, expected_user.deep_symbolize_keys
+    end
+  end
+
+  def assert_fraud_detection_notified_of_failed_login_with(properties)
+    assert_requested(:post, 'https://api.castle.io/v1/filter') do |request|
+      assert_equal JSON.parse(request.body).deep_symbolize_keys.slice(*properties.keys), properties.deep_symbolize_keys
     end
   end
 
