@@ -1,55 +1,74 @@
-# Ruby on Rails Tutorial sample application
+# Clean Up The Mess - Example App
 
-This is a fork of the [*Ruby on Rails Tutorial*](http://www.railstutorial.org/) application by Michael Hartl. 
-We created this project to help you try RubyMine features.
-To get started with the app, follow the [step-by-step tutorial](https://www.jetbrains.com/help/ruby/get-started.html) 
-or check out our [YouTube channel](https://www.youtube.com/playlist?list=PLQ176FUIyIUanO72dRf6lOefKIznviKKJ).
+Structure of this exercise
 
-## Getting started
+Act 1
 
-To get started with the app, first clone the repo and `cd` into the directory:
+* Sets up the story
+* Introduce characters
+* Create relationships
+* Establish hero's unfulfilled desire
 
-```
-$ git clone https://github.com/JetBrains/sample_rails_app.git 
-$ cd sample_rails_app
-```
+Act 2
 
-Then install the needed gems (while skipping any gems needed only in production):
+* Dramatic action
+* Held together by confrontation
+* Hero encounters obstacles which prevent them achieving their desire
 
-```
-$ bundle install --without production
-```
+Act 3
 
-Install JavaScript dependencies:
+* Resolves the story
+* Solution - did the character succeed or fail?
 
-```
-$ yarn install
-```
 
-Next, migrate the database:
+# Act 1
 
-```
-$ rails db:migrate
-```
+What do we want?
 
-Finally, run the test suite to verify that everything is working correctly:
+Protect our app from hackers.
 
-```
-$ rails test
-```
+What have we got?
 
-If the test suite passes, you'll be ready to run the app in a local server:
+* Rails app
+* Creating microposts
+* Calls out to Castle
+* Detects hackers and presents them with 500 errors
+* Code is messy
 
-```
-$ rails server
-```
+# Act 2
 
-## Help page
+* A series of changes
+* We'll see how the design responds to these changes
 
-For general help on the Rails Tutorial, see the [Rails Tutorial Help page](https://www.railstutorial.org/help).
+## Change 1: Use policies instead of risk levels
 
-## License
+## Change 2: Block IP using Cloudflare
 
-All source code in the [Ruby on Rails Tutorial](https://www.railstutorial.org/)
-is available jointly under the MIT License and the Beerware License. See
-[LICENSE.md](LICENSE.md) for details.
+## Change 3: Add challenges using Cloudflare
+
+### Act 2A - The Normal Way
+
+* "Hack in" each of these changes in the simplest way possible.
+* Very little abstraction.
+* Typical code I see in projects
+* "Shovel the shit" around
+
+### Act 2B - The Designed Way
+
+* Use objects to abstract behaviour away
+* Assess coupling and concern metrics using techniques
+* Tidy first, then change behaviour
+
+## Act 2C - Comparison
+
+* Use a diagram to compare the normal way with the designed way.
+* Examine tradeoffs
+* Compare and contrast the two approaches
+* Sliding scale
+
+# Act 3 - Conclusion
+
+* I've introduced the principles to you
+* Recap the techniques and principles
+* The really hard part - judgement - is another book.
+* Go forth and look for interfaces.
