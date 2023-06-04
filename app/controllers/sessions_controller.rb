@@ -5,12 +5,14 @@ class SessionsController < ApplicationController
     user = User.find_by(email: params[:session][:email].downcase)
 
     if user && user.authenticate(params[:session][:password])
-      if user.activated? && user_is_genuine?(user: user)
-        log_in user
-        params[:session][:remember_me] == '1' ? remember(user) : forget(user)
-        redirect_back_or user
-      elsif user.activated? && user_is_a_hacker?(user: user)
-        head :internal_server_error
+      if user.activated?
+        if user_is_genuine?(user: user)
+          log_in user
+          params[:session][:remember_me] == '1' ? remember(user) : forget(user)
+          redirect_back_or user
+        else
+          head :internal_server_error
+        end
       else
         message  = 'Account not activated. '
         message += 'Check your email for the activation link.'
