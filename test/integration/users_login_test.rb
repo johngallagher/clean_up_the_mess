@@ -91,11 +91,24 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
       activated_at: Time.zone.parse('2012-12-02 00:30:08.276 UTC')
     )
     log_in_as(user)
-    assert_user_details_sent_to_fraud_detection_ai(
-      id: user.id.to_s,
-      registered_at: '2012-12-02T00:30:08.276Z',
-      email: 'joe@example.org',
-      name: 'Joe Bloggs'
+    assert_fraud_detection_notified_of_login_succeeded_with(
+      user: {
+        id: user.id.to_s,
+        registered_at: '2012-12-02T00:30:08.276Z',
+        email: 'joe@example.org',
+        name: 'Joe Bloggs'
+      },
+      context: {
+        ip: '127.0.0.1',
+        headers: {
+          "Content-Length": '150',
+          "Remote-Addr": '127.0.0.1',
+          Version: 'HTTP/1.0',
+          Host: 'www.example.com',
+          Accept: 'text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5',
+          Cookie: true
+        }
+      }
     )
   end
 
@@ -111,23 +124,6 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     )
     log_in_as(inactive_user)
     assert_fraud_detection_not_called
-  end
-
-  # TODO: Update this test assert to be more descriptive - should say notified of login succeeded
-  test "sends the user's IP address to be risk assessed " \
-       'so that we can accurately detect hackers' do
-    log_in_as(@user)
-    assert_context_sent_to_fraud_detection_ai(
-      ip: '127.0.0.1',
-      headers: {
-        "Content-Length": '150',
-        "Remote-Addr": '127.0.0.1',
-        Version: 'HTTP/1.0',
-        Host: 'www.example.com',
-        Accept: 'text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5',
-        Cookie: true
-      }
-    )
   end
 
   test 'notifies fraud detection when a genuinue user has failed login ' \
