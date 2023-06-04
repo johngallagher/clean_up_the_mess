@@ -38,5 +38,7 @@ VCR.configure do |config|
   config.cassette_library_dir = "test/vcr"
   config.hook_into :webmock
   config.filter_sensitive_data('<BASIC_AUTH_ENCODED_CASTLE_API_SECRET>') { Base64::encode64(":#{ENV.fetch('CASTLE_API_SECRET')}").chomp }
+  config.filter_sensitive_data('<CLOUDFLARE_API_TOKEN>') { ENV.fetch('CLOUDFLARE_API_TOKEN') }
+  config.filter_sensitive_data('<CLOUDFLARE_API_EMAIL>') { ENV.fetch('CLOUDFLARE_API_EMAIL') }
   config.allow_http_connections_when_no_cassette = false
 end

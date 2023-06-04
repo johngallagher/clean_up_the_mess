@@ -85,6 +85,12 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     )
   end
 
+  test 'when a user has a high likelihood of being a hacker ' \
+       'block their IP address' do
+    log_in_as(@user, likelihood_of_being_a_hacker: 1.0)
+    assert_user_blocked(ip: '127.0.0.1')
+  end
+
   test 'when the user has a medium-high likelihood of being a hacker' \
        'block them from logging in' do
     log_in_as(@user, likelihood_of_being_a_hacker: 0.9)
@@ -172,8 +178,8 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     )
   end
 
-  test "notifies fraud detection of attempted valid login " \
-       "so that the fraud detection has more information to learn from" do
+  test 'notifies fraud detection of attempted valid login ' \
+       'so that the fraud detection has more information to learn from' do
     log_in_as(@user)
     assert_fraud_detection_notified_of_login_attempted_with(
       params: {
@@ -224,5 +230,13 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
 
   def assert_fraud_detection_not_called
     assert_not_requested(:post, 'https://api.castle.io/v1/risk')
+  end
+
+  def assert_user_blocked(ip:)
+    assert_requested(
+      :post,
+      'https://api.cloudflare.com/client/v4/accounts/a4bedc9e66fe2e421c76b068531a75a2/firewall/access_rules/rules',
+      body: JSON.generate({ configuration: { target: 'ip', value: ip }, mode: 'block' })
+    )
   end
 end
