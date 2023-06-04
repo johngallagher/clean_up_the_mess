@@ -18,6 +18,7 @@ class UsersController < ApplicationController
   end
 
   def create
+    notify_fraud_detection_system_of_registration_attempted
     @user = User.new(user_params)
     if @user.save
       @user.send_activation_email
@@ -77,8 +78,26 @@ class UsersController < ApplicationController
     redirect_to(root_url) unless current_user?(@user)
   end
 
-    # Confirms an admin user.
-    def admin_user
-      redirect_to(root_url) unless current_user.admin?
-    end
+  # Confirms an admin user.
+  def admin_user
+    redirect_to(root_url) unless current_user.admin?
+  end
+
+  def notify_fraud_detection_system_of_registration_attempted
+    castle = ::Castle::Client.new
+    token = params[:castle_request_token]
+    context = Castle::Context::Prepare.call(request)
+    castle.filter(
+      type: '$registration',
+      status: '$attempted',
+      request_token: token,
+      params: {
+        email: user_params[:email]
+      },
+      context: {
+        ip: context[:ip],
+        headers: context[:headers]
+      }
+    )
+  end
 end

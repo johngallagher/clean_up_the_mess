@@ -1,17 +1,20 @@
 require 'test_helper'
 
 class UsersSignupTest < ActionDispatch::IntegrationTest
+  make_my_diffs_pretty!
+
   def setup
     ActionMailer::Base.deliveries.clear
   end
 
   test 'invalid signup information' do
-    get signup_path
     assert_no_difference 'User.count' do
-      post users_path, params: { user: { name: '',
-                                         email: 'user@invalid',
-                                         password: 'foo',
-                                         password_confirmation: 'bar' } }
+      sign_up_as(
+        name: '',
+        email: 'user@invalid',
+        password: 'foo',
+        password_confirmation: 'bar'
+      )
     end
     assert_template 'users/new'
     assert_select 'div#error_explanation'
@@ -19,12 +22,13 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   end
 
   test 'valid signup information with account activation' do
-    get signup_path
     assert_difference 'User.count', 1 do
-      post users_path, params: { user: { name: 'Example User',
-                                         email: 'user@example.com',
-                                         password: 'password',
-                                         password_confirmation: 'password' } }
+      sign_up_as(
+        name: 'Example User',
+        email: 'user@example.com',
+        password: 'password',
+        password_confirmation: 'password'
+      )
     end
     assert_equal 1, ActionMailer::Base.deliveries.size
     user = assigns(:user)
@@ -61,7 +65,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
       context: {
         ip: '127.0.0.1',
         headers: {
-          "Content-Length": '150',
+          "Content-Length": '179',
           "Remote-Addr": '127.0.0.1',
           Version: 'HTTP/1.0',
           Host: 'www.example.com',
