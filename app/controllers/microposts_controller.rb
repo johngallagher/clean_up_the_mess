@@ -4,9 +4,14 @@ class MicropostsController < ApplicationController
   before_action :correct_user,   only: :destroy
 
   def create
-    if user_is_a_hacker?(user: current_user, type: '$custom', name: 'Created a micropost')
-      challenge_ip_address(request.remote_ip)
+    hacker_likelihood = fetch_hacker_likelihood(user: current_user, type: '$custom', name: 'Created a micropost')
+    if hacker_likelihood > 0.8
+      block_ip_address(request.remote_ip)
       head :internal_server_error and return
+    end
+
+    if hacker_likelihood > 0.6
+      challenge_ip_address(request.remote_ip)
     end
 
     @micropost = current_user.microposts.build(micropost_params)

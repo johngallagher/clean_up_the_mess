@@ -5,8 +5,8 @@ http_interactions:
     uri: https://api.castle.io/v1/risk
     body:
       encoding: UTF-8
-      string: '{"type":"$custom","status":"","name":"Created a micropost","request_token":"test|device:chrome_on_mac|risk:1.0","user":{"id":"762146111","email":"michael@example.com","name":"Michael
-        Example","registered_at":"2023-06-04T21:41:48Z"},"context":{"ip":"127.0.0.1","headers":{"Content-Length":"90","Remote-Addr":"127.0.0.1","Version":"HTTP/1.0","Host":"www.example.com","Accept":"text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5","Cookie":true}},"timestamp":"2023-06-04T21:41:53.279Z","sent_at":"2023-06-04T21:41:53.279Z"}'
+      string: '{"type":"$custom","status":"","name":"Created a micropost","request_token":"test|device:chrome_on_mac|risk:0.7","user":{"id":"762146111","email":"michael@example.com","name":"Michael
+        Example","registered_at":"2023-06-04T21:41:48Z"},"context":{"ip":"127.0.0.1","headers":{"Content-Length":"90","Remote-Addr":"127.0.0.1","Version":"HTTP/1.0","Host":"www.example.com","Accept":"text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5","Cookie":true}},"timestamp":"2023-06-04T21:41:51.625Z","sent_at":"2023-06-04T21:41:51.625Z"}'
     headers:
       Content-Type:
       - application/json
@@ -24,7 +24,7 @@ http_interactions:
       message: Created
     headers:
       Date:
-      - Sun, 04 Jun 2023 21:41:30 GMT
+      - Sun, 04 Jun 2023 21:41:28 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
@@ -38,23 +38,23 @@ http_interactions:
       X-Ratelimit-Reset:
       - '1'
       Etag:
-      - W/"61efa88dde89175ed8e39def88a69dae"
+      - W/"57596063a87fda5c700a7e2e170ff2f0"
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - bae056f1-8efc-43d3-a7dd-1a4dce17da55
+      - fbd517a9-0fa2-425c-b6e0-6be0b1b5e6fb
       Server:
       - castle.io
     body:
       encoding: UTF-8
-      string: '{"risk":1.0,"scores":{"account_abuse":{"score":1.0},"account_takeover":{"score":0.26},"bot":{"score":0.13}},"signals":{},"policy":{"action":"allow","id":"b7f26fb8-1e12-414d-a44e-7097c5c112b4","revision_id":"","name":"Default"},"device":{"token":"eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlbiI6InRxME9WQ2NRSTZON2tqZGphOUpSajkyQWZCaWQiLCJxdWFsaWZpZXIiOiJBUUlEQ2pJeE5UVTJOVEkyTlRFIiwiYW5vbnltb3VzIjpmYWxzZSwidmVyc2lvbiI6MC4zfQ.jLW6r_TbUVJKIW1iW-PEh9S7f3qM9BttndoQE_gh02E","fingerprint":null}}'
-  recorded_at: Sun, 04 Jun 2023 21:41:53 GMT
+      string: '{"risk":0.7,"scores":{"account_abuse":{"score":0.7},"account_takeover":{"score":0.26},"bot":{"score":0.13}},"signals":{},"policy":{"action":"allow","id":"b7f26fb8-1e12-414d-a44e-7097c5c112b4","revision_id":"","name":"Default"},"device":{"token":"eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlbiI6InRxME9WQ2NRSTZON2tqZGphOUpSajkyQWZCaWQiLCJxdWFsaWZpZXIiOiJBUUlEQ2pJeE5UVTJOVEkyTlRFIiwiYW5vbnltb3VzIjpmYWxzZSwidmVyc2lvbiI6MC4zfQ.jLW6r_TbUVJKIW1iW-PEh9S7f3qM9BttndoQE_gh02E","fingerprint":null}}'
+  recorded_at: Sun, 04 Jun 2023 21:41:52 GMT
 - request:
     method: post
     uri: https://api.cloudflare.com/client/v4/accounts/a4bedc9e66fe2e421c76b068531a75a2/firewall/access_rules/rules
     body:
       encoding: UTF-8
-      string: '{"configuration":{"target":"ip","value":"127.0.0.1"},"mode":"block"}'
+      string: '{"configuration":{"target":"ip","value":"127.0.0.1"},"mode":"challenge"}'
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -76,7 +76,7 @@ http_interactions:
       message: Bad Request
     headers:
       Date:
-      - Sun, 04 Jun 2023 21:41:31 GMT
+      - Sun, 04 Jun 2023 21:41:29 GMT
       Content-Type:
       - application/json; charset=UTF-8
       Transfer-Encoding:
@@ -84,18 +84,18 @@ http_interactions:
       Connection:
       - keep-alive
       Cf-Ray:
-      - 7d2357220ee52dd3-MAN
+      - 7d235717cc56075a-MAN
       Cf-Cache-Status:
       - DYNAMIC
       Set-Cookie:
-      - __cflb=0H28vgHxwvgAQtjUGU56Rb8iNWZVUvXhhvZJaiV2Jey; SameSite=Lax; path=/;
-        expires=Mon, 05-Jun-23 00:11:32 GMT; HttpOnly
-      - __cfruid=195c31cf99c5c29ee51b9c7d936d54a8cda1796f-1685914891; path=/; domain=.api.cloudflare.com;
+      - __cflb=0H28vgHxwvgAQtjUGU56Rb8iNWZVUvXhhkrdZufXhPT; SameSite=Lax; path=/;
+        expires=Mon, 05-Jun-23 00:11:30 GMT; HttpOnly
+      - __cfruid=f883f292d20060c8b4e57b2a54a16712fc80e493-1685914889; path=/; domain=.api.cloudflare.com;
         HttpOnly; Secure; SameSite=None
       Vary:
       - Accept-Encoding
       X-Envoy-Upstream-Service-Time:
-      - '3'
+      - '44'
       Server:
       - cloudflare
     body:
@@ -112,5 +112,5 @@ http_interactions:
           ],
           "messages": []
         }
-  recorded_at: Sun, 04 Jun 2023 21:41:54 GMT
+  recorded_at: Sun, 04 Jun 2023 21:41:53 GMT
 recorded_with: VCR 6.1.0
