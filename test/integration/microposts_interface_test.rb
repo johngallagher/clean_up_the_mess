@@ -41,6 +41,12 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "challenges when microposts are being created by a hacker" do
+    log_in_as(@user)
+    create_micropost('Content', likelihood_of_being_a_hacker: 1.0)
+    assert_user_challenged(ip: '127.0.0.1')
+  end
+
   private
 
   def create_micropost(content, likelihood_of_being_a_hacker: 0.0)
@@ -50,5 +56,13 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
         micropost: { content: content }
       }
     end
+  end
+
+  def assert_user_challenged(ip:)
+    assert_requested(
+      :post,
+      'https://api.cloudflare.com/client/v4/accounts/a4bedc9e66fe2e421c76b068531a75a2/firewall/access_rules/rules',
+      body: JSON.generate({ configuration: { target: 'ip', value: ip }, mode: 'challenge' })
+    )
   end
 end
