@@ -35,16 +35,31 @@ What have we got?
 * Detects hackers and presents them with 500 errors
 * Code is messy
 
+## Rules for hackers
+
+* Anyone above a risk level of 0.8 is a suspected hacker
+
+## Rules for Cloudflare
+
+* Signing up - hackers are challenged
+* Logging in - hackers are blocked
+* Microposts - hackers are challenged
+
 # Act 2
 
 * A series of changes
 * We'll see how the design responds to these changes
 
-## Change 1: Use policies instead of risk levels
+## Change 1: Challenge and block more consistently
 
-## Change 2: Block IP using Cloudflare
+* For anyone between 0.6 and 0.8 they're challenged on everything
+* For anyone greater than 0.8 they're blocked on everything
 
-## Change 3: Add challenges using Cloudflare
+## Change 2: Use policies instead of risk levels for Castle
+
+
+## Change 3: Change to using AWS for firewall blocking and fraud detection
+
 
 ### Act 2A - The Normal Way
 
