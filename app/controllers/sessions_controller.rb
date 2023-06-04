@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  include Protectable
+
   def new; end
 
   def create
@@ -7,7 +9,7 @@ class SessionsController < ApplicationController
     user = User.find_by(email: params[:session][:email].downcase)
 
     if user && user.authenticate(params[:session][:password]) && user.activated?
-      if user_is_genuine?(user: user)
+      if user_is_genuine?(user: user, type: '$login', status: '$succeeded')
         log_in user
         params[:session][:remember_me] == '1' ? remember(user) : forget(user)
         redirect_back_or user
@@ -33,73 +35,6 @@ class SessionsController < ApplicationController
   end
 
   private
-
-  def notify_fraud_detection_system_of_login_attempted
-    castle = ::Castle::Client.new
-    token = params[:castle_request_token]
-    context = Castle::Context::Prepare.call(request)
-    castle.filter(
-      type: '$login',
-      status: '$attempted',
-      request_token: token,
-      params: {
-        email: params[:session][:email]
-      },
-      context: {
-        ip: context[:ip],
-        headers: context[:headers]
-      }
-    )
-  end
-
-  def notify_fraud_detection_system_of_failed_login_attempt
-    castle = ::Castle::Client.new
-    token = params[:castle_request_token]
-    context = Castle::Context::Prepare.call(request)
-    castle.filter(
-      type: '$login',
-      status: '$failed',
-      request_token: token,
-      params: {
-        email: params[:session][:email]
-      },
-      context: {
-        ip: context[:ip],
-        headers: context[:headers]
-      }
-    )
-  end
-
-  def user_is_genuine?(user:)
-    !user_is_a_hacker? user: user
-  end
-
-  def user_is_a_hacker?(user:)
-    castle = ::Castle::Client.new
-
-    begin
-      token = request.params[:castle_request_token]
-      context = Castle::Context::Prepare.call(request)
-
-      res = castle.risk(
-        type: '$login',
-        status: '$succeeded',
-        request_token: token,
-        context: {
-          ip: context[:ip],
-          headers: context[:headers]
-        },
-        user: {
-          id: user.id.to_s,
-          registered_at: user.activated_at.iso8601,
-          email: user.email,
-          name: user.name
-        }
-      )
-
-      res[:risk] >= 0.8
-    end
-  end
 
   def block_ip_address(ip)
     require 'uri'

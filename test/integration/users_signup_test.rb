@@ -110,7 +110,8 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     assert_fraud_detection_notified_of_registration_succeeded_with(
       user: {
         id: User.find_by(email: 'user@example.com').id.to_s,
-        email: 'user@example.com'
+        email: 'user@example.com',
+        name: 'Example User'
       },
       context: {
         ip: '127.0.0.1',
@@ -142,7 +143,8 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     assert_fraud_detection_notified_of_registration_succeeded_with(
       user: {
         id: User.find_by(email: 'user@example.com').id.to_s,
-        email: 'user@example.com'
+        email: 'user@example.com',
+        name: 'Example User'
       },
       context: {
         ip: '127.0.0.1',
@@ -159,7 +161,6 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
     assert_equal 1, User.where(email: 'user@example.com').count
   end
-
 
   private
 
@@ -187,19 +188,27 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   def assert_fraud_detection_notified_of_registration_failed_with(properties)
     signatures = WebMock::RequestRegistry.instance.requested_signatures.select do |request|
       parsed_body = JSON.parse(request.body).deep_symbolize_keys
-      request.uri.to_s == 'https://api.castle.io:443/v1/filter' && parsed_body.slice(:type, :status) == ({ type: '$registration', status: '$failed' })
+      request.uri.to_s == 'https://api.castle.io:443/v1/filter' && parsed_body.slice(:type,
+                                                                                     :status) == ({
+                                                                                       type: '$registration', status: '$failed'
+                                                                                     })
     end
     assert_equal 1, signatures.size, 'Expected to find one request to notify fraud detection of registration failed'
-    assert_equal properties.deep_symbolize_keys, JSON.parse(signatures.first.first.body).deep_symbolize_keys.slice(*properties.keys)
+    assert_equal properties.deep_symbolize_keys,
+                 JSON.parse(signatures.first.first.body).deep_symbolize_keys.slice(*properties.keys)
   end
 
   def assert_fraud_detection_notified_of_registration_succeeded_with(properties)
     signatures = WebMock::RequestRegistry.instance.requested_signatures.select do |request|
       parsed_body = JSON.parse(request.body).deep_symbolize_keys
-      request.uri.to_s == 'https://api.castle.io:443/v1/risk' && parsed_body.slice(:type, :status) == ({ type: '$registration', status: '$succeeded' })
+      request.uri.to_s == 'https://api.castle.io:443/v1/risk' && parsed_body.slice(:type,
+                                                                                   :status) == ({
+                                                                                     type: '$registration', status: '$succeeded'
+                                                                                   })
     end
     assert_equal 1, signatures.size, 'Expected to find one request to notify fraud detection of registration succeeded'
-    assert_equal properties.deep_symbolize_keys, JSON.parse(signatures.first.first.body).deep_symbolize_keys.slice(*properties.keys)
+    assert_equal properties.deep_symbolize_keys,
+                 JSON.parse(signatures.first.first.body).deep_symbolize_keys.slice(*properties.keys)
   end
 
   def assert_fraud_detection_notified_of_registration_attempted_with(properties)

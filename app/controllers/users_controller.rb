@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  include Protectable
+
   before_action :logged_in_user, only: %i[index edit update destroy
                                           following followers]
   before_action :correct_user,   only: %i[edit update]
@@ -21,7 +23,7 @@ class UsersController < ApplicationController
     notify_fraud_detection_system_of_registration_attempted
     @user = User.new(user_params)
     if @user.save
-      if user_is_genuine?(user: @user)
+      if user_is_genuine?(user: @user, type: '$registration', status: '$succeeded')
         @user.send_activation_email
         flash[:info] = 'Please check your email to activate your account.'
         redirect_to root_url
@@ -87,62 +89,6 @@ class UsersController < ApplicationController
   # Confirms an admin user.
   def admin_user
     redirect_to(root_url) unless current_user.admin?
-  end
-
-  def notify_fraud_detection_system_of_registration_failed
-    castle = ::Castle::Client.new
-    token = params[:castle_request_token]
-    context = Castle::Context::Prepare.call(request)
-    castle.filter(
-      type: '$registration',
-      status: '$failed',
-      request_token: token,
-      params: {
-        email: user_params[:email]
-      },
-      context: {
-        ip: context[:ip],
-        headers: context[:headers]
-      }
-    )
-  end
-
-  def user_is_genuine?(user:)
-    castle = ::Castle::Client.new
-    token = params[:castle_request_token]
-    context = Castle::Context::Prepare.call(request)
-    response = castle.risk(
-      type: '$registration',
-      status: '$succeeded',
-      request_token: token,
-      user: {
-        id: user.id.to_s,
-        email: user.email
-      },
-      context: {
-        ip: context[:ip],
-        headers: context[:headers]
-      }
-    )
-    response[:risk] < 0.8
-  end
-
-  def notify_fraud_detection_system_of_registration_attempted
-    castle = ::Castle::Client.new
-    token = params[:castle_request_token]
-    context = Castle::Context::Prepare.call(request)
-    castle.filter(
-      type: '$registration',
-      status: '$attempted',
-      request_token: token,
-      params: {
-        email: user_params[:email]
-      },
-      context: {
-        ip: context[:ip],
-        headers: context[:headers]
-      }
-    )
   end
 
   def challenge_ip_address(ip)
