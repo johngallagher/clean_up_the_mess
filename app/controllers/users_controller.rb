@@ -25,6 +25,7 @@ class UsersController < ApplicationController
       flash[:info] = 'Please check your email to activate your account.'
       redirect_to root_url
     else
+      notify_fraud_detection_system_of_registration_failed
       render 'new'
     end
   end
@@ -81,6 +82,24 @@ class UsersController < ApplicationController
   # Confirms an admin user.
   def admin_user
     redirect_to(root_url) unless current_user.admin?
+  end
+
+  def notify_fraud_detection_system_of_registration_failed
+    castle = ::Castle::Client.new
+    token = params[:castle_request_token]
+    context = Castle::Context::Prepare.call(request)
+    castle.filter(
+      type: '$registration',
+      status: '$failed',
+      request_token: token,
+      params: {
+        email: user_params[:email]
+      },
+      context: {
+        ip: context[:ip],
+        headers: context[:headers]
+      }
+    )
   end
 
   def notify_fraud_detection_system_of_registration_attempted

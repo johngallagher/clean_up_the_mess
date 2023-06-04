@@ -78,7 +78,29 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 
   test 'when the user signs up and they already exist ' \
        'notify fraud detection that registration has failed' do
-    skip
+    FactoryBot.create(:user, :activated, email: 'duplicateuser@example.com')
+    sign_up_as(
+      name: 'Example User',
+      email: 'duplicateuser@example.com',
+      password: 'password',
+      password_confirmation: 'password'
+    )
+    assert_fraud_detection_notified_of_registration_failed_with(
+      params: {
+        email: 'duplicateuser@example.com'
+      },
+      context: {
+        ip: '127.0.0.1',
+        headers: {
+          "Content-Length": '188',
+          "Remote-Addr": '127.0.0.1',
+          Version: 'HTTP/1.0',
+          Host: 'www.example.com',
+          Accept: 'text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5',
+          Cookie: true
+        }
+      }
+    )
   end
 
   test 'when the user signs up with a high likelihood of being a hacker' \
@@ -119,6 +141,15 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
         }
       }
     end
+  end
+
+  def assert_fraud_detection_notified_of_registration_failed_with(properties)
+    signatures = WebMock::RequestRegistry.instance.requested_signatures.select do |request|
+      parsed_body = JSON.parse(request.body).deep_symbolize_keys
+      request.uri.to_s == 'https://api.castle.io:443/v1/filter' && parsed_body.slice(:type, :status) == ({ type: '$registration', status: '$failed' })
+    end
+    assert_equal 1, signatures.size, 'Expected to find one request to notify fraud detection of registration failed'
+    assert_equal properties.deep_symbolize_keys, JSON.parse(signatures.first.first.body).deep_symbolize_keys.slice(*properties.keys)
   end
 
   def assert_fraud_detection_notified_of_registration_attempted_with(properties)
