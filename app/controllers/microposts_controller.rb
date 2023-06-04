@@ -36,24 +36,4 @@ class MicropostsController < ApplicationController
     @micropost = current_user.microposts.find_by(id: params[:id])
     redirect_to root_url if @micropost.nil?
   end
-
-  def challenge_ip_address(ip)
-    require 'uri'
-    require 'net/http'
-    require 'openssl'
-
-    url = URI('https://api.cloudflare.com/client/v4/accounts/a4bedc9e66fe2e421c76b068531a75a2/firewall/access_rules/rules')
-
-    http = Net::HTTP.new(url.host, url.port)
-    http.use_ssl = true
-    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-    request = Net::HTTP::Post.new(url)
-    request['Content-Type'] = 'application/json'
-    request['X-Auth-Email'] = ENV.fetch('CLOUDFLARE_API_EMAIL')
-    request['X-Auth-Key'] = ENV.fetch('CLOUDFLARE_API_TOKEN')
-    request.body = JSON.generate({ configuration: { target: 'ip', value: ip }, mode: 'challenge' })
-
-    http.request(request)
-  end
 end

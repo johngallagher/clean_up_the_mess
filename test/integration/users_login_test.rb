@@ -53,6 +53,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     assert_empty cookies[:remember_token]
   end
 
+  # Definite hackers
   test 'when the user has a high likelihood of being a hacker' \
        'block them from logging in' do
     log_in_as(@user, likelihood_of_being_a_hacker: 1.0)
@@ -91,25 +92,33 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     assert_user_blocked(ip: '127.0.0.1')
   end
 
-  test 'when the user has a medium-high likelihood of being a hacker' \
-       'block them from logging in' do
-    log_in_as(@user, likelihood_of_being_a_hacker: 0.9)
-    assert_not is_logged_in?, 'Expected to be logged out'
-    assert response.status == 500, 'Expected 500, got ' + response.status.to_s
-  end
-
-  test 'when the user has a low likelihood of being a hacker' \
-       'allow them to log in' do
-    log_in_as(@user, likelihood_of_being_a_hacker: 0.0)
-    assert is_logged_in?, 'Expected to be logged in'
-    assert response.status == 302, 'Expected 302, got ' + response.status.to_s
-  end
-
   test 'when the hacker has the wrong password ' \
        "render new and don't log them in" do
     log_in_as(@user, password: 'invalid', likelihood_of_being_a_hacker: 1.0)
     assert_not is_logged_in?, 'Expected to be logged out'
     assert response.status == 200, 'Expected 200, got ' + response.status.to_s
+  end
+
+  # Possible hackers
+  test 'when the user has a medium likelihood of being a hacker' \
+       'allow them to log in' do
+    log_in_as(@user, likelihood_of_being_a_hacker: 0.7)
+    assert is_logged_in?, 'Expected to be logged in'
+    assert response.status == 302, 'Expected 302, got ' + response.status.to_s
+  end
+
+  test 'when the user has a medium likelihood of being a hacker' \
+       'challenge them the next time they log in' do
+    log_in_as(@user, likelihood_of_being_a_hacker: 0.7)
+    assert_user_challenged(ip: '127.0.0.1')
+  end
+
+  # Genuine users
+  test 'when the user has a low likelihood of being a hacker' \
+       'allow them to log in' do
+    log_in_as(@user, likelihood_of_being_a_hacker: 0.0)
+    assert is_logged_in?, 'Expected to be logged in'
+    assert response.status == 302, 'Expected 302, got ' + response.status.to_s
   end
 
   test "sends the user's details to be risk assessed " \
@@ -237,6 +246,14 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
       :post,
       'https://api.cloudflare.com/client/v4/accounts/a4bedc9e66fe2e421c76b068531a75a2/firewall/access_rules/rules',
       body: JSON.generate({ configuration: { target: 'ip', value: ip }, mode: 'block' })
+    )
+  end
+
+  def assert_user_challenged(ip:)
+    assert_requested(
+      :post,
+      'https://api.cloudflare.com/client/v4/accounts/a4bedc9e66fe2e421c76b068531a75a2/firewall/access_rules/rules',
+      body: JSON.generate({ configuration: { target: 'ip', value: ip }, mode: 'challenge' })
     )
   end
 end

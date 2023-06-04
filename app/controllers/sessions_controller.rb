@@ -9,7 +9,13 @@ class SessionsController < ApplicationController
     user = User.find_by(email: params[:session][:email].downcase)
 
     if user && user.authenticate(params[:session][:password]) && user.activated?
-      if user_is_genuine?(user: user, type: '$login', status: '$succeeded')
+      hacker_likelihood = fetch_hacker_likelihood(user: user, type: '$login', status: '$succeeded')
+      if hacker_likelihood < 0.6
+        log_in user
+        params[:session][:remember_me] == '1' ? remember(user) : forget(user)
+        redirect_back_or user
+      elsif hacker_likelihood >= 0.6 && hacker_likelihood < 0.8
+        challenge_ip_address(request.remote_ip)
         log_in user
         params[:session][:remember_me] == '1' ? remember(user) : forget(user)
         redirect_back_or user
@@ -32,27 +38,5 @@ class SessionsController < ApplicationController
   def destroy
     log_out if logged_in?
     redirect_to root_url
-  end
-
-  private
-
-  def block_ip_address(ip)
-    require 'uri'
-    require 'net/http'
-    require 'openssl'
-
-    url = URI('https://api.cloudflare.com/client/v4/accounts/a4bedc9e66fe2e421c76b068531a75a2/firewall/access_rules/rules')
-
-    http = Net::HTTP.new(url.host, url.port)
-    http.use_ssl = true
-    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-
-    request = Net::HTTP::Post.new(url)
-    request['Content-Type'] = 'application/json'
-    request['X-Auth-Email'] = ENV.fetch('CLOUDFLARE_API_EMAIL')
-    request['X-Auth-Key'] = ENV.fetch('CLOUDFLARE_API_TOKEN')
-    request.body = JSON.generate({ configuration: { target: 'ip', value: ip }, mode: 'block' })
-
-    http.request(request)
   end
 end
