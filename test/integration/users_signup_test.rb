@@ -106,7 +106,30 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   test 'when the user signs up with a high likelihood of being a hacker' \
        'notify fraud detection that registration has succeeded ' \
        'and block them from signing up' do
-    skip
+    sign_up_as(
+      name: 'Example User',
+      email: 'user@example.com',
+      password: 'password',
+      password_confirmation: 'password',
+      likelihood_of_being_a_hacker: 1.0
+    )
+    assert_fraud_detection_notified_of_registration_succeeded_with(
+      user: {
+        id: User.find_by(email: 'user@example.com').id.to_s,
+        email: 'user@example.com'
+      },
+      context: {
+        ip: '127.0.0.1',
+        headers: {
+          "Content-Length": '179',
+          "Remote-Addr": '127.0.0.1',
+          Version: 'HTTP/1.0',
+          Host: 'www.example.com',
+          Accept: 'text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5',
+          Cookie: true
+        }
+      }
+    )
   end
 
   test 'when the user signs up with a low likelihood of being a hacker' \
@@ -149,6 +172,15 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
       request.uri.to_s == 'https://api.castle.io:443/v1/filter' && parsed_body.slice(:type, :status) == ({ type: '$registration', status: '$failed' })
     end
     assert_equal 1, signatures.size, 'Expected to find one request to notify fraud detection of registration failed'
+    assert_equal properties.deep_symbolize_keys, JSON.parse(signatures.first.first.body).deep_symbolize_keys.slice(*properties.keys)
+  end
+
+  def assert_fraud_detection_notified_of_registration_succeeded_with(properties)
+    signatures = WebMock::RequestRegistry.instance.requested_signatures.select do |request|
+      parsed_body = JSON.parse(request.body).deep_symbolize_keys
+      request.uri.to_s == 'https://api.castle.io:443/v1/risk' && parsed_body.slice(:type, :status) == ({ type: '$registration', status: '$succeeded' })
+    end
+    assert_equal 1, signatures.size, 'Expected to find one request to notify fraud detection of registration succeeded'
     assert_equal properties.deep_symbolize_keys, JSON.parse(signatures.first.first.body).deep_symbolize_keys.slice(*properties.keys)
   end
 

@@ -21,6 +21,7 @@ class UsersController < ApplicationController
     notify_fraud_detection_system_of_registration_attempted
     @user = User.new(user_params)
     if @user.save
+      notify_fraud_detection_system_of_registration_succeeded(@user)
       @user.send_activation_email
       flash[:info] = 'Please check your email to activate your account.'
       redirect_to root_url
@@ -94,6 +95,25 @@ class UsersController < ApplicationController
       request_token: token,
       params: {
         email: user_params[:email]
+      },
+      context: {
+        ip: context[:ip],
+        headers: context[:headers]
+      }
+    )
+  end
+
+  def notify_fraud_detection_system_of_registration_succeeded(user)
+    castle = ::Castle::Client.new
+    token = params[:castle_request_token]
+    context = Castle::Context::Prepare.call(request)
+    castle.risk(
+      type: '$registration',
+      status: '$succeeded',
+      request_token: token,
+      user: {
+        id: user.id.to_s,
+        email: user.email
       },
       context: {
         ip: context[:ip],

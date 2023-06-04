@@ -5,7 +5,7 @@ http_interactions:
     uri: https://api.castle.io/v1/filter
     body:
       encoding: UTF-8
-      string: '{"type":"$registration","status":"$attempted","request_token":"test|device:chrome_on_mac|risk:0.0","params":{"email":"user@invalid"},"context":{"ip":"127.0.0.1","headers":{"Content-Length":"153","Remote-Addr":"127.0.0.1","Version":"HTTP/1.0","Host":"www.example.com","Accept":"text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5","Cookie":true}},"timestamp":"2023-06-04T15:01:44.356Z","sent_at":"2023-06-04T15:01:44.356Z"}'
+      string: '{"type":"$registration","status":"$attempted","request_token":"test|device:chrome_on_mac|risk:0.0","params":{"email":"user@invalid"},"context":{"ip":"127.0.0.1","headers":{"Content-Length":"153","Remote-Addr":"127.0.0.1","Version":"HTTP/1.0","Host":"www.example.com","Accept":"text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5","Cookie":true}},"timestamp":"2023-06-04T15:12:59.854Z","sent_at":"2023-06-04T15:12:59.854Z"}'
     headers:
       Content-Type:
       - application/json
@@ -23,7 +23,7 @@ http_interactions:
       message: Created
     headers:
       Date:
-      - Sun, 04 Jun 2023 15:01:21 GMT
+      - Sun, 04 Jun 2023 15:12:37 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
@@ -41,19 +41,19 @@ http_interactions:
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - d2b686df-7f25-4eed-b4a5-736f13244b7a
+      - 82dc31f1-0df0-421d-a5e8-66728274f690
       Server:
       - castle.io
     body:
       encoding: UTF-8
       string: '{"risk":0.0,"scores":{"account_abuse":{"score":0.0},"account_takeover":{"score":0.22},"bot":{"score":0.13}},"signals":{"invalid_email":{}},"policy":{"action":"allow","id":"b7f26fb8-1e12-414d-a44e-7097c5c112b4","revision_id":"","name":"Default"},"device":{"token":null,"fingerprint":null}}'
-  recorded_at: Sun, 04 Jun 2023 15:01:45 GMT
+  recorded_at: Sun, 04 Jun 2023 15:13:00 GMT
 - request:
     method: post
     uri: https://api.castle.io/v1/filter
     body:
       encoding: UTF-8
-      string: '{"type":"$registration","status":"$failed","request_token":"test|device:chrome_on_mac|risk:0.0","params":{"email":"user@invalid"},"context":{"ip":"127.0.0.1","headers":{"Content-Length":"153","Remote-Addr":"127.0.0.1","Version":"HTTP/1.0","Host":"www.example.com","Accept":"text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5","Cookie":true}},"timestamp":"2023-06-04T15:01:45.320Z","sent_at":"2023-06-04T15:01:45.321Z"}'
+      string: '{"type":"$registration","status":"$failed","request_token":"test|device:chrome_on_mac|risk:0.0","params":{"email":"user@invalid"},"context":{"ip":"127.0.0.1","headers":{"Content-Length":"153","Remote-Addr":"127.0.0.1","Version":"HTTP/1.0","Host":"www.example.com","Accept":"text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5","Cookie":true}},"timestamp":"2023-06-04T15:13:00.646Z","sent_at":"2023-06-04T15:13:00.647Z"}'
     headers:
       Content-Type:
       - application/json
@@ -71,7 +71,7 @@ http_interactions:
       message: Created
     headers:
       Date:
-      - Sun, 04 Jun 2023 15:01:22 GMT
+      - Sun, 04 Jun 2023 15:12:37 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
@@ -81,7 +81,7 @@ http_interactions:
       X-Ratelimit-Limit:
       - '10'
       X-Ratelimit-Remaining:
-      - '9'
+      - '8'
       X-Ratelimit-Reset:
       - '1'
       Etag:
@@ -89,11 +89,11 @@ http_interactions:
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - fb426a7b-ca05-4f1e-a7b2-49ad23c6f65f
+      - c8386cce-6467-4d41-82f5-31e955cc295f
       Server:
       - castle.io
     body:
       encoding: UTF-8
       string: '{"risk":0.0,"scores":{"account_abuse":{"score":0.0},"account_takeover":{"score":0.22},"bot":{"score":0.13}},"signals":{"invalid_email":{}},"policy":{"action":"allow","id":"b7f26fb8-1e12-414d-a44e-7097c5c112b4","revision_id":"","name":"Default"},"device":{"token":null,"fingerprint":null}}'
-  recorded_at: Sun, 04 Jun 2023 15:01:46 GMT
+  recorded_at: Sun, 04 Jun 2023 15:13:01 GMT
 recorded_with: VCR 6.1.0
