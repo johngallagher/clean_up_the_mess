@@ -11,6 +11,9 @@
                                            'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
     <%= render 'layouts/shim' %>
+    <script>
+      window.castle.configure({ pk: '<%= ENV.fetch('CASTLE_PUBLISHABLE_KEY') %>' });
+    </script>
   </head>
   <body>
     <%= render 'layouts/header' %>

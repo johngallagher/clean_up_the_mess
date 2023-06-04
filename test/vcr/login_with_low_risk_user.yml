@@ -1,0 +1,109 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.castle.io/v1/risk
+    body:
+      encoding: UTF-8
+      string: '{"type":"$login","status":"$succeeded","request_token":"BQxdTldRUHJCNmRfYVZHfTxjf3ZucVVtNHQ8UkBHSWdwd01K1USoTc-CS8OjjdrRlerKmLw9sfIKb9iJzfzEnsiSqqeKtdra6nIsiRv0dKfVws602bA4joL1udUEUJOPv2TGgpL7xHWq9rHHoo2t5qGW67_jx-SigJan46ODq_mlzOTDo4Oh5u26pentuJeqldf1upLG8dX63uTLvYeo75qSpsGkg-u__sDqufvX7MGFo4nG4deo46aS5M2olK_l5NeH4r-Yqe_ixvW548fquuPH5NmskaX4pNjxufrZ97yh_6a9_JP86K7HT4pZ__bpr87y6__AWK2MuYPGiNfsy72HqO_h14X6vZuhqoDG5Nq_mOiqgoeh5Iq75L7jxu0u2cf1pf3G67v0wPSm7cf1sP3H_rr9WMyKeNYBIBA8xFnMKkcsKvcviTq6jmjSnzsgp3THisH6gf-_mLTv4rur5KmYqp7DkqqnirXo76PakdnhkqrKzffEis33xIrN98SKzffEis33xIrN98SKzffEis33xIrNt4TKjbeEis33xIrN98SKzffEys33xIrN98SKzffEdWM","context":{"ip":"127.0.0.1","headers":{"Version":"HTTP/1.1","Host":"127.0.0.1:52394","Connection":"keep-alive","Content-Length":"699","Cache-Control":"max-age=0","Sec-Ch-Ua":"\"Google
+        Chrome\";v=\"113\", \"Chromium\";v=\"113\", \"Not-A.Brand\";v=\"24\"","Sec-Ch-Ua-Mobile":"?0","Sec-Ch-Ua-Platform":"\"macOS\"","Upgrade-Insecure-Requests":"1","Origin":"http://127.0.0.1:52394","User-Agent":"Mozilla/5.0
+        (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko)
+        Chrome/113.0.0.0 Safari/537.36","Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7","Sec-Fetch-Site":"same-origin","Sec-Fetch-Mode":"navigate","Sec-Fetch-User":"?1","Sec-Fetch-Dest":"document","Referer":"http://127.0.0.1:52394/login","Accept-Encoding":"gzip,
+        deflate, br","Accept-Language":"en-GB,en-US;q=0.9,en;q=0.8","Cookie":true,"Remote-Addr":"127.0.0.1"}},"user":{"id":"1046959424","registered_at":"2023-06-04T10:24:51.255Z","email":"joe@example.org","name":"Joe
+        Bloggs"},"timestamp":"2023-06-04T10:24:53.943Z","sent_at":"2023-06-04T10:24:53.944Z"}'
+    headers:
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Authorization:
+      - Basic <BASIC_AUTH_ENCODED_CASTLE_API_SECRET>
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Date:
+      - Sun, 04 Jun 2023 10:24:31 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Ratelimit-Limit:
+      - '10'
+      X-Ratelimit-Remaining:
+      - '9'
+      X-Ratelimit-Reset:
+      - '1'
+      Etag:
+      - W/"a96fa05c5c1ba88f71ccc1a5012972e4"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 4d0cb3b4-e681-4a14-8efa-157624fd6f99
+      Server:
+      - castle.io
+    body:
+      encoding: UTF-8
+      string: '{"risk":0.0,"scores":{"account_abuse":{"score":0.0},"account_takeover":{"score":0.0},"bot":{"score":0.0}},"signals":{"bot_behavior":{},"headless_browser":{}},"policy":{"action":"allow","id":"b7f26fb8-1e12-414d-a44e-7097c5c112b4","revision_id":"","name":"Default"},"device":{"token":"eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlbiI6InRxMGR0dUlRTUVHLWtpU0JydEpNelBXQWJfcFkiLCJxdWFsaWZpZXIiOiJBUUlEQ2pJeE5UUTNOelUzT1RBIiwiYW5vbnltb3VzIjpmYWxzZSwidmVyc2lvbiI6MC4zfQ.Ic8X4majh6_uA_wcDo-PakNt1D0kKHdy7dwY8ivjDbw","fingerprint":"p1lwJ15dRqWNA5bUqELSvQ"}}'
+  recorded_at: Sun, 04 Jun 2023 10:24:54 GMT
+- request:
+    method: post
+    uri: https://api.castle.io/v1/risk
+    body:
+      encoding: UTF-8
+      string: '{"type":"$login","status":"$succeeded","request_token":"BQxdTldRUHJCNmRfYVZHfTxjf3ZucVVtNHQ8UkBHSWdwd01K1USoTc-CS8OjjdrRlerKmLw9sfIKb9iJzfzEnsiSqqeKtdra6nIsiRv0dKfVws602bA4joL1udUEUJOPv2TGgpL7xHWq9rHHoo2t5qGW67_jx-SigJan46ODq_mlzOTDo4Oh5u26pentuJeqldf1upLG8dX63uTLvYeo75qSpsGkg-u__sDqufvX7MGFo4nG4deo46aS5M2olK_l5NeH4r-Yqe_ixvW548fquuPH5NmskaX4pNjxufrZ97yh_6a9_JP86K7HT4pZ__bpr87y6__AWK2MuYPGiNfsy72HqO_h14X6vZuhqoDG5Nq_mOiqgoeh5Iq75L7jxu0u2cf1pf3G67v0wPSm7cf1sP3H_rr9WMyKeNYBIBA8xFnMKkcsKvcviTq6jmjSnzsgp3THisH6gf-_mLTv4rur5KmYqp7DkqqnirXo76PakdnhkqrKzffEis33xIrN98SKzffEis33xIrN98SKzffEis33xIrNt4TKjbeEis33xIrN98SKzffEys33xIrN98SKzffEdWM","context":{"ip":"127.0.0.1","headers":{"Version":"HTTP/1.1","Host":"127.0.0.1:52394","Connection":"keep-alive","Content-Length":"699","Cache-Control":"max-age=0","Sec-Ch-Ua":"\"Google
+        Chrome\";v=\"113\", \"Chromium\";v=\"113\", \"Not-A.Brand\";v=\"24\"","Sec-Ch-Ua-Mobile":"?0","Sec-Ch-Ua-Platform":"\"macOS\"","Upgrade-Insecure-Requests":"1","Origin":"http://127.0.0.1:52394","User-Agent":"Mozilla/5.0
+        (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko)
+        Chrome/113.0.0.0 Safari/537.36","Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7","Sec-Fetch-Site":"same-origin","Sec-Fetch-Mode":"navigate","Sec-Fetch-User":"?1","Sec-Fetch-Dest":"document","Referer":"http://127.0.0.1:52394/login","Accept-Encoding":"gzip,
+        deflate, br","Accept-Language":"en-GB,en-US;q=0.9,en;q=0.8","Cookie":true,"Remote-Addr":"127.0.0.1"}},"user":{"id":"1046959424","registered_at":"2023-06-04T10:24:51.255Z","email":"joe@example.org","name":"Joe
+        Bloggs"},"timestamp":"2023-06-04T10:24:54.731Z","sent_at":"2023-06-04T10:24:54.732Z"}'
+    headers:
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Authorization:
+      - Basic <BASIC_AUTH_ENCODED_CASTLE_API_SECRET>
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Date:
+      - Sun, 04 Jun 2023 10:24:32 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Ratelimit-Limit:
+      - '10'
+      X-Ratelimit-Remaining:
+      - '8'
+      X-Ratelimit-Reset:
+      - '1'
+      Etag:
+      - W/"a96fa05c5c1ba88f71ccc1a5012972e4"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 47dd13fa-f501-4175-8d41-7d6c1df0e7e1
+      Server:
+      - castle.io
+    body:
+      encoding: UTF-8
+      string: '{"risk":1.0,"scores":{"account_abuse":{"score":1.0},"account_takeover":{"score":0.26},"bot":{"score":0.9}},"signals":{"bot_behavior":{},"headless_browser":{}},"policy":{"action":"allow","id":"b7f26fb8-1e12-414d-a44e-7097c5c112b4","revision_id":"","name":"Default"},"device":{"token":"eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlbiI6InRxMGR0dUlRTUVHLWtpU0JydEpNelBXQWJfcFkiLCJxdWFsaWZpZXIiOiJBUUlEQ2pJeE5UUTNOelUzT1RBIiwiYW5vbnltb3VzIjpmYWxzZSwidmVyc2lvbiI6MC4zfQ.Ic8X4majh6_uA_wcDo-PakNt1D0kKHdy7dwY8ivjDbw","fingerprint":"p1lwJ15dRqWNA5bUqELSvQ"}}'
+  recorded_at: Sun, 04 Jun 2023 10:24:55 GMT
+recorded_with: VCR 6.1.0

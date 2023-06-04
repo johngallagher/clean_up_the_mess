@@ -30,9 +30,13 @@ class ActionDispatch::IntegrationTest
   end
 end
 
+require 'webdrivers'
+Webdrivers::Chromedriver.update
+
 VCR.configure do |config|
+  config.ignore_hosts '127.0.0.1'
   config.cassette_library_dir = "test/vcr"
   config.hook_into :webmock
-  config.filter_sensitive_data('<API_KEY>') { ENV['API_KEY'] }
-  config.allow_http_connections_when_no_cassette = true
+  config.filter_sensitive_data('<BASIC_AUTH_ENCODED_CASTLE_API_SECRET>') { Base64::encode64(":#{ENV.fetch('CASTLE_API_SECRET')}").chomp }
+  config.allow_http_connections_when_no_cassette = false
 end

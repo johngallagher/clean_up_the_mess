@@ -53,3 +53,5 @@ gem "dotenv-rails", "~> 2.8"
 gem "webmock", "~> 3.18"
 
 gem "vcr", "~> 6.1"
+
+gem "stimulus-rails", "~> 1.2"
