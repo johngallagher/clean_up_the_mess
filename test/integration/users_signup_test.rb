@@ -50,6 +50,33 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     assert is_logged_in?
   end
 
+  # Genuine users
+  test 'when the user signs up with a low likelihood of being a hacker' \
+       'notify fraud detection that registration has succeeded ' \
+       'and sign them up' do
+    sign_up_as(likelihood_of_being_a_hacker: 0.0)
+    assert_fraud_detection_notified_of_registration_succeeded_with(
+      user: {
+        id: User.find_by(email: 'user@example.com').id.to_s,
+        email: 'user@example.com',
+        name: 'Example User'
+      },
+      context: {
+        ip: '127.0.0.1',
+        headers: {
+          "Content-Length": '179',
+          "Remote-Addr": '127.0.0.1',
+          Version: 'HTTP/1.0',
+          Host: 'www.example.com',
+          Accept: 'text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5',
+          Cookie: true
+        }
+      }
+    )
+    assert_redirected_to root_url
+    assert_equal 1, User.where(email: 'user@example.com').count
+  end
+
   test 'when the user has posted a signup form ' \
        'notify fraud detection that registration has been attempted' do
     sign_up_as(
@@ -129,37 +156,20 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     assert_equal 1, User.where(email: 'user@example.com').count
   end
 
+  # Possible hackers
   test 'when the user signs up with a high likelihood of being a hacker' \
-       'challenge the users IP address in Cloudflare' \
+       'challenge the users IP address' \
        "so that they have to prove they're a human to enter their account" do
-    sign_up_as(likelihood_of_being_a_hacker: 1.0)
+    sign_up_as(likelihood_of_being_a_hacker: 0.7)
     assert_user_challenged(ip: '127.0.0.1')
   end
 
-  test 'when the user signs up with a low likelihood of being a hacker' \
-       'notify fraud detection that registration has succeeded ' \
-       'and sign them up' do
-    sign_up_as(likelihood_of_being_a_hacker: 0.0)
-    assert_fraud_detection_notified_of_registration_succeeded_with(
-      user: {
-        id: User.find_by(email: 'user@example.com').id.to_s,
-        email: 'user@example.com',
-        name: 'Example User'
-      },
-      context: {
-        ip: '127.0.0.1',
-        headers: {
-          "Content-Length": '179',
-          "Remote-Addr": '127.0.0.1',
-          Version: 'HTTP/1.0',
-          Host: 'www.example.com',
-          Accept: 'text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5',
-          Cookie: true
-        }
-      }
-    )
-    assert_redirected_to root_url
-    assert_equal 1, User.where(email: 'user@example.com').count
+  # Hackers
+  test 'when the user signs up with a high likelihood of being a hacker' \
+       'block the users IP address' \
+       "so that we're not letting hackers in" do
+    sign_up_as(likelihood_of_being_a_hacker: 1.0)
+    assert_user_blocked(ip: '127.0.0.1')
   end
 
   private
@@ -218,6 +228,14 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 
       assert_equal parsed_body.slice(*properties.keys), properties.deep_symbolize_keys
     end
+  end
+
+  def assert_user_blocked(ip:)
+    assert_requested(
+      :post,
+      'https://api.cloudflare.com/client/v4/accounts/a4bedc9e66fe2e421c76b068531a75a2/firewall/access_rules/rules',
+      body: JSON.generate({ configuration: { target: 'ip', value: ip }, mode: 'block' })
+    )
   end
 
   def assert_user_challenged(ip:)
