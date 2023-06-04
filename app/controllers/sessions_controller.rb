@@ -70,7 +70,7 @@ class SessionsController < ApplicationController
         },
         user: {
           id: user.id.to_s,
-          registered_at: user.activated_at,
+          registered_at: user.activated_at.iso8601,
           email: user.email,
           name: user.name
         }

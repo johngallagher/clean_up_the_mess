@@ -60,6 +60,31 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     assert response.status == 500, 'Expected 500, got ' + response.status.to_s
   end
 
+  test 'when a user with valid password has a high likelihood of being a hacker' \
+       'sends the users details to risk assessment ' \
+       'so that other hackers with valid passwords are recognised' do
+    log_in_as(@user, likelihood_of_being_a_hacker: 1.0)
+    assert_fraud_detection_notified_of_login_succeeded_with(
+      user: {
+        id: @user.id.to_s,
+        registered_at: @user.activated_at.iso8601,
+        email: @user.email,
+        name: @user.name
+      },
+      context: {
+        ip: '127.0.0.1',
+        headers: {
+          "Content-Length": '150',
+          "Remote-Addr": '127.0.0.1',
+          Version: 'HTTP/1.0',
+          Host: 'www.example.com',
+          Accept: 'text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5',
+          Cookie: true
+        }
+      }
+    )
+  end
+
   test 'when the user has a medium-high likelihood of being a hacker' \
        'block them from logging in' do
     log_in_as(@user, likelihood_of_being_a_hacker: 0.9)
@@ -94,7 +119,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     assert_fraud_detection_notified_of_login_succeeded_with(
       user: {
         id: user.id.to_s,
-        registered_at: '2012-12-02T00:30:08.276Z',
+        registered_at: '2012-12-02T00:30:08Z',
         email: 'joe@example.org',
         name: 'Joe Bloggs'
       },
