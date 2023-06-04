@@ -18,6 +18,7 @@ class SessionsController < ApplicationController
         redirect_to root_url
       end
     else
+      notify_fraud_detection_system_of_failed_login_attempt
       flash.now[:danger] = 'Invalid email/password combination'
       render 'new'
     end
@@ -27,14 +28,32 @@ class SessionsController < ApplicationController
     log_out if logged_in?
     redirect_to root_url
   end
-  
+
   private
 
-  def user_is_genuine? user:
+  def notify_fraud_detection_system_of_failed_login_attempt
+    castle = ::Castle::Client.new
+    token = params[:castle_request_token]
+    context = Castle::Context::Prepare.call(request)
+    castle.filter(
+      type: '$login',
+      status: '$failed',
+      request_token: token,
+      params: {
+        email: params[:session][:email]
+      },
+      context: {
+        ip: context[:ip],
+        headers: context[:headers]
+      }
+    )
+  end
+
+  def user_is_genuine?(user:)
     !user_is_a_hacker? user: user
   end
 
-  def user_is_a_hacker? user:
+  def user_is_a_hacker?(user:)
     castle = ::Castle::Client.new
 
     begin

@@ -6,7 +6,6 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
 
   def setup
     @user = users(:michael)
-    @user_with_invalid_password = users(:with_invalid_password)
   end
 
   test 'login with valid email/invalid password' do
@@ -22,7 +21,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
 
   test 'login with valid information followed by logout' do
     get login_path
-    log_in_as(@user, password: 'password')
+    log_in_as(@user)
     assert is_logged_in?
     assert_redirected_to @user
     follow_redirect!
@@ -77,7 +76,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
 
   test 'when the hacker has the wrong password ' \
        "render new and don't log them in" do
-    log_in_as(@user_with_invalid_password, likelihood_of_being_a_hacker: 1.0)
+    log_in_as(@user, password: 'invalid', likelihood_of_being_a_hacker: 1.0)
     assert_not is_logged_in?, 'Expected to be logged out'
     assert response.status == 200, 'Expected 200, got ' + response.status.to_s
   end
@@ -133,16 +132,15 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
 
   test 'notifies fraud detection when a genuinue user has failed login ' \
        'so that the fraud detection learns about hackers' do
-    log_in_as(@user, password: 'invalid', likelihood_of_being_a_hacker: 0.0)
+    log_in_as(@user, password: 'invalid')
     assert_fraud_detection_notified_of_failed_login_with(
       params: {
         email: @user.email
       },
-      matching_user_id: @user.id.to_s,
       context: {
         ip: '127.0.0.1',
         headers: {
-          "Content-Length": '150',
+          "Content-Length": '149',
           "Remote-Addr": '127.0.0.1',
           Version: 'HTTP/1.0',
           Host: 'www.example.com',

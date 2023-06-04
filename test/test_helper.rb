@@ -19,7 +19,7 @@ end
 class ActionDispatch::IntegrationTest
   # Log in as a particular user.
   def log_in_as(user, password: 'password', remember_me: '1', likelihood_of_being_a_hacker: 0.0)
-    VCR.use_cassette("user_with_hacker_risk_#{likelihood_of_being_a_hacker}") do
+    VCR.use_cassette("user_with_hacker_risk_#{likelihood_of_being_a_hacker}_valid_password_#{password == 'password'}_with_email_#{user.email}") do
       post login_path, params: {
         castle_request_token: "test|device:chrome_on_mac|risk:#{likelihood_of_being_a_hacker}",
         session: { email: user.email,

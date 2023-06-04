@@ -6,14 +6,6 @@ michael:
   activated: true
   activated_at: <%= Time.zone.now %>
 
-with_invalid_password:
-  name: Michael Example
-  email: invalid@example.com
-  password_digest: <%= User.digest('invalid') %>
-  admin: true
-  activated: true
-  activated_at: <%= Time.zone.now %>
-
 archer:
   name: Sterling Archer
   email: duchess@example.gov

@@ -5,12 +5,12 @@ http_interactions:
     uri: https://api.castle.io/v1/risk
     body:
       encoding: UTF-8
-      string: '{"type":"$login","status":"$succeeded","request_token":"BQxdTldRUHJCNmRfYVZHfTxjf3ZucVVtNHQ8UkBHSWdwd01K1USoTc-CS8OjjdrRlerKmLw9sfIKb9iJzfzEnsiSqqeKtdra6nIsiRv0dKfVws602bA4joL1udUEUJOPv2TGgpL7xHWq9rHHoo2t5qGW67_jx-SigJan46ODq_mlzOTDo4Oh5u26pentuJeqldf1upLG8dX63uTLvYeo75qSpsGkg-u__sDqufvX7MGFo4nG4deo46aS5M2olK_l5NeH4r-Yqe_ixvW548fquuPH5NmskaX4pNjxufrZ97yh_6a9_JP86K7HT4pZ__bpr87y6__AWK2MuYPGiNfsy72HqO_h14X6vZuhqoDG5Nq_mOiqgoeh5Iq75L7jxu0u2cf1pf3G67v0wPSm7cf1sP3H_rr9WMyKeNYBIBA8xFnMKkcsKvcviTq6jmjSnzsgp3THisH6gf-_mLTv4rur5KmYqp7DkqqnirXo76PakdnhkqrKzffEis33xIrN98SKzffEis33xIrN98SKzffEis33xIrNt4TKjbeEis33xIrN98SKzffEys33xIrN98SKzffEdWM","context":{"ip":"127.0.0.1","headers":{"Version":"HTTP/1.1","Host":"127.0.0.1:52394","Connection":"keep-alive","Content-Length":"699","Cache-Control":"max-age=0","Sec-Ch-Ua":"\"Google
-        Chrome\";v=\"113\", \"Chromium\";v=\"113\", \"Not-A.Brand\";v=\"24\"","Sec-Ch-Ua-Mobile":"?0","Sec-Ch-Ua-Platform":"\"macOS\"","Upgrade-Insecure-Requests":"1","Origin":"http://127.0.0.1:52394","User-Agent":"Mozilla/5.0
+      string: '{"type":"$login","status":"$succeeded","request_token":"Fh9OXURCQ2FRJXdMckVUbi9wbGV9YkZ-J2cvQVNUWnRjZF5ZRfL-1tibU7u-Gc1zwU4-cJVtr7IpWajVlWaxwpAI3_vAPq-GsuhZ1UNuAfuNWLvogSpN0sphsWnybDOb-hfYuvkMnuO7XZH-2AzSv_sZ3qX9VpGf-xnUurUg0LW1IuL2zU2A5spchImiRJGX5R3ds8II0538GZ7jplqf5aNNmZ3dOfyauU3dv_4IkZHwDtq5vE35s_QJ3bPmHvK-5wLcs7pcgOW7XZ_jo1qD-KRfh_bGDNe35wSe46Zan-WjAbfirFqDtPHmsUKdW4LnpFmHt_DJpee6XJ7nrFqB-rVci-alV4HmtSz8eZ1tBPdQx2wdlb6wCxbLVtZ-bkab34-uvmrH21WWbb3b0BjDueUInpr6A9W5-3m0s_tA5IXVbbHWlW2x1pVtsdaVbbHWlW2x1pVtsdaVbbHWlW2x1pVt8ZbVLfGWlW2x1pVtsdaVbbHW1W2x1pVtsdaVbbHWahY","context":{"ip":"127.0.0.1","headers":{"Version":"HTTP/1.1","Host":"127.0.0.1:53173","Connection":"keep-alive","Content-Length":"631","Cache-Control":"max-age=0","Sec-Ch-Ua":"\"HeadlessChrome\";v=\"113\",
+        \"Chromium\";v=\"113\", \"Not-A.Brand\";v=\"24\"","Sec-Ch-Ua-Mobile":"?0","Sec-Ch-Ua-Platform":"\"macOS\"","Upgrade-Insecure-Requests":"1","Origin":"http://127.0.0.1:53173","User-Agent":"Mozilla/5.0
         (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko)
-        Chrome/113.0.0.0 Safari/537.36","Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7","Sec-Fetch-Site":"same-origin","Sec-Fetch-Mode":"navigate","Sec-Fetch-User":"?1","Sec-Fetch-Dest":"document","Referer":"http://127.0.0.1:52394/login","Accept-Encoding":"gzip,
-        deflate, br","Accept-Language":"en-GB,en-US;q=0.9,en;q=0.8","Cookie":true,"Remote-Addr":"127.0.0.1"}},"user":{"id":"1046959424","registered_at":"2023-06-04T10:24:51.255Z","email":"joe@example.org","name":"Joe
-        Bloggs"},"timestamp":"2023-06-04T10:24:53.943Z","sent_at":"2023-06-04T10:24:53.944Z"}'
+        HeadlessChrome/113.0.5672.126 Safari/537.36","Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7","Sec-Fetch-Site":"same-origin","Sec-Fetch-Mode":"navigate","Sec-Fetch-User":"?1","Sec-Fetch-Dest":"document","Referer":"http://127.0.0.1:53173/login","Accept-Encoding":"gzip,
+        deflate, br","Cookie":true,"Remote-Addr":"127.0.0.1"}},"user":{"id":"1046959424","registered_at":"2023-06-04T12:43:03.648Z","email":"joe@example.org","name":"Joe
+        Bloggs"},"timestamp":"2023-06-04T12:43:04.838Z","sent_at":"2023-06-04T12:43:04.838Z"}'
     headers:
       Content-Type:
       - application/json
@@ -28,7 +28,7 @@ http_interactions:
       message: Created
     headers:
       Date:
-      - Sun, 04 Jun 2023 10:24:31 GMT
+      - Sun, 04 Jun 2023 12:42:42 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
@@ -42,28 +42,28 @@ http_interactions:
       X-Ratelimit-Reset:
       - '1'
       Etag:
-      - W/"a96fa05c5c1ba88f71ccc1a5012972e4"
+      - W/"66ae4a1f9ecc2a3b6197bff77f728a15"
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - 4d0cb3b4-e681-4a14-8efa-157624fd6f99
+      - b6a96ac2-76fc-4087-a5cd-da3011cf4239
       Server:
       - castle.io
     body:
       encoding: UTF-8
-      string: '{"risk":0.0,"scores":{"account_abuse":{"score":0.0},"account_takeover":{"score":0.0},"bot":{"score":0.0}},"signals":{"bot_behavior":{},"headless_browser":{}},"policy":{"action":"allow","id":"b7f26fb8-1e12-414d-a44e-7097c5c112b4","revision_id":"","name":"Default"},"device":{"token":"eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlbiI6InRxMGR0dUlRTUVHLWtpU0JydEpNelBXQWJfcFkiLCJxdWFsaWZpZXIiOiJBUUlEQ2pJeE5UUTNOelUzT1RBIiwiYW5vbnltb3VzIjpmYWxzZSwidmVyc2lvbiI6MC4zfQ.Ic8X4majh6_uA_wcDo-PakNt1D0kKHdy7dwY8ivjDbw","fingerprint":"p1lwJ15dRqWNA5bUqELSvQ"}}'
-  recorded_at: Sun, 04 Jun 2023 10:24:54 GMT
+      string: '{"risk":0.0,"scores":{"account_abuse":{"score":0.0},"account_takeover":{"score":0.0},"bot":{"score":0.0}},"signals":{"bot_behavior":{},"headless_browser":{}},"policy":{"action":"allow","id":"b7f26fb8-1e12-414d-a44e-7097c5c112b4","revision_id":"","name":"Default"},"device":{"token":"eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlbiI6InRxME9MMnNRSTlnM2tqY1lKOUpmVlh5QWZHUFIiLCJxdWFsaWZpZXIiOiJBUUlEQ2pJeE5UVTJOalkzT1RFIiwiYW5vbnltb3VzIjpmYWxzZSwidmVyc2lvbiI6MC4zfQ.R9lsK-tNK82dVFISa2C2n-tLJ_L3PVdoaHu-0iEKq5E","fingerprint":"kA4R2QSdQXOYhceWw_9JoA"}}'
+  recorded_at: Sun, 04 Jun 2023 12:43:05 GMT
 - request:
     method: post
     uri: https://api.castle.io/v1/risk
     body:
       encoding: UTF-8
-      string: '{"type":"$login","status":"$succeeded","request_token":"BQxdTldRUHJCNmRfYVZHfTxjf3ZucVVtNHQ8UkBHSWdwd01K1USoTc-CS8OjjdrRlerKmLw9sfIKb9iJzfzEnsiSqqeKtdra6nIsiRv0dKfVws602bA4joL1udUEUJOPv2TGgpL7xHWq9rHHoo2t5qGW67_jx-SigJan46ODq_mlzOTDo4Oh5u26pentuJeqldf1upLG8dX63uTLvYeo75qSpsGkg-u__sDqufvX7MGFo4nG4deo46aS5M2olK_l5NeH4r-Yqe_ixvW548fquuPH5NmskaX4pNjxufrZ97yh_6a9_JP86K7HT4pZ__bpr87y6__AWK2MuYPGiNfsy72HqO_h14X6vZuhqoDG5Nq_mOiqgoeh5Iq75L7jxu0u2cf1pf3G67v0wPSm7cf1sP3H_rr9WMyKeNYBIBA8xFnMKkcsKvcviTq6jmjSnzsgp3THisH6gf-_mLTv4rur5KmYqp7DkqqnirXo76PakdnhkqrKzffEis33xIrN98SKzffEis33xIrN98SKzffEis33xIrNt4TKjbeEis33xIrN98SKzffEys33xIrN98SKzffEdWM","context":{"ip":"127.0.0.1","headers":{"Version":"HTTP/1.1","Host":"127.0.0.1:52394","Connection":"keep-alive","Content-Length":"699","Cache-Control":"max-age=0","Sec-Ch-Ua":"\"Google
-        Chrome\";v=\"113\", \"Chromium\";v=\"113\", \"Not-A.Brand\";v=\"24\"","Sec-Ch-Ua-Mobile":"?0","Sec-Ch-Ua-Platform":"\"macOS\"","Upgrade-Insecure-Requests":"1","Origin":"http://127.0.0.1:52394","User-Agent":"Mozilla/5.0
+      string: '{"type":"$login","status":"$succeeded","request_token":"Fh9OXURCQ2FRJXdMckVUbi9wbGV9YkZ-J2cvQVNUWnRjZF5ZRfL-1tibU7u-Gc1zwU4-cJVtr7IpWajVlWaxwpAI3_vAPq-GsuhZ1UNuAfuNWLvogSpN0sphsWnybDOb-hfYuvkMnuO7XZH-2AzSv_sZ3qX9VpGf-xnUurUg0LW1IuL2zU2A5spchImiRJGX5R3ds8II0538GZ7jplqf5aNNmZ3dOfyauU3dv_4IkZHwDtq5vE35s_QJ3bPmHvK-5wLcs7pcgOW7XZ_jo1qD-KRfh_bGDNe35wSe46Zan-WjAbfirFqDtPHmsUKdW4LnpFmHt_DJpee6XJ7nrFqB-rVci-alV4HmtSz8eZ1tBPdQx2wdlb6wCxbLVtZ-bkab34-uvmrH21WWbb3b0BjDueUInpr6A9W5-3m0s_tA5IXVbbHWlW2x1pVtsdaVbbHWlW2x1pVtsdaVbbHWlW2x1pVt8ZbVLfGWlW2x1pVtsdaVbbHW1W2x1pVtsdaVbbHWahY","context":{"ip":"127.0.0.1","headers":{"Version":"HTTP/1.1","Host":"127.0.0.1:53173","Connection":"keep-alive","Content-Length":"631","Cache-Control":"max-age=0","Sec-Ch-Ua":"\"HeadlessChrome\";v=\"113\",
+        \"Chromium\";v=\"113\", \"Not-A.Brand\";v=\"24\"","Sec-Ch-Ua-Mobile":"?0","Sec-Ch-Ua-Platform":"\"macOS\"","Upgrade-Insecure-Requests":"1","Origin":"http://127.0.0.1:53173","User-Agent":"Mozilla/5.0
         (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko)
-        Chrome/113.0.0.0 Safari/537.36","Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7","Sec-Fetch-Site":"same-origin","Sec-Fetch-Mode":"navigate","Sec-Fetch-User":"?1","Sec-Fetch-Dest":"document","Referer":"http://127.0.0.1:52394/login","Accept-Encoding":"gzip,
-        deflate, br","Accept-Language":"en-GB,en-US;q=0.9,en;q=0.8","Cookie":true,"Remote-Addr":"127.0.0.1"}},"user":{"id":"1046959424","registered_at":"2023-06-04T10:24:51.255Z","email":"joe@example.org","name":"Joe
-        Bloggs"},"timestamp":"2023-06-04T10:24:54.731Z","sent_at":"2023-06-04T10:24:54.732Z"}'
+        HeadlessChrome/113.0.5672.126 Safari/537.36","Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7","Sec-Fetch-Site":"same-origin","Sec-Fetch-Mode":"navigate","Sec-Fetch-User":"?1","Sec-Fetch-Dest":"document","Referer":"http://127.0.0.1:53173/login","Accept-Encoding":"gzip,
+        deflate, br","Cookie":true,"Remote-Addr":"127.0.0.1"}},"user":{"id":"1046959424","registered_at":"2023-06-04T12:43:03.648Z","email":"joe@example.org","name":"Joe
+        Bloggs"},"timestamp":"2023-06-04T12:43:05.587Z","sent_at":"2023-06-04T12:43:05.588Z"}'
     headers:
       Content-Type:
       - application/json
@@ -81,7 +81,7 @@ http_interactions:
       message: Created
     headers:
       Date:
-      - Sun, 04 Jun 2023 10:24:32 GMT
+      - Sun, 04 Jun 2023 12:42:42 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
@@ -95,15 +95,15 @@ http_interactions:
       X-Ratelimit-Reset:
       - '1'
       Etag:
-      - W/"a96fa05c5c1ba88f71ccc1a5012972e4"
+      - W/"66ae4a1f9ecc2a3b6197bff77f728a15"
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - 47dd13fa-f501-4175-8d41-7d6c1df0e7e1
+      - a434af4d-5b71-4ba8-9ca8-c54ca77a5b74
       Server:
       - castle.io
     body:
       encoding: UTF-8
-      string: '{"risk":1.0,"scores":{"account_abuse":{"score":1.0},"account_takeover":{"score":0.26},"bot":{"score":0.9}},"signals":{"bot_behavior":{},"headless_browser":{}},"policy":{"action":"allow","id":"b7f26fb8-1e12-414d-a44e-7097c5c112b4","revision_id":"","name":"Default"},"device":{"token":"eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlbiI6InRxMGR0dUlRTUVHLWtpU0JydEpNelBXQWJfcFkiLCJxdWFsaWZpZXIiOiJBUUlEQ2pJeE5UUTNOelUzT1RBIiwiYW5vbnltb3VzIjpmYWxzZSwidmVyc2lvbiI6MC4zfQ.Ic8X4majh6_uA_wcDo-PakNt1D0kKHdy7dwY8ivjDbw","fingerprint":"p1lwJ15dRqWNA5bUqELSvQ"}}'
-  recorded_at: Sun, 04 Jun 2023 10:24:55 GMT
+      string: '{"risk":0.0,"scores":{"account_abuse":{"score":0.0},"account_takeover":{"score":0.0},"bot":{"score":0.0}},"signals":{"bot_behavior":{},"headless_browser":{}},"policy":{"action":"allow","id":"b7f26fb8-1e12-414d-a44e-7097c5c112b4","revision_id":"","name":"Default"},"device":{"token":"eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlbiI6InRxME9MMnNRSTlnM2tqY1lKOUpmVlh5QWZHUFIiLCJxdWFsaWZpZXIiOiJBUUlEQ2pJeE5UVTJOalkzT1RFIiwiYW5vbnltb3VzIjpmYWxzZSwidmVyc2lvbiI6MC4zfQ.R9lsK-tNK82dVFISa2C2n-tLJ_L3PVdoaHu-0iEKq5E","fingerprint":"kA4R2QSdQXOYhceWw_9JoA"}}'
+  recorded_at: Sun, 04 Jun 2023 12:43:06 GMT
 recorded_with: VCR 6.1.0
