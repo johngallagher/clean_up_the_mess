@@ -106,13 +106,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   test 'when the user signs up with a high likelihood of being a hacker' \
        'notify fraud detection that registration has succeeded ' \
        'and redirect them to the home page but create them' do
-    sign_up_as(
-      name: 'Example User',
-      email: 'user@example.com',
-      password: 'password',
-      password_confirmation: 'password',
-      likelihood_of_being_a_hacker: 1.0
-    )
+    sign_up_as(likelihood_of_being_a_hacker: 1.0)
     assert_fraud_detection_notified_of_registration_succeeded_with(
       user: {
         id: User.find_by(email: 'user@example.com').id.to_s,
@@ -134,16 +128,17 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     assert_equal 1, User.where(email: 'user@example.com').count
   end
 
+  test 'when the user signs up with a high likelihood of being a hacker' \
+       'challenge the users IP address in Cloudflare' \
+       "so that they have to prove they're a human to enter their account" do
+    sign_up_as(likelihood_of_being_a_hacker: 1.0)
+    assert_user_challenged(ip: '127.0.0.1')
+  end
+
   test 'when the user signs up with a low likelihood of being a hacker' \
        'notify fraud detection that registration has succeeded ' \
        'and sign them up' do
-    sign_up_as(
-      name: 'Example User',
-      email: 'user@example.com',
-      password: 'password',
-      password_confirmation: 'password',
-      likelihood_of_being_a_hacker: 0.0
-    )
+    sign_up_as(likelihood_of_being_a_hacker: 0.0)
     assert_fraud_detection_notified_of_registration_succeeded_with(
       user: {
         id: User.find_by(email: 'user@example.com').id.to_s,
@@ -165,11 +160,12 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     assert_equal 1, User.where(email: 'user@example.com').count
   end
 
+
   private
 
   def sign_up_as(
-    name:,
-    email:,
+    name: 'Example User',
+    email: 'user@example.com',
     password: 'password',
     password_confirmation: password,
     likelihood_of_being_a_hacker: 0.0
@@ -213,5 +209,13 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 
       assert_equal parsed_body.slice(*properties.keys), properties.deep_symbolize_keys
     end
+  end
+
+  def assert_user_challenged(ip:)
+    assert_requested(
+      :post,
+      'https://api.cloudflare.com/client/v4/accounts/a4bedc9e66fe2e421c76b068531a75a2/firewall/access_rules/rules',
+      body: JSON.generate({ configuration: { target: 'ip', value: ip }, mode: 'challenge' })
+    )
   end
 end

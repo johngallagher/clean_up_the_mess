@@ -5,7 +5,7 @@ http_interactions:
     uri: https://api.castle.io/v1/filter
     body:
       encoding: UTF-8
-      string: '{"type":"$registration","status":"$attempted","request_token":"test|device:chrome_on_mac|risk:0.0","params":{"email":"duplicateuser@example.com"},"context":{"ip":"127.0.0.1","headers":{"Content-Length":"188","Remote-Addr":"127.0.0.1","Version":"HTTP/1.0","Host":"www.example.com","Accept":"text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5","Cookie":true}},"timestamp":"2023-06-04T15:12:57.986Z","sent_at":"2023-06-04T15:12:57.986Z"}'
+      string: '{"type":"$registration","status":"$attempted","request_token":"test|device:chrome_on_mac|risk:0.0","params":{"email":"duplicateuser@example.com"},"context":{"ip":"127.0.0.1","headers":{"Content-Length":"188","Remote-Addr":"127.0.0.1","Version":"HTTP/1.0","Host":"www.example.com","Accept":"text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5","Cookie":true}},"timestamp":"2023-06-04T18:53:59.411Z","sent_at":"2023-06-04T18:53:59.411Z"}'
     headers:
       Content-Type:
       - application/json
@@ -23,7 +23,7 @@ http_interactions:
       message: Created
     headers:
       Date:
-      - Sun, 04 Jun 2023 15:12:35 GMT
+      - Sun, 04 Jun 2023 18:53:36 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
@@ -41,19 +41,19 @@ http_interactions:
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - b169dc07-1521-4b36-bbf4-151a429ce8c3
+      - 7dc3d5a8-c68b-47de-81a7-71697ece4d25
       Server:
       - castle.io
     body:
       encoding: UTF-8
       string: '{"risk":0.0,"scores":{"account_abuse":{"score":0.0},"account_takeover":{"score":0.22},"bot":{"score":0.79}},"signals":{},"policy":{"action":"allow","id":"b7f26fb8-1e12-414d-a44e-7097c5c112b4","revision_id":"","name":"Default"},"device":{"token":null,"fingerprint":null}}'
-  recorded_at: Sun, 04 Jun 2023 15:12:58 GMT
+  recorded_at: Sun, 04 Jun 2023 18:53:59 GMT
 - request:
     method: post
     uri: https://api.castle.io/v1/filter
     body:
       encoding: UTF-8
-      string: '{"type":"$registration","status":"$failed","request_token":"test|device:chrome_on_mac|risk:0.0","params":{"email":"duplicateuser@example.com"},"context":{"ip":"127.0.0.1","headers":{"Content-Length":"188","Remote-Addr":"127.0.0.1","Version":"HTTP/1.0","Host":"www.example.com","Accept":"text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5","Cookie":true}},"timestamp":"2023-06-04T15:12:58.904Z","sent_at":"2023-06-04T15:12:58.904Z"}'
+      string: '{"type":"$registration","status":"$failed","request_token":"test|device:chrome_on_mac|risk:0.0","params":{"email":"duplicateuser@example.com"},"context":{"ip":"127.0.0.1","headers":{"Content-Length":"188","Remote-Addr":"127.0.0.1","Version":"HTTP/1.0","Host":"www.example.com","Accept":"text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5","Cookie":true}},"timestamp":"2023-06-04T18:53:59.990Z","sent_at":"2023-06-04T18:53:59.990Z"}'
     headers:
       Content-Type:
       - application/json
@@ -71,7 +71,7 @@ http_interactions:
       message: Created
     headers:
       Date:
-      - Sun, 04 Jun 2023 15:12:36 GMT
+      - Sun, 04 Jun 2023 18:53:37 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
@@ -89,11 +89,11 @@ http_interactions:
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - 007710fc-79e8-451a-b86f-7e5cdbec8d0a
+      - 1cb2ce3c-ddfd-4530-a4e3-934e21eeca2a
       Server:
       - castle.io
     body:
       encoding: UTF-8
       string: '{"risk":0.0,"scores":{"account_abuse":{"score":0.0},"account_takeover":{"score":0.22},"bot":{"score":0.13}},"signals":{},"policy":{"action":"allow","id":"b7f26fb8-1e12-414d-a44e-7097c5c112b4","revision_id":"","name":"Default"},"device":{"token":null,"fingerprint":null}}'
-  recorded_at: Sun, 04 Jun 2023 15:12:59 GMT
+  recorded_at: Sun, 04 Jun 2023 18:54:00 GMT
 recorded_with: VCR 6.1.0
