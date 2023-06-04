@@ -50,7 +50,7 @@ http_interactions:
       - castle.io
     body:
       encoding: UTF-8
-      string: '{"risk":1.0,"scores":{"account_abuse":{"score":1.0},"account_takeover":{"score":0.22},"bot":{"score":0.98}},"signals":{"bot_behavior":{},"headless_browser":{}},"policy":{"action":"allow","id":"b7f26fb8-1e12-414d-a44e-7097c5c112b4","revision_id":"","name":"Default"},"device":{"token":null,"fingerprint":"kA4R2QSdQXOYhceWw_9JoA"}}'
+      string: '{"risk":0.0,"scores":{"account_abuse":{"score":0.0},"account_takeover":{"score":0.0},"bot":{"score":0.0}},"signals":{"bot_behavior":{},"headless_browser":{}},"policy":{"action":"allow","id":"b7f26fb8-1e12-414d-a44e-7097c5c112b4","revision_id":"","name":"Default"},"device":{"token":null,"fingerprint":"kA4R2QSdQXOYhceWw_9JoA"}}'
   recorded_at: Sun, 04 Jun 2023 15:12:52 GMT
 - request:
     method: post
@@ -102,6 +102,6 @@ http_interactions:
       - castle.io
     body:
       encoding: UTF-8
-      string: '{"risk":1.0,"scores":{"account_abuse":{"score":1.0},"account_takeover":{"score":0.23},"bot":{"score":0.98}},"signals":{"bot_behavior":{},"headless_browser":{}},"policy":{"action":"allow","id":"b7f26fb8-1e12-414d-a44e-7097c5c112b4","revision_id":"","name":"Default"},"device":{"token":"eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlbiI6InRxME9MMnNRSTlnM2tqY1lKOUpmVlh5QWZHUFIiLCJxdWFsaWZpZXIiOiJBUUlEQ2pJeE5UVTJOalkzT1RFIiwiYW5vbnltb3VzIjpmYWxzZSwidmVyc2lvbiI6MC4zfQ.R9lsK-tNK82dVFISa2C2n-tLJ_L3PVdoaHu-0iEKq5E","fingerprint":"kA4R2QSdQXOYhceWw_9JoA"}}'
+      string: '{"risk":0.0,"scores":{"account_abuse":{"score":0.0},"account_takeover":{"score":0.0},"bot":{"score":0.0}},"signals":{"bot_behavior":{},"headless_browser":{}},"policy":{"action":"allow","id":"b7f26fb8-1e12-414d-a44e-7097c5c112b4","revision_id":"","name":"Default"},"device":{"token":"eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlbiI6InRxME9MMnNRSTlnM2tqY1lKOUpmVlh5QWZHUFIiLCJxdWFsaWZpZXIiOiJBUUlEQ2pJeE5UVTJOalkzT1RFIiwiYW5vbnltb3VzIjpmYWxzZSwidmVyc2lvbiI6MC4zfQ.R9lsK-tNK82dVFISa2C2n-tLJ_L3PVdoaHu-0iEKq5E","fingerprint":"kA4R2QSdQXOYhceWw_9JoA"}}'
   recorded_at: Sun, 04 Jun 2023 15:12:53 GMT
 recorded_with: VCR 6.1.0

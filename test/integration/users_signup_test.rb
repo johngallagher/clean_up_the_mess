@@ -105,7 +105,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 
   test 'when the user signs up with a high likelihood of being a hacker' \
        'notify fraud detection that registration has succeeded ' \
-       'and block them from signing up' do
+       'and redirect them to the home page but create them' do
     sign_up_as(
       name: 'Example User',
       email: 'user@example.com',
@@ -130,6 +130,8 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
         }
       }
     )
+    assert_template 'users/new'
+    assert_equal 1, User.where(email: 'user@example.com').count
   end
 
   test 'when the user signs up with a low likelihood of being a hacker' \
