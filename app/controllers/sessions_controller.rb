@@ -2,6 +2,8 @@ class SessionsController < ApplicationController
   def new; end
 
   def create
+    notify_fraud_detection_system_of_login_attempted
+
     user = User.find_by(email: params[:session][:email].downcase)
 
     if user && user.authenticate(params[:session][:password]) && user.activated?
@@ -30,6 +32,24 @@ class SessionsController < ApplicationController
   end
 
   private
+
+  def notify_fraud_detection_system_of_login_attempted
+    castle = ::Castle::Client.new
+    token = params[:castle_request_token]
+    context = Castle::Context::Prepare.call(request)
+    castle.filter(
+      type: '$login',
+      status: '$attempted',
+      request_token: token,
+      params: {
+        email: params[:session][:email]
+      },
+      context: {
+        ip: context[:ip],
+        headers: context[:headers]
+      }
+    )
+  end
 
   def notify_fraud_detection_system_of_failed_login_attempt
     castle = ::Castle::Client.new

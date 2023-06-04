@@ -2,15 +2,14 @@
 http_interactions:
 - request:
     method: post
-    uri: https://api.castle.io/v1/risk
+    uri: https://api.castle.io/v1/filter
     body:
       encoding: UTF-8
-      string: '{"type":"$login","status":"$succeeded","request_token":"Fh9OXURCQ2FRJXdMckVUbi9wbGV9YkZ-J2cvQVNUWnRjZF5ZRfL-1tibU7u-Gc1zwU4-cJVtr7IpWajVlWaxwpAI3_vAPq-GsuhZ1UNuAfuNWLvogSpN0sphsWnybDOb-hfYuvkMnuO7XZH-2AzSv_sZ3qX9VpGf-xnUurUg0LW1IuL2zU2A5spchImiRJGX5R3ds8II0538GZ7jplqf5aNNmZ3dOfyauU3dv_4IkZHwDtq5vE35s_QJ3bPmHvK-5wLcs7pcgOW7XZ_jo1qD-KRfh_bGDNe35wSe46Zan-WjAbfirFqDtPHmsUKdW4LnpFmHt_DJpee6XJ7nrFqB-rVci-alV4HmtSz8eZ1tBPdQx2wdlb6wCxbLVtZ-bkab34-uvmrH21WWbb3b0BjDueUInpr6A9W5-3m0s_tA5IXVbbHWlW2x1pVtsdaVbbHWlW2x1pVtsdaVbbHWlW2x1pVt8ZbVLfGWlW2x1pVtsdaVbbHW1W2x1pVtsdaVbbHWahY","context":{"ip":"127.0.0.1","headers":{"Version":"HTTP/1.1","Host":"127.0.0.1:53173","Connection":"keep-alive","Content-Length":"631","Cache-Control":"max-age=0","Sec-Ch-Ua":"\"HeadlessChrome\";v=\"113\",
-        \"Chromium\";v=\"113\", \"Not-A.Brand\";v=\"24\"","Sec-Ch-Ua-Mobile":"?0","Sec-Ch-Ua-Platform":"\"macOS\"","Upgrade-Insecure-Requests":"1","Origin":"http://127.0.0.1:53173","User-Agent":"Mozilla/5.0
+      string: '{"type":"$login","status":"$attempted","request_token":"PzZndG1rakh4DF5lW2x9RwZZRUxUS29XDk4GaHp9c11KTXdwvUI5a1KEfdS-XPg3n-fDl9WSbI9qN_-0pCTmo6FKiJrxfPjng6oOtHIsVpq8GuyJsGgas_sj5gjDLmT6y1WP28hOyYKKH8af6U6F3spbicTMFMb-yluD24Rih9SEYLWX_A_Xh_se0-iTBsb21F-K0vNKhPzNW8mClxjIhJIPzvzse6v7iA-K3s9KxvDBTI3YjQ-u0sVLitLXXKXf1kCL0ose14SKH8iCkhjUmZUd0Jf3ToDW1kbJgpcYyISSQ-CDnRjU1cCk5iOsGdWGlRvQ1sGL8oaLHsmGnRjWm4Qe3IeUFdaHhG6rGKwvU5ZhhTt8pPznaieJAbdPLBH67s3531uFjDSnL-q64VqU2NRKyfvLQYLYyjvj0soCs-TkL-a3pC_mt6Qv5rekL-a3pC_mt6Qv5rekL-a3pC_mt6Qvpvfkb6b3pC_mt6Qv5rekL-a35C_mt6Qv5rekL-a3Wz8","params":{"email":"joe@example.org"},"context":{"ip":"127.0.0.1","headers":{"Version":"HTTP/1.1","Host":"127.0.0.1:52177","Connection":"keep-alive","Content-Length":"631","Cache-Control":"max-age=0","Sec-Ch-Ua":"\"HeadlessChrome\";v=\"113\",
+        \"Chromium\";v=\"113\", \"Not-A.Brand\";v=\"24\"","Sec-Ch-Ua-Mobile":"?0","Sec-Ch-Ua-Platform":"\"macOS\"","Upgrade-Insecure-Requests":"1","Origin":"http://127.0.0.1:52177","User-Agent":"Mozilla/5.0
         (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko)
-        HeadlessChrome/113.0.5672.126 Safari/537.36","Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7","Sec-Fetch-Site":"same-origin","Sec-Fetch-Mode":"navigate","Sec-Fetch-User":"?1","Sec-Fetch-Dest":"document","Referer":"http://127.0.0.1:53173/login","Accept-Encoding":"gzip,
-        deflate, br","Cookie":true,"Remote-Addr":"127.0.0.1"}},"user":{"id":"1046959424","registered_at":"2023-06-04T12:43:03.648Z","email":"joe@example.org","name":"Joe
-        Bloggs"},"timestamp":"2023-06-04T12:43:04.838Z","sent_at":"2023-06-04T12:43:04.838Z"}'
+        HeadlessChrome/113.0.5672.126 Safari/537.36","Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7","Sec-Fetch-Site":"same-origin","Sec-Fetch-Mode":"navigate","Sec-Fetch-User":"?1","Sec-Fetch-Dest":"document","Referer":"http://127.0.0.1:52177/login","Accept-Encoding":"gzip,
+        deflate, br","Cookie":true,"Remote-Addr":"127.0.0.1"}},"timestamp":"2023-06-04T13:43:34.778Z","sent_at":"2023-06-04T13:43:34.778Z"}'
     headers:
       Content-Type:
       - application/json
@@ -28,7 +27,60 @@ http_interactions:
       message: Created
     headers:
       Date:
-      - Sun, 04 Jun 2023 12:42:42 GMT
+      - Sun, 04 Jun 2023 13:43:12 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Ratelimit-Limit:
+      - '10'
+      X-Ratelimit-Remaining:
+      - '9'
+      X-Ratelimit-Reset:
+      - '1'
+      Etag:
+      - W/"b332e74b9c4577f4a1ed7fd466450eb7"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 6c1c4fc9-19a3-42a6-a688-9d24537e64ee
+      Server:
+      - castle.io
+    body:
+      encoding: UTF-8
+      string: '{"risk":0.0,"scores":{"account_abuse":{"score":0.0},"account_takeover":{"score":0.0},"bot":{"score":0.0}},"signals":{"bot_behavior":{},"headless_browser":{}},"policy":{"action":"allow","id":"b7f26fb8-1e12-414d-a44e-7097c5c112b4","revision_id":"","name":"Default"},"device":{"token":null,"fingerprint":"kA4R2QSdQXOYhceWw_9JoA"}}'
+  recorded_at: Sun, 04 Jun 2023 13:43:35 GMT
+- request:
+    method: post
+    uri: https://api.castle.io/v1/risk
+    body:
+      encoding: UTF-8
+      string: '{"type":"$login","status":"$succeeded","request_token":"PzZndG1rakh4DF5lW2x9RwZZRUxUS29XDk4GaHp9c11KTXdwvUI5a1KEfdS-XPg3n-fDl9WSbI9qN_-0pCTmo6FKiJrxfPjng6oOtHIsVpq8GuyJsGgas_sj5gjDLmT6y1WP28hOyYKKH8af6U6F3spbicTMFMb-yluD24Rih9SEYLWX_A_Xh_se0-iTBsb21F-K0vNKhPzNW8mClxjIhJIPzvzse6v7iA-K3s9KxvDBTI3YjQ-u0sVLitLXXKXf1kCL0ose14SKH8iCkhjUmZUd0Jf3ToDW1kbJgpcYyISSQ-CDnRjU1cCk5iOsGdWGlRvQ1sGL8oaLHsmGnRjWm4Qe3IeUFdaHhG6rGKwvU5ZhhTt8pPznaieJAbdPLBH67s3531uFjDSnL-q64VqU2NRKyfvLQYLYyjvj0soCs-TkL-a3pC_mt6Qv5rekL-a3pC_mt6Qv5rekL-a3pC_mt6Qvpvfkb6b3pC_mt6Qv5rekL-a35C_mt6Qv5rekL-a3Wz8","context":{"ip":"127.0.0.1","headers":{"Version":"HTTP/1.1","Host":"127.0.0.1:52177","Connection":"keep-alive","Content-Length":"631","Cache-Control":"max-age=0","Sec-Ch-Ua":"\"HeadlessChrome\";v=\"113\",
+        \"Chromium\";v=\"113\", \"Not-A.Brand\";v=\"24\"","Sec-Ch-Ua-Mobile":"?0","Sec-Ch-Ua-Platform":"\"macOS\"","Upgrade-Insecure-Requests":"1","Origin":"http://127.0.0.1:52177","User-Agent":"Mozilla/5.0
+        (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko)
+        HeadlessChrome/113.0.5672.126 Safari/537.36","Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7","Sec-Fetch-Site":"same-origin","Sec-Fetch-Mode":"navigate","Sec-Fetch-User":"?1","Sec-Fetch-Dest":"document","Referer":"http://127.0.0.1:52177/login","Accept-Encoding":"gzip,
+        deflate, br","Cookie":true,"Remote-Addr":"127.0.0.1"}},"user":{"id":"1046959424","registered_at":"2023-06-04T13:43:33Z","email":"joe@example.org","name":"Joe
+        Bloggs"},"timestamp":"2023-06-04T13:43:35.610Z","sent_at":"2023-06-04T13:43:35.611Z"}'
+    headers:
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Authorization:
+      - Basic <BASIC_AUTH_ENCODED_CASTLE_API_SECRET>
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Date:
+      - Sun, 04 Jun 2023 13:43:12 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
@@ -46,64 +98,11 @@ http_interactions:
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - b6a96ac2-76fc-4087-a5cd-da3011cf4239
+      - ab50432f-2624-4b4d-b615-527f0706cc2c
       Server:
       - castle.io
     body:
       encoding: UTF-8
       string: '{"risk":0.0,"scores":{"account_abuse":{"score":0.0},"account_takeover":{"score":0.0},"bot":{"score":0.0}},"signals":{"bot_behavior":{},"headless_browser":{}},"policy":{"action":"allow","id":"b7f26fb8-1e12-414d-a44e-7097c5c112b4","revision_id":"","name":"Default"},"device":{"token":"eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlbiI6InRxME9MMnNRSTlnM2tqY1lKOUpmVlh5QWZHUFIiLCJxdWFsaWZpZXIiOiJBUUlEQ2pJeE5UVTJOalkzT1RFIiwiYW5vbnltb3VzIjpmYWxzZSwidmVyc2lvbiI6MC4zfQ.R9lsK-tNK82dVFISa2C2n-tLJ_L3PVdoaHu-0iEKq5E","fingerprint":"kA4R2QSdQXOYhceWw_9JoA"}}'
-  recorded_at: Sun, 04 Jun 2023 12:43:05 GMT
-- request:
-    method: post
-    uri: https://api.castle.io/v1/risk
-    body:
-      encoding: UTF-8
-      string: '{"type":"$login","status":"$succeeded","request_token":"Fh9OXURCQ2FRJXdMckVUbi9wbGV9YkZ-J2cvQVNUWnRjZF5ZRfL-1tibU7u-Gc1zwU4-cJVtr7IpWajVlWaxwpAI3_vAPq-GsuhZ1UNuAfuNWLvogSpN0sphsWnybDOb-hfYuvkMnuO7XZH-2AzSv_sZ3qX9VpGf-xnUurUg0LW1IuL2zU2A5spchImiRJGX5R3ds8II0538GZ7jplqf5aNNmZ3dOfyauU3dv_4IkZHwDtq5vE35s_QJ3bPmHvK-5wLcs7pcgOW7XZ_jo1qD-KRfh_bGDNe35wSe46Zan-WjAbfirFqDtPHmsUKdW4LnpFmHt_DJpee6XJ7nrFqB-rVci-alV4HmtSz8eZ1tBPdQx2wdlb6wCxbLVtZ-bkab34-uvmrH21WWbb3b0BjDueUInpr6A9W5-3m0s_tA5IXVbbHWlW2x1pVtsdaVbbHWlW2x1pVtsdaVbbHWlW2x1pVt8ZbVLfGWlW2x1pVtsdaVbbHW1W2x1pVtsdaVbbHWahY","context":{"ip":"127.0.0.1","headers":{"Version":"HTTP/1.1","Host":"127.0.0.1:53173","Connection":"keep-alive","Content-Length":"631","Cache-Control":"max-age=0","Sec-Ch-Ua":"\"HeadlessChrome\";v=\"113\",
-        \"Chromium\";v=\"113\", \"Not-A.Brand\";v=\"24\"","Sec-Ch-Ua-Mobile":"?0","Sec-Ch-Ua-Platform":"\"macOS\"","Upgrade-Insecure-Requests":"1","Origin":"http://127.0.0.1:53173","User-Agent":"Mozilla/5.0
-        (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko)
-        HeadlessChrome/113.0.5672.126 Safari/537.36","Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7","Sec-Fetch-Site":"same-origin","Sec-Fetch-Mode":"navigate","Sec-Fetch-User":"?1","Sec-Fetch-Dest":"document","Referer":"http://127.0.0.1:53173/login","Accept-Encoding":"gzip,
-        deflate, br","Cookie":true,"Remote-Addr":"127.0.0.1"}},"user":{"id":"1046959424","registered_at":"2023-06-04T12:43:03.648Z","email":"joe@example.org","name":"Joe
-        Bloggs"},"timestamp":"2023-06-04T12:43:05.587Z","sent_at":"2023-06-04T12:43:05.588Z"}'
-    headers:
-      Content-Type:
-      - application/json
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - "*/*"
-      User-Agent:
-      - Ruby
-      Authorization:
-      - Basic <BASIC_AUTH_ENCODED_CASTLE_API_SECRET>
-  response:
-    status:
-      code: 201
-      message: Created
-    headers:
-      Date:
-      - Sun, 04 Jun 2023 12:42:42 GMT
-      Content-Type:
-      - application/json
-      Transfer-Encoding:
-      - chunked
-      Connection:
-      - keep-alive
-      X-Ratelimit-Limit:
-      - '10'
-      X-Ratelimit-Remaining:
-      - '8'
-      X-Ratelimit-Reset:
-      - '1'
-      Etag:
-      - W/"66ae4a1f9ecc2a3b6197bff77f728a15"
-      Cache-Control:
-      - max-age=0, private, must-revalidate
-      X-Request-Id:
-      - a434af4d-5b71-4ba8-9ca8-c54ca77a5b74
-      Server:
-      - castle.io
-    body:
-      encoding: UTF-8
-      string: '{"risk":0.0,"scores":{"account_abuse":{"score":0.0},"account_takeover":{"score":0.0},"bot":{"score":0.0}},"signals":{"bot_behavior":{},"headless_browser":{}},"policy":{"action":"allow","id":"b7f26fb8-1e12-414d-a44e-7097c5c112b4","revision_id":"","name":"Default"},"device":{"token":"eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlbiI6InRxME9MMnNRSTlnM2tqY1lKOUpmVlh5QWZHUFIiLCJxdWFsaWZpZXIiOiJBUUlEQ2pJeE5UVTJOalkzT1RFIiwiYW5vbnltb3VzIjpmYWxzZSwidmVyc2lvbiI6MC4zfQ.R9lsK-tNK82dVFISa2C2n-tLJ_L3PVdoaHu-0iEKq5E","fingerprint":"kA4R2QSdQXOYhceWw_9JoA"}}'
-  recorded_at: Sun, 04 Jun 2023 12:43:06 GMT
+  recorded_at: Sun, 04 Jun 2023 13:43:36 GMT
 recorded_with: VCR 6.1.0

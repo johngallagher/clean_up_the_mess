@@ -182,7 +182,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
       context: {
         ip: '127.0.0.1',
         headers: {
-          "Content-Length": '149',
+          "Content-Length": '150',
           "Remote-Addr": '127.0.0.1',
           Version: 'HTTP/1.0',
           Host: 'www.example.com',
@@ -198,7 +198,8 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
   def assert_fraud_detection_notified_of_login_succeeded_with(properties)
     assert_requested(:post, 'https://api.castle.io/v1/risk') do |request|
       parsed_body = JSON.parse(request.body).deep_symbolize_keys
-      assert_equal parsed_body.slice(:type, :status), ({ type: '$login', status: '$succeeded' })
+      return false if parsed_body.slice(:type, :status) != ({ type: '$login', status: '$succeeded' })
+
       assert_equal parsed_body.slice(*properties.keys), properties.deep_symbolize_keys
     end
   end
@@ -206,7 +207,17 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
   def assert_fraud_detection_notified_of_failed_login_with(properties)
     assert_requested(:post, 'https://api.castle.io/v1/filter') do |request|
       parsed_body = JSON.parse(request.body).deep_symbolize_keys
-      assert_equal parsed_body.slice(:type, :status), ({ type: '$login', status: '$failed' })
+      return false if parsed_body.slice(:type, :status) != ({ type: '$login', status: '$failed' })
+
+      assert_equal parsed_body.slice(*properties.keys), properties.deep_symbolize_keys
+    end
+  end
+
+  def assert_fraud_detection_notified_of_login_attempted_with(properties)
+    assert_requested(:post, 'https://api.castle.io/v1/filter') do |request|
+      parsed_body = JSON.parse(request.body).deep_symbolize_keys
+      return false if parsed_body.slice(:type, :status) != ({ type: '$login', status: '$attempted' })
+
       assert_equal parsed_body.slice(*properties.keys), properties.deep_symbolize_keys
     end
   end
