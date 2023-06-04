@@ -137,12 +137,32 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   test 'when the user signs up with a low likelihood of being a hacker' \
        'notify fraud detection that registration has succeeded ' \
        'and sign them up' do
-    skip
-  end
-
-  test 'when the user signs up with a high likelihood of being a hacker' \
-       'block them from signing up' do
-    skip
+    sign_up_as(
+      name: 'Example User',
+      email: 'user@example.com',
+      password: 'password',
+      password_confirmation: 'password',
+      likelihood_of_being_a_hacker: 0.0
+    )
+    assert_fraud_detection_notified_of_registration_succeeded_with(
+      user: {
+        id: User.find_by(email: 'user@example.com').id.to_s,
+        email: 'user@example.com'
+      },
+      context: {
+        ip: '127.0.0.1',
+        headers: {
+          "Content-Length": '179',
+          "Remote-Addr": '127.0.0.1',
+          Version: 'HTTP/1.0',
+          Host: 'www.example.com',
+          Accept: 'text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5',
+          Cookie: true
+        }
+      }
+    )
+    assert_redirected_to root_url
+    assert_equal 1, User.where(email: 'user@example.com').count
   end
 
   private
