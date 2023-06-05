@@ -9,17 +9,17 @@ class SessionsController < ApplicationController
     user = User.find_by(email: params[:session][:email].downcase)
 
     if user && user.authenticate(params[:session][:password]) && user.activated?
-      hacker_likelihood = fetch_hacker_likelihood(user: user, type: '$login', status: '$succeeded')
-      if hacker_likelihood < 0.6
+      risk_score = assess_risk_of_a_bad_actor_logging_in(user: user) # [^1]
+      if risk_score.low? # [^2]
         log_in user
         params[:session][:remember_me] == '1' ? remember(user) : forget(user)
         redirect_back_or user
-      elsif hacker_likelihood >= 0.6 && hacker_likelihood < 0.8
+      elsif risk_score.medium? # [^2]
         challenge_ip_address(request.remote_ip)
         log_in user
         params[:session][:remember_me] == '1' ? remember(user) : forget(user)
         redirect_back_or user
-      else
+      elsif risk_score.high? # [^2]
         block_ip_address(request.remote_ip)
         head :internal_server_error
       end

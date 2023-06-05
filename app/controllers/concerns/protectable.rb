@@ -1,7 +1,30 @@
 module Protectable
   extend ActiveSupport::Concern
 
+  class RiskScore
+    def initialize(score)
+      @score = score
+    end
+
+    def low?
+      @score < 0.6
+    end
+
+    def medium?
+      @score >= 0.6 && @score < 0.8
+    end
+
+    def high?
+      @score >= 0.8
+    end
+  end
+
   included do
+    def assess_risk_of_a_bad_actor_logging_in(user:)
+      score = fetch_hacker_likelihood(user: user, type: '$login', status: '$succeeded')
+      RiskScore.new(score)
+    end
+
     def notify_fraud_detection_system_of_registration_failed
       castle = ::Castle::Client.new
       token = params[:castle_request_token]

@@ -55,7 +55,68 @@ What have we got?
 * For anyone between 0.6 and 0.8 they're challenged on everything
 * For anyone greater than 0.8 they're blocked on everything
 
+## Refactor
+
+Let's assess the code we have against design principles.
+
+Let's use the four rules of simple design.
+
+1. Works - yes. We have reasonable coverage and the tests pass.
+2. Good names
+3. No duplication
+4. No dead code
+
+## 2. Good names
+
+First, sessions controller.
+
+[^1]
+
+`type` and `status` are what we pass to Castle, but they're not very revealing as names.
+
+We're logging in, so let's make that in the name.
+
+Names should be drop dead simple. 
+
+Tip: Say what the methods doing (not HOW it's doing it remember) to a pair partner or yourself.
+
+Try to use plain english. Explain it as if to your Mum or a non technical friend.
+
+Imagine trying to understand the name when you're high, drunk, stoned or very tired.
+
+[^2]
+
+Any time you're comparing numbers, it's time to take a step back.
+
+0.6? 0.8? What do these risk levels mean?
+
+It's not clear. There's no names.
+
+This is a design smell called "primitive obssesion".
+
+There's a good name hiding here.
+
+What is it? It's a score. So a score can be low, medium or high.
+
+And we do different things for low medium and high.
+
+## 3. No duplication
+
+
+## 4. No dead code
+
+## Design principles
+
+Next, we'll assess:
+
+* Coupling
+* Cohesion
+* Modularity
+
+
+
 ## Change 2: Use policies instead of risk levels for Castle
+
 
 
 ## Change 3: Change to using AWS for firewall blocking and fraud detection
