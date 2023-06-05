@@ -51,18 +51,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   end
 
   # Genuine users
-  test 'when the user signs up with a low likelihood of being a hacker at lower bounds ' \
-       'sign them up and redirect them' \
-       'and do not block them' do
-    sign_up_as(
-      matching_policy: :allow
-    )
-    assert_redirected_to root_url
-    assert_equal 1, User.where(email: 'user@example.com').count
-    assert_not_blocked_or_challenged
-  end
-
-  test 'when the user signs up with a low likelihood of being a hacker at upper bounds' \
+  test 'when the user signs up with a low likelihood of being a hacker ' \
        'sign them up and redirect them' \
        'and do not block them' do
     sign_up_as(
@@ -120,15 +109,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   end
 
   # Possible hackers
-  test 'when the user signs up with a medium likelihood of being a hacker at lower bounds ' \
-       'treat them as a risk' do
-    sign_up_as(matching_policy: :challenge)
-    assert_user_challenged(ip: '127.0.0.1')
-    assert_redirected_to root_url
-    assert_equal 1, User.where(email: 'user@example.com').count
-  end
-
-  test 'when the user signs up with a medium likelihood of being a hacker upper bounds ' \
+  test 'when the user signs up with a medium likelihood of being a hacker ' \
        'treat them as a risk' do
     sign_up_as(matching_policy: :challenge)
     assert_user_challenged(ip: '127.0.0.1')
@@ -137,15 +118,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   end
 
   # Hackers
-  test 'when the user signs up with a high likelihood of being a hacker lower bounds ' \
-       'treat them as a bad actor but create the acccount' do
-    sign_up_as(matching_policy: :deny)
-    assert_user_blocked(ip: '127.0.0.1')
-    assert_template 'users/new'
-    assert_equal 1, User.where(email: 'user@example.com').count
-  end
-
-  test 'when the user signs up with a high likelihood of being a hacker upper bounds ' \
+  test 'when the user signs up with a high likelihood of being a hacker ' \
        'treat them as a bad actor but create the acccount' do
     sign_up_as(matching_policy: :deny)
     assert_user_blocked(ip: '127.0.0.1')
