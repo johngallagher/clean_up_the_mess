@@ -55,7 +55,6 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
        'sign them up and redirect them' \
        'and do not block them' do
     sign_up_as(
-      likelihood_of_being_a_hacker: 0.0,
       matching_policy: :allow
     )
     assert_redirected_to root_url
@@ -67,7 +66,6 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
        'sign them up and redirect them' \
        'and do not block them' do
     sign_up_as(
-      likelihood_of_being_a_hacker: 0.59,
       matching_policy: :allow
     )
     assert_redirected_to root_url
@@ -78,7 +76,6 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   test 'when the user signs up with a low likelihood of being a hacker' \
        'notify fraud detection that registration has succeeded ' do
     sign_up_as(
-      likelihood_of_being_a_hacker: 0.0,
       matching_policy: :allow
     )
     assert_fraud_detection_notified_of_registration_succeeded_with(
@@ -98,7 +95,6 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
       email: 'user@example.com',
       password: 'password',
       password_confirmation: 'password',
-      likelihood_of_being_a_hacker: 0.0,
       matching_policy: :allow
     )
     assert_fraud_detection_notified_of_registration_attempted_with(
@@ -115,7 +111,6 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
       email: 'duplicateuser@example.com',
       password: 'password',
       password_confirmation: 'password',
-      likelihood_of_being_a_hacker: 0.0,
       matching_policy: :allow
     )
     assert_fraud_detection_notified_of_registration_failed_with(
@@ -127,7 +122,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   # Possible hackers
   test 'when the user signs up with a medium likelihood of being a hacker at lower bounds ' \
        'treat them as a risk' do
-    sign_up_as(likelihood_of_being_a_hacker: 0.6, matching_policy: :challenge)
+    sign_up_as(matching_policy: :challenge)
     assert_user_challenged(ip: '127.0.0.1')
     assert_redirected_to root_url
     assert_equal 1, User.where(email: 'user@example.com').count
@@ -135,7 +130,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 
   test 'when the user signs up with a medium likelihood of being a hacker upper bounds ' \
        'treat them as a risk' do
-    sign_up_as(likelihood_of_being_a_hacker: 0.79, matching_policy: :challenge)
+    sign_up_as(matching_policy: :challenge)
     assert_user_challenged(ip: '127.0.0.1')
     assert_redirected_to root_url
     assert_equal 1, User.where(email: 'user@example.com').count
@@ -144,7 +139,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   # Hackers
   test 'when the user signs up with a high likelihood of being a hacker lower bounds ' \
        'treat them as a bad actor but create the acccount' do
-    sign_up_as(likelihood_of_being_a_hacker: 0.8, matching_policy: :deny)
+    sign_up_as(matching_policy: :deny)
     assert_user_blocked(ip: '127.0.0.1')
     assert_template 'users/new'
     assert_equal 1, User.where(email: 'user@example.com').count
@@ -152,7 +147,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 
   test 'when the user signs up with a high likelihood of being a hacker upper bounds ' \
        'treat them as a bad actor but create the acccount' do
-    sign_up_as(likelihood_of_being_a_hacker: 1.0, matching_policy: :deny)
+    sign_up_as(matching_policy: :deny)
     assert_user_blocked(ip: '127.0.0.1')
     assert_template 'users/new'
     assert_equal 1, User.where(email: 'user@example.com').count
@@ -160,7 +155,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 
   test 'when the user signs up with a high likelihood of being a hacker' \
        'notify fraud detection that registration has succeeded ' do
-    sign_up_as(likelihood_of_being_a_hacker: 1.0, matching_policy: :deny)
+    sign_up_as(matching_policy: :deny)
     assert_fraud_detection_notified_of_registration_succeeded_with(
       user: {
         id: User.find_by(email: 'user@example.com').id.to_s,
@@ -178,8 +173,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     email: 'user@example.com',
     password: 'password',
     password_confirmation: password,
-    matching_policy: :allow,
-    likelihood_of_being_a_hacker: 0.0
+    matching_policy: :allow
   )
     VCR.use_cassette("sign_up_user_policy_action_#{matching_policy}_with_email_#{email}") do
       get signup_path
