@@ -167,7 +167,8 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     email: 'user@example.com',
     password: 'password',
     password_confirmation: password,
-    likelihood_of_being_a_hacker: 0.0
+    likelihood_of_being_a_hacker: 0.0,
+    matching_policy: :allow
   )
     VCR.use_cassette("sign_up_user_with_hacker_risk_#{likelihood_of_being_a_hacker}_with_email_#{email}") do
       get signup_path
