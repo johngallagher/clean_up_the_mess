@@ -253,6 +253,28 @@ This way our system is a lot more flexible! It means our code doesn't have to ch
 
 Let's start by changing the tests to establish this new behaviour.
 
+[^10]
+
+Recap.
+
+We moved in very small steps.
+
+Every step was measured and designed to keep as many tests passing as possible.
+
+We did have one failing test for a little while, but even that could have been avoided.
+
+This is what allows big refactorings!
+
+We also kept the interface from the old code exactly the same.
+
+We just created a *new* method that returned a *new* interface.
+
+Then we swapped it out and in one small commit all the tests pass and we're good.
+
+This is what good design looks like. You're minimising the things that change.
+
+Any time lots of tests break, it's telling you something.
+
 ## Change 3: Change to using AWS for firewall blocking and fraud detection
 
 
