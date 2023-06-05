@@ -241,7 +241,17 @@ Let's move onto the next requirement.
 
 ## Change 2: Use policies instead of risk levels for Castle
 
+OK. So we've got a problem with this way of doing things.
 
+The app decides when to block or challenge.
+
+Instead, we want castle to tell us when to block or challenge.
+
+That's because we want to create rules in Castle to determine when to block or challenge.
+
+This way our system is a lot more flexible! It means our code doesn't have to change all the time for exceptions.
+
+Let's start by changing the tests to establish this new behaviour.
 
 ## Change 3: Change to using AWS for firewall blocking and fraud detection
 
