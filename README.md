@@ -152,6 +152,22 @@ Same thing repeated. Similar pattern.
 
 ## 3. No duplication
 
+We could go further, but let's move onto duplication.
+
+No duplication of code or ideas.
+
+It's important not to go too far with this too soon.
+
+That's why we've let this build up whilst we build the system.
+
+Now let's tackle some duplication.
+
+Start at sessions controller first.
+
+See [^6] and [^7]? Those three lines are duplicated.
+
+So let's get rid of them.
+
 ## 4. No dead code
 
 ## Design principles

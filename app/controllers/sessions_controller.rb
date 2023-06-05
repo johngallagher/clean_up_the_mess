@@ -9,17 +9,19 @@ class SessionsController < ApplicationController
     user = User.find_by(email: params[:session][:email].downcase)
 
     if user && user.authenticate(params[:session][:password]) && user.activated?
-      risk_score = assess_risk_of_a_bad_actor_logging_in(user: user) # [^1]
-      if risk_score.low? # [^2]
+      risk_score = assess_risk_of_a_bad_actor_logging_in(user: user)
+      if risk_score.low?
+        # [^6]
         log_in user
         params[:session][:remember_me] == '1' ? remember(user) : forget(user)
         redirect_back_or user
-      elsif risk_score.medium? # [^2]
+      elsif risk_score.medium?
         challenge_ip_address(request.remote_ip)
+        # [^7]
         log_in user
         params[:session][:remember_me] == '1' ? remember(user) : forget(user)
         redirect_back_or user
-      elsif risk_score.high? # [^2]
+      elsif risk_score.high?
         block_ip_address(request.remote_ip)
         head :internal_server_error
       end
