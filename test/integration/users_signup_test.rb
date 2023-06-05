@@ -178,13 +178,13 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     email: 'user@example.com',
     password: 'password',
     password_confirmation: password,
-    likelihood_of_being_a_hacker: 0.0,
-    matching_policy: :allow
+    matching_policy: :allow,
+    likelihood_of_being_a_hacker: 0.0
   )
-    VCR.use_cassette("sign_up_user_with_hacker_risk_#{likelihood_of_being_a_hacker}_policy_action_#{matching_policy}_with_email_#{email}") do
+    VCR.use_cassette("sign_up_user_policy_action_#{matching_policy}_with_email_#{email}") do
       get signup_path
       post users_path, params: {
-        castle_request_token: "test|device:chrome_on_mac|risk:#{likelihood_of_being_a_hacker}|policy.action:#{matching_policy}",
+        castle_request_token: "test|device:chrome_on_mac|policy.action:#{matching_policy}",
         user: {
           name: name,
           email: email,
