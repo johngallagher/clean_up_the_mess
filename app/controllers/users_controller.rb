@@ -23,17 +23,17 @@ class UsersController < ApplicationController
     notify_fraud_detection_system_of_registration_attempted
     @user = User.new(user_params)
     if @user.save
-      hacker_likelihood = fetch_hacker_likelihood(user: @user, type: '$registration', status: '$succeeded')
-      if hacker_likelihood < 0.6
+      risk_score = assess_risk_of_a_bad_actor_registering(user: @user) # [^4]
+      if risk_score.low? # [^4]
         @user.send_activation_email
         flash[:info] = 'Please check your email to activate your account.'
         redirect_to root_url
-      elsif hacker_likelihood < 0.8
+      elsif risk_score.medium? # [^4]
         @user.send_activation_email
         flash[:info] = 'Please check your email to activate your account.'
         redirect_to root_url
         challenge_ip_address(request.remote_ip)
-      else
+      elsif risk_score.high? # [^4]
         block_ip_address(request.remote_ip)
         render 'new'
       end

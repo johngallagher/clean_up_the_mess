@@ -100,8 +100,57 @@ What is it? It's a score. So a score can be low, medium or high.
 
 And we do different things for low medium and high.
 
-## 3. No duplication
+[^3]
 
+By naming the score and naming query methods on it, we've had to create an object.
+
+This is a pattern you'll see repeatedly.
+
+There was a missing concept in the code.
+
+It's a concept that was there in a number, but the number on it's own wasn't meaningful enough.
+
+It needed meaning wrapped around the numbers.
+
+@design_principle:abstraction 
+@design_principle:encapsulation 
+
+Abstraction - giving something a higher level name.
+
+Encapsulation - wrapping up details.
+
+When you focus on names, it leads you to create more objects.
+
+Those objects are new abstractions. And they encapsulate details.
+
+Once again, we're focusing on the "what" not the "how".
+
+The "what" is "are they low, medium or high risk?"
+
+The "how" is the nitty gritty of which scores we choose. This is a detail. This is configuration.
+
+One day we may decide to change what constitutes "low", "medium" or "high". When that day comes, we'll have one place to change it - `RiskScore`.
+
+Next step - perform similar naming operations across other pieces of code.
+
+
+### `UsersController`
+
+[^4]
+
+Repeat the same thing. Tweak the name of the method slightly.
+
+The fact that we've not had to add much code is a great sign we're on the right path here.
+
+It makes sense - our abstraction is the repeated logic of "if < 0.6" etc.
+
+That said, we'll focus on duplication in a moment.
+
+[^5]
+
+Same thing repeated. Similar pattern.
+
+## 3. No duplication
 
 ## 4. No dead code
 

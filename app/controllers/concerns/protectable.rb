@@ -1,6 +1,7 @@
 module Protectable
   extend ActiveSupport::Concern
 
+  # [^3]
   class RiskScore
     def initialize(score)
       @score = score
@@ -22,6 +23,16 @@ module Protectable
   included do
     def assess_risk_of_a_bad_actor_logging_in(user:)
       score = fetch_hacker_likelihood(user: user, type: '$login', status: '$succeeded')
+      RiskScore.new(score)
+    end
+      
+    def assess_risk_of_a_bad_actor_registering(user:)
+      score = fetch_hacker_likelihood(user: user, type: '$registration', status: '$succeeded')
+      RiskScore.new(score)
+    end
+
+    def assess_risk_of_a_bad_actor_creating_a_micropost(user:) # [^5]
+      score = fetch_hacker_likelihood(user: user, type: '$custom', name: 'Created a micropost')
       RiskScore.new(score)
     end
 
