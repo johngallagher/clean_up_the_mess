@@ -168,6 +168,28 @@ See [^6] and [^7]? Those three lines are duplicated.
 
 So let's get rid of them.
 
+[^8]
+
+We've removed a lot of the duplication.
+
+You'll see that a pattern is emerging.
+
+Instead of resisting the pattern, we're embracing it.
+
+Try to make things look alike. Try to make them rhyme.
+
+This is still duplication but it's less obvious right now how to get rid of it.
+
+The pattern is still pronounced - when someone is a high risk we always want to block them.
+
+What happens after that depends on the controller.
+
+When the person is medium risk, they're always challenged.
+
+Interesting that this *always* happens.
+
+Let's leave this duplication for now. At least it's symmetrical so we can see which bits are the same and which are different.
+
 ## 4. No dead code
 
 ## Design principles

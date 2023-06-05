@@ -10,21 +10,21 @@ class SessionsController < ApplicationController
 
     if user && user.authenticate(params[:session][:password]) && user.activated?
       risk_score = assess_risk_of_a_bad_actor_logging_in(user: user)
-      if risk_score.low?
-        # [^6]
-        log_in user
-        params[:session][:remember_me] == '1' ? remember(user) : forget(user)
-        redirect_back_or user
-      elsif risk_score.medium?
-        challenge_ip_address(request.remote_ip)
-        # [^7]
-        log_in user
-        params[:session][:remember_me] == '1' ? remember(user) : forget(user)
-        redirect_back_or user
-      elsif risk_score.high?
+
+      # [^8]
+      if risk_score.high?
         block_ip_address(request.remote_ip)
-        head :internal_server_error
+        head :internal_server_error and return
       end
+
+      # [^8]
+      if risk_score.medium?
+        challenge_ip_address(request.remote_ip) 
+      end
+
+      log_in user
+      params[:session][:remember_me] == '1' ? remember(user) : forget(user)
+      redirect_back_or user
     elsif !user.activated?
       message  = 'Account not activated. '
       message += 'Check your email for the activation link.'

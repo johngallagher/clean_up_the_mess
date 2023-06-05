@@ -23,20 +23,22 @@ class UsersController < ApplicationController
     notify_fraud_detection_system_of_registration_attempted
     @user = User.new(user_params)
     if @user.save
-      risk_score = assess_risk_of_a_bad_actor_registering(user: @user) # [^4]
-      if risk_score.low? # [^4]
-        @user.send_activation_email
-        flash[:info] = 'Please check your email to activate your account.'
-        redirect_to root_url
-      elsif risk_score.medium? # [^4]
-        @user.send_activation_email
-        flash[:info] = 'Please check your email to activate your account.'
-        redirect_to root_url
-        challenge_ip_address(request.remote_ip)
-      elsif risk_score.high? # [^4]
+      risk_score = assess_risk_of_a_bad_actor_registering(user: @user)
+
+      # [^8]
+      if risk_score.high?
         block_ip_address(request.remote_ip)
-        render 'new'
+        render 'new' and return
       end
+
+      # [^8]
+      if risk_score.medium?
+        challenge_ip_address(request.remote_ip)
+      end
+
+      @user.send_activation_email
+      flash[:info] = 'Please check your email to activate your account.'
+      redirect_to root_url
     else
       notify_fraud_detection_system_of_registration_failed
       render 'new'

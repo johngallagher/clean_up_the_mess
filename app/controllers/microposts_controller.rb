@@ -5,11 +5,14 @@ class MicropostsController < ApplicationController
 
   def create
     risk_score = assess_risk_of_a_bad_actor_creating_a_micropost(user: current_user) # [^5]
+
+    # [^8]
     if risk_score.high?
       block_ip_address(request.remote_ip)
       head :internal_server_error and return
     end
 
+    # [^8]
     if risk_score.medium?
       challenge_ip_address(request.remote_ip)
     end
