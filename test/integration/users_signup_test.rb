@@ -127,7 +127,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   # Possible hackers
   test 'when the user signs up with a medium likelihood of being a hacker at lower bounds ' \
        'treat them as a risk' do
-    sign_up_as(matching_policy: :challenge)
+    sign_up_as(likelihood_of_being_a_hacker: 0.6, matching_policy: :challenge)
     assert_user_challenged(ip: '127.0.0.1')
     assert_redirected_to root_url
     assert_equal 1, User.where(email: 'user@example.com').count

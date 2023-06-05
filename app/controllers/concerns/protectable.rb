@@ -22,7 +22,7 @@ module Protectable
 
   class RiskPolicy
     def initialize(policy)
-      @policy = policy
+      @policy = policy[:action]
     end
 
     def deny?

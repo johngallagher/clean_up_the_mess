@@ -23,16 +23,16 @@ class UsersController < ApplicationController
     notify_fraud_detection_system_of_registration_attempted
     @user = User.new(user_params)
     if @user.save
-      risk_score = assess_risk_of_a_bad_actor_registering(user: @user)
+      policy = match_actor_against_policy_for_registration(user: @user)
 
       # [^8]
-      if risk_score.high?
+      if policy.deny?
         block_ip_address(request.remote_ip)
         render 'new' and return
       end
 
       # [^8]
-      if risk_score.medium?
+      if policy.challenge?
         challenge_ip_address(request.remote_ip)
       end
 
