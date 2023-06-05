@@ -188,7 +188,17 @@ When the person is medium risk, they're always challenged.
 
 Interesting that this *always* happens.
 
-Let's leave this duplication for now. At least it's symmetrical so we can see which bits are the same and which are different.
+Let's leave this duplication for now.
+
+At least it's symmetrical so we can see which bits are the same and which are different.
+
+[^9]
+
+We can see lots of duplication in this file.
+
+Let's clean it up.
+
+
 
 ## 4. No dead code
 

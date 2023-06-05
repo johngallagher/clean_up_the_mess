@@ -36,6 +36,7 @@ module Protectable
       RiskScore.new(score)
     end
 
+    # [^9]
     def notify_fraud_detection_system_of_registration_failed
       castle = ::Castle::Client.new
       token = params[:castle_request_token]
