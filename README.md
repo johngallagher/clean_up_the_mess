@@ -198,6 +198,9 @@ We can see lots of duplication in this file.
 
 Let's clean it up.
 
+That was an easy piece of cleanup.
+
+So far so good.
 
 
 ## 4. No dead code

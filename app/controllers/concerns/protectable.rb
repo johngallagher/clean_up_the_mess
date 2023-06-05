@@ -31,82 +31,9 @@ module Protectable
       RiskScore.new(score)
     end
 
-    def assess_risk_of_a_bad_actor_creating_a_micropost(user:) # [^5]
+    def assess_risk_of_a_bad_actor_creating_a_micropost(user:)
       score = fetch_hacker_likelihood(user: user, type: '$custom', name: 'Created a micropost')
       RiskScore.new(score)
-    end
-
-    # [^9]
-    def notify_fraud_detection_system_of_registration_failed
-      castle = ::Castle::Client.new
-      token = params[:castle_request_token]
-      context = Castle::Context::Prepare.call(request)
-      castle.filter(
-        type: '$registration',
-        status: '$failed',
-        request_token: token,
-        params: {
-          email: user_params[:email]
-        },
-        context: {
-          ip: context[:ip],
-          headers: context[:headers]
-        }
-      )
-    end
-
-    def notify_fraud_detection_system_of_registration_attempted
-      castle = ::Castle::Client.new
-      token = params[:castle_request_token]
-      context = Castle::Context::Prepare.call(request)
-      castle.filter(
-        type: '$registration',
-        status: '$attempted',
-        request_token: token,
-        params: {
-          email: user_params[:email]
-        },
-        context: {
-          ip: context[:ip],
-          headers: context[:headers]
-        }
-      )
-    end
-
-    def notify_fraud_detection_system_of_login_attempted
-      castle = ::Castle::Client.new
-      token = params[:castle_request_token]
-      context = Castle::Context::Prepare.call(request)
-      castle.filter(
-        type: '$login',
-        status: '$attempted',
-        request_token: token,
-        params: {
-          email: params[:session][:email]
-        },
-        context: {
-          ip: context[:ip],
-          headers: context[:headers]
-        }
-      )
-    end
-
-    def notify_fraud_detection_system_of_failed_login_attempt
-      castle = ::Castle::Client.new
-      token = params[:castle_request_token]
-      context = Castle::Context::Prepare.call(request)
-      castle.filter(
-        type: '$login',
-        status: '$failed',
-        request_token: token,
-        params: {
-          email: params[:session][:email]
-        },
-        context: {
-          ip: context[:ip],
-          headers: context[:headers]
-        }
-      )
     end
 
     def fetch_hacker_likelihood(user:, type:, status: '', name: '')
@@ -129,6 +56,44 @@ module Protectable
         }.compact_blank
       )
       response[:risk]
+    end
+
+    # [^9]
+    def notify_fraud_detection_system_of_registration_failed
+      notify_fraud_detection_system_of(type: '$registration', status: '$failed')
+    end
+
+    def notify_fraud_detection_system_of_registration_attempted
+      notify_fraud_detection_system_of(type: '$registration', status: '$attempted')
+    end
+
+    def notify_fraud_detection_system_of_login_attempted
+      notify_fraud_detection_system_of(type: '$login', status: '$attempted')
+    end
+
+    def notify_fraud_detection_system_of_failed_login_attempt
+      notify_fraud_detection_system_of(type: '$login', status: '$failed')
+    end
+
+    def notify_fraud_detection_system_of(type:, status:)
+      email = user_params[:email] if type == '$registration'
+      email = params[:session][:email] if type == '$login'
+
+      castle = ::Castle::Client.new
+      token = params[:castle_request_token]
+      context = Castle::Context::Prepare.call(request)
+      castle.filter(
+        type: type,
+        status: status,
+        request_token: token,
+        params: {
+          email: email
+        },
+        context: {
+          ip: context[:ip],
+          headers: context[:headers]
+        }
+      )
     end
 
     def challenge_ip_address(ip)
