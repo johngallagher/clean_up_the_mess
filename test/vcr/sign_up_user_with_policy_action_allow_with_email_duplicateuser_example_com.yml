@@ -1,0 +1,99 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.castle.io/v1/filter
+    body:
+      encoding: UTF-8
+      string: '{"type":"$registration","status":"$attempted","request_token":"test|device:chrome_on_mac|risk:0.0|policy.action:allow","params":{"email":"duplicateuser@example.com"},"context":{"ip":"127.0.0.1","headers":{"Content-Length":"212","Remote-Addr":"127.0.0.1","Version":"HTTP/1.0","Host":"www.example.com","Accept":"text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5","Cookie":true}},"timestamp":"2023-06-05T21:52:46.053Z","sent_at":"2023-06-05T21:52:46.053Z"}'
+    headers:
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Authorization:
+      - Basic <BASIC_AUTH_ENCODED_CASTLE_API_SECRET>
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Date:
+      - Mon, 05 Jun 2023 21:52:22 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Ratelimit-Limit:
+      - '10'
+      X-Ratelimit-Remaining:
+      - '8'
+      X-Ratelimit-Reset:
+      - '1'
+      Etag:
+      - W/"285651bfabdfe7ce41d972fa704ddc07"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 3f16599b-2990-4810-b676-550d96b6c107
+      Server:
+      - castle.io
+    body:
+      encoding: UTF-8
+      string: '{"risk":0.0,"scores":{"account_abuse":{"score":0.0},"account_takeover":{"score":0.22},"bot":{"score":0.13}},"signals":{},"policy":{"action":"allow","id":"d0330b9e-9c7d-49b2-91e7-7026cb0aa717","revision_id":"","name":"test-65ddefa6-a800-4159-b2a9-bb5c1448a661"},"device":{"token":null,"fingerprint":null}}'
+  recorded_at: Mon, 05 Jun 2023 21:52:46 GMT
+- request:
+    method: post
+    uri: https://api.castle.io/v1/filter
+    body:
+      encoding: UTF-8
+      string: '{"type":"$registration","status":"$failed","request_token":"test|device:chrome_on_mac|risk:0.0|policy.action:allow","params":{"email":"duplicateuser@example.com"},"context":{"ip":"127.0.0.1","headers":{"Content-Length":"212","Remote-Addr":"127.0.0.1","Version":"HTTP/1.0","Host":"www.example.com","Accept":"text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5","Cookie":true}},"timestamp":"2023-06-05T21:52:46.690Z","sent_at":"2023-06-05T21:52:46.690Z"}'
+    headers:
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Authorization:
+      - Basic <BASIC_AUTH_ENCODED_CASTLE_API_SECRET>
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Date:
+      - Mon, 05 Jun 2023 21:52:23 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Ratelimit-Limit:
+      - '10'
+      X-Ratelimit-Remaining:
+      - '9'
+      X-Ratelimit-Reset:
+      - '1'
+      Etag:
+      - W/"8f7524efb563698aa1bf7618cbce7647"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 9263bcc3-4f12-44d7-852c-b40ea5c1da70
+      Server:
+      - castle.io
+    body:
+      encoding: UTF-8
+      string: '{"risk":0.0,"scores":{"account_abuse":{"score":0.0},"account_takeover":{"score":0.22},"bot":{"score":0.13}},"signals":{},"policy":{"action":"allow","id":"c9d1abda-84a7-47f2-a78d-34a308a628b9","revision_id":"","name":"test-294465b0-4154-41ae-87f9-cbf8468bb7c1"},"device":{"token":null,"fingerprint":null}}'
+  recorded_at: Mon, 05 Jun 2023 21:52:47 GMT
+recorded_with: VCR 6.1.0

@@ -20,20 +20,43 @@ module Protectable
     end
   end
 
+  class RiskPolicy
+    def initialize(policy)
+      @policy = policy
+    end
+
+    def deny?
+      @policy == 'deny'
+    end
+
+    def challenge?
+      @policy == 'challenge'
+    end
+
+    def allow?
+      @policy == 'allow'
+    end
+  end
+
   included do
     def assess_risk_of_a_bad_actor_logging_in(user:)
-      score = fetch_hacker_likelihood(user: user, type: '$login', status: '$succeeded')
-      RiskScore.new(score)
+      response = fetch_hacker_likelihood(user: user, type: '$login', status: '$succeeded')
+      RiskScore.new(response[:risk])
     end
       
     def assess_risk_of_a_bad_actor_registering(user:)
-      score = fetch_hacker_likelihood(user: user, type: '$registration', status: '$succeeded')
-      RiskScore.new(score)
+      response = fetch_hacker_likelihood(user: user, type: '$registration', status: '$succeeded')
+      RiskScore.new(response[:risk])
     end
 
     def assess_risk_of_a_bad_actor_creating_a_micropost(user:)
-      score = fetch_hacker_likelihood(user: user, type: '$custom', name: 'Created a micropost')
-      RiskScore.new(score)
+      response = fetch_hacker_likelihood(user: user, type: '$custom', name: 'Created a micropost')
+      RiskScore.new(response[:risk])
+    end
+
+    def match_actor_against_policy_for_registration(user:)
+      response = fetch_hacker_likelihood(user: user, type: '$registration', status: '$succeeded')
+      RiskPolicy.new(response[:policy])
     end
 
     def fetch_hacker_likelihood(user:, type:, status: '', name: '')
@@ -55,7 +78,7 @@ module Protectable
           headers: context[:headers]
         }.compact_blank
       )
-      response[:risk]
+      response
     end
 
     def notify_fraud_detection_system_of_registration_failed

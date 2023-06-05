@@ -54,7 +54,10 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   test 'when the user signs up with a low likelihood of being a hacker at lower bounds ' \
        'sign them up and redirect them' \
        'and do not block them' do
-    sign_up_as(likelihood_of_being_a_hacker: 0.0)
+    sign_up_as(
+      likelihood_of_being_a_hacker: 0.0,
+      matching_policy: :allow
+    )
     assert_redirected_to root_url
     assert_equal 1, User.where(email: 'user@example.com').count
     assert_not_blocked_or_challenged
@@ -63,7 +66,10 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   test 'when the user signs up with a low likelihood of being a hacker at upper bounds' \
        'sign them up and redirect them' \
        'and do not block them' do
-    sign_up_as(likelihood_of_being_a_hacker: 0.59)
+    sign_up_as(
+      likelihood_of_being_a_hacker: 0.59,
+      matching_policy: :allow
+    )
     assert_redirected_to root_url
     assert_equal 1, User.where(email: 'user@example.com').count
     assert_not_blocked_or_challenged
@@ -71,14 +77,17 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 
   test 'when the user signs up with a low likelihood of being a hacker' \
        'notify fraud detection that registration has succeeded ' do
-    sign_up_as(likelihood_of_being_a_hacker: 0.0)
+    sign_up_as(
+      likelihood_of_being_a_hacker: 0.0,
+      matching_policy: :allow
+    )
     assert_fraud_detection_notified_of_registration_succeeded_with(
       user: {
         id: User.find_by(email: 'user@example.com').id.to_s,
         email: 'user@example.com',
         name: 'Example User'
       },
-      context: expected_request_context(content_length_header: 179)
+      context: expected_request_context
     )
   end
 
@@ -89,11 +98,12 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
       email: 'user@example.com',
       password: 'password',
       password_confirmation: 'password',
-      likelihood_of_being_a_hacker: 0.0
+      likelihood_of_being_a_hacker: 0.0,
+      matching_policy: :allow
     )
     assert_fraud_detection_notified_of_registration_attempted_with(
       params: { email: 'user@example.com' },
-      context: expected_request_context(content_length_header: 179)
+      context: expected_request_context
     )
   end
 
@@ -105,18 +115,19 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
       email: 'duplicateuser@example.com',
       password: 'password',
       password_confirmation: 'password',
-      likelihood_of_being_a_hacker: 0.0
+      likelihood_of_being_a_hacker: 0.0,
+      matching_policy: :allow
     )
     assert_fraud_detection_notified_of_registration_failed_with(
       params: { email: 'duplicateuser@example.com' },
-      context: expected_request_context(content_length_header: 188)
+      context: expected_request_context
     )
   end
 
   # Possible hackers
   test 'when the user signs up with a medium likelihood of being a hacker at lower bounds ' \
        'treat them as a risk' do
-    sign_up_as(likelihood_of_being_a_hacker: 0.6)
+    sign_up_as(matching_policy: :challenge)
     assert_user_challenged(ip: '127.0.0.1')
     assert_redirected_to root_url
     assert_equal 1, User.where(email: 'user@example.com').count
@@ -124,7 +135,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 
   test 'when the user signs up with a medium likelihood of being a hacker upper bounds ' \
        'treat them as a risk' do
-    sign_up_as(likelihood_of_being_a_hacker: 0.79)
+    sign_up_as(likelihood_of_being_a_hacker: 0.79, matching_policy: :challenge)
     assert_user_challenged(ip: '127.0.0.1')
     assert_redirected_to root_url
     assert_equal 1, User.where(email: 'user@example.com').count
@@ -133,7 +144,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   # Hackers
   test 'when the user signs up with a high likelihood of being a hacker lower bounds ' \
        'treat them as a bad actor but create the acccount' do
-    sign_up_as(likelihood_of_being_a_hacker: 0.8)
+    sign_up_as(likelihood_of_being_a_hacker: 0.8, matching_policy: :deny)
     assert_user_blocked(ip: '127.0.0.1')
     assert_template 'users/new'
     assert_equal 1, User.where(email: 'user@example.com').count
@@ -141,7 +152,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 
   test 'when the user signs up with a high likelihood of being a hacker upper bounds ' \
        'treat them as a bad actor but create the acccount' do
-    sign_up_as(likelihood_of_being_a_hacker: 1.0)
+    sign_up_as(likelihood_of_being_a_hacker: 1.0, matching_policy: :deny)
     assert_user_blocked(ip: '127.0.0.1')
     assert_template 'users/new'
     assert_equal 1, User.where(email: 'user@example.com').count
@@ -149,14 +160,14 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 
   test 'when the user signs up with a high likelihood of being a hacker' \
        'notify fraud detection that registration has succeeded ' do
-    sign_up_as(likelihood_of_being_a_hacker: 1.0)
+    sign_up_as(likelihood_of_being_a_hacker: 1.0, matching_policy: :deny)
     assert_fraud_detection_notified_of_registration_succeeded_with(
       user: {
         id: User.find_by(email: 'user@example.com').id.to_s,
         email: 'user@example.com',
         name: 'Example User'
       },
-      context: expected_request_context(content_length_header: 179)
+      context: expected_request_context
     )
   end
 
@@ -170,10 +181,10 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     likelihood_of_being_a_hacker: 0.0,
     matching_policy: :allow
   )
-    VCR.use_cassette("sign_up_user_with_hacker_risk_#{likelihood_of_being_a_hacker}_with_email_#{email}") do
+    VCR.use_cassette("sign_up_user_with_hacker_risk_#{likelihood_of_being_a_hacker}_policy_action_#{matching_policy}_with_email_#{email}") do
       get signup_path
       post users_path, params: {
-        castle_request_token: "test|device:chrome_on_mac|risk:#{likelihood_of_being_a_hacker}",
+        castle_request_token: "test|device:chrome_on_mac|risk:#{likelihood_of_being_a_hacker}|policy.action:#{matching_policy}",
         user: {
           name: name,
           email: email,
@@ -186,14 +197,14 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 
   def assert_fraud_detection_notified_of_registration_failed_with(properties)
     signatures = WebMock::RequestRegistry.instance.requested_signatures.select do |request|
-      uri_matches = request.uri.to_s == 'https://api.castle.io:443/v1/filter' 
+      uri_matches = request.uri.to_s == 'https://api.castle.io:443/v1/filter'
       parsed_body = JSON.parse(request.body).deep_symbolize_keys
       body_matches = parsed_body.slice(:type, :status) == ({ type: '$registration', status: '$failed' })
       uri_matches && body_matches
     end
+    actual_signature = JSON.parse(signatures.first.first.body).deep_symbolize_keys.slice(*properties.keys)
+    assert_equal remove_content_length(properties.deep_symbolize_keys), remove_content_length(actual_signature)
     assert_equal 1, signatures.size, 'Expected to find one request to notify fraud detection of registration failed'
-    assert_equal properties.deep_symbolize_keys,
-                 JSON.parse(signatures.first.first.body).deep_symbolize_keys.slice(*properties.keys)
   end
 
   def assert_fraud_detection_notified_of_registration_succeeded_with(properties)
@@ -203,9 +214,9 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
       body_matches = parsed_body.slice(:type, :status) == ({ type: '$registration', status: '$succeeded' })
       uri_matches && body_matches
     end
+    actual_signature = JSON.parse(signatures.first.first.body).deep_symbolize_keys.slice(*properties.keys)
+    assert_equal remove_content_length(properties.deep_symbolize_keys), remove_content_length(actual_signature)
     assert_equal 1, signatures.size, 'Expected to find one request to notify fraud detection of registration succeeded'
-    assert_equal properties.deep_symbolize_keys,
-                 JSON.parse(signatures.first.first.body).deep_symbolize_keys.slice(*properties.keys)
   end
 
   def assert_fraud_detection_notified_of_registration_attempted_with(properties)
@@ -213,8 +224,13 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
       parsed_body = JSON.parse(request.body).deep_symbolize_keys
       return false if parsed_body.slice(:type, :status) != ({ type: '$registration', status: '$attempted' })
 
-      assert_equal properties.deep_symbolize_keys, parsed_body.slice(*properties.keys)
+      assert_equal remove_content_length(properties.deep_symbolize_keys),
+                   remove_content_length(parsed_body.slice(*properties.keys))
     end
+  end
+
+  def remove_content_length(hash)
+    hash.deep_merge(context: { headers: { 'Content-Length': '' } }).compact_blank
   end
 
   def assert_user_blocked(ip:)
@@ -240,11 +256,10 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     )
   end
 
-  def expected_request_context(content_length_header:)
+  def expected_request_context
     {
       ip: '127.0.0.1',
       headers: {
-        "Content-Length": content_length_header.to_s,
         "Remote-Addr": '127.0.0.1',
         Version: 'HTTP/1.0',
         Host: 'www.example.com',
