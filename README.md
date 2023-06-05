@@ -227,18 +227,17 @@ Tip: When removing duplication think:
 * Is this an "artifical" refactor - what I call "shovelling around the shit"?
 * How to know? This comes with experience but it's a red flag if you're just pushing everything into more and more methods that don't improve the design.
 
-
 ## 4. No dead code
 
-## Design principles
+I've looked around and can't see any code we're not using.
 
-Next, we'll assess:
+So let's move on.
 
-* Coupling
-* Cohesion
-* Modularity
+Note: I haven't gone through this exercise with the tests... yet.
 
+In this book I've got to pick my battles, so I'll leave refactoring the tests as an exercise for you.
 
+Let's move onto the next requirement.
 
 ## Change 2: Use policies instead of risk levels for Castle
 
@@ -259,6 +258,12 @@ Next, we'll assess:
 * Use objects to abstract behaviour away
 * Assess coupling and concern metrics using techniques
 * Tidy first, then change behaviour
+
+## Design principles
+
+* Coupling
+* Cohesion
+* Modularity
 
 ## Act 2C - Comparison
 
