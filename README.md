@@ -202,6 +202,31 @@ That was an easy piece of cleanup.
 
 So far so good.
 
+We're going to leave it there for now for removing duplication.
+
+The biggest smell is the duplication of ideas around [^8].
+
+I don't know what to do about this yet.
+
+So I'm not going to force anything.
+
+Tip: a common mistake is to force removing duplication.
+
+I find myself waiting for the duplication to reveal a pattern.
+
+Once the pattern has been revealed, it's a matter of waiting for the right moment.
+
+This is too early. I don't have enough feedback from the changing requirements to know what will happen.
+
+I could push extra methods into `Protectable` but this feels "artifical" - like we're doing it for the sake of it.
+
+Tip: When removing duplication think:
+
+* Will this introduce a new abstraction?
+* Will this abstraction be useful?
+* Is this an "artifical" refactor - what I call "shovelling around the shit"?
+* How to know? This comes with experience but it's a red flag if you're just pushing everything into more and more methods that don't improve the design.
+
 
 ## 4. No dead code
 

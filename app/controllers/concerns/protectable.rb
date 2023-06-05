@@ -58,7 +58,6 @@ module Protectable
       response[:risk]
     end
 
-    # [^9]
     def notify_fraud_detection_system_of_registration_failed
       notify_fraud_detection_system_of(type: '$registration', status: '$failed')
     end
