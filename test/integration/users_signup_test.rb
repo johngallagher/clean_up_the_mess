@@ -51,9 +51,26 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   end
 
   # Genuine users
+  test 'when the user signs up with a low likelihood of being a hacker at lower bounds ' \
+       'sign them up and redirect them' \
+       'and do not block them' do
+    sign_up_as(likelihood_of_being_a_hacker: 0.0)
+    assert_redirected_to root_url
+    assert_equal 1, User.where(email: 'user@example.com').count
+    assert_not_blocked_or_challenged
+  end
+
+  test 'when the user signs up with a low likelihood of being a hacker at upper bounds' \
+       'sign them up and redirect them' \
+       'and do not block them' do
+    sign_up_as(likelihood_of_being_a_hacker: 0.59)
+    assert_redirected_to root_url
+    assert_equal 1, User.where(email: 'user@example.com').count
+    assert_not_blocked_or_challenged
+  end
+
   test 'when the user signs up with a low likelihood of being a hacker' \
-       'notify fraud detection that registration has succeeded ' \
-       'and sign them up' do
+       'notify fraud detection that registration has succeeded ' do
     sign_up_as(likelihood_of_being_a_hacker: 0.0)
     assert_fraud_detection_notified_of_registration_succeeded_with(
       user: {
@@ -61,20 +78,8 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
         email: 'user@example.com',
         name: 'Example User'
       },
-      context: {
-        ip: '127.0.0.1',
-        headers: {
-          "Content-Length": '179',
-          "Remote-Addr": '127.0.0.1',
-          Version: 'HTTP/1.0',
-          Host: 'www.example.com',
-          Accept: 'text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5',
-          Cookie: true
-        }
-      }
+      context: expected_request_context(content_length_header: 179)
     )
-    assert_redirected_to root_url
-    assert_equal 1, User.where(email: 'user@example.com').count
   end
 
   test 'when the user has posted a signup form ' \
@@ -83,23 +88,12 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
       name: 'Example User',
       email: 'user@example.com',
       password: 'password',
-      password_confirmation: 'password'
+      password_confirmation: 'password',
+      likelihood_of_being_a_hacker: 0.0
     )
     assert_fraud_detection_notified_of_registration_attempted_with(
-      params: {
-        email: 'user@example.com'
-      },
-      context: {
-        ip: '127.0.0.1',
-        headers: {
-          "Content-Length": '179',
-          "Remote-Addr": '127.0.0.1',
-          Version: 'HTTP/1.0',
-          Host: 'www.example.com',
-          Accept: 'text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5',
-          Cookie: true
-        }
-      }
+      params: { email: 'user@example.com' },
+      context: expected_request_context(content_length_header: 179)
     )
   end
 
@@ -110,29 +104,51 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
       name: 'Example User',
       email: 'duplicateuser@example.com',
       password: 'password',
-      password_confirmation: 'password'
+      password_confirmation: 'password',
+      likelihood_of_being_a_hacker: 0.0
     )
     assert_fraud_detection_notified_of_registration_failed_with(
-      params: {
-        email: 'duplicateuser@example.com'
-      },
-      context: {
-        ip: '127.0.0.1',
-        headers: {
-          "Content-Length": '188',
-          "Remote-Addr": '127.0.0.1',
-          Version: 'HTTP/1.0',
-          Host: 'www.example.com',
-          Accept: 'text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5',
-          Cookie: true
-        }
-      }
+      params: { email: 'duplicateuser@example.com' },
+      context: expected_request_context(content_length_header: 188)
     )
   end
 
+  # Possible hackers
+  test 'when the user signs up with a medium likelihood of being a hacker at lower bounds ' \
+       'treat them as a risk' do
+    sign_up_as(likelihood_of_being_a_hacker: 0.6)
+    assert_user_challenged(ip: '127.0.0.1')
+    assert_redirected_to root_url
+    assert_equal 1, User.where(email: 'user@example.com').count
+  end
+
+  test 'when the user signs up with a medium likelihood of being a hacker upper bounds ' \
+       'treat them as a risk' do
+    sign_up_as(likelihood_of_being_a_hacker: 0.79)
+    assert_user_challenged(ip: '127.0.0.1')
+    assert_redirected_to root_url
+    assert_equal 1, User.where(email: 'user@example.com').count
+  end
+
+  # Hackers
+  test 'when the user signs up with a high likelihood of being a hacker lower bounds ' \
+       'treat them as a bad actor but create the acccount' do
+    sign_up_as(likelihood_of_being_a_hacker: 0.8)
+    assert_user_blocked(ip: '127.0.0.1')
+    assert_template 'users/new'
+    assert_equal 1, User.where(email: 'user@example.com').count
+  end
+
+  test 'when the user signs up with a high likelihood of being a hacker upper bounds ' \
+       'treat them as a bad actor but create the acccount' do
+    sign_up_as(likelihood_of_being_a_hacker: 1.0)
+    assert_user_blocked(ip: '127.0.0.1')
+    assert_template 'users/new'
+    assert_equal 1, User.where(email: 'user@example.com').count
+  end
+
   test 'when the user signs up with a high likelihood of being a hacker' \
-       'notify fraud detection that registration has succeeded ' \
-       'and redirect them to the home page but create them' do
+       'notify fraud detection that registration has succeeded ' do
     sign_up_as(likelihood_of_being_a_hacker: 1.0)
     assert_fraud_detection_notified_of_registration_succeeded_with(
       user: {
@@ -140,36 +156,8 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
         email: 'user@example.com',
         name: 'Example User'
       },
-      context: {
-        ip: '127.0.0.1',
-        headers: {
-          "Content-Length": '179',
-          "Remote-Addr": '127.0.0.1',
-          Version: 'HTTP/1.0',
-          Host: 'www.example.com',
-          Accept: 'text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5',
-          Cookie: true
-        }
-      }
+      context: expected_request_context(content_length_header: 179)
     )
-    assert_template 'users/new'
-    assert_equal 1, User.where(email: 'user@example.com').count
-  end
-
-  # Possible hackers
-  test 'when the user signs up with a high likelihood of being a hacker' \
-       'challenge the users IP address' \
-       "so that they have to prove they're a human to enter their account" do
-    sign_up_as(likelihood_of_being_a_hacker: 0.7)
-    assert_user_challenged(ip: '127.0.0.1')
-  end
-
-  # Hackers
-  test 'when the user signs up with a high likelihood of being a hacker' \
-       'block the users IP address' \
-       "so that we're not letting hackers in" do
-    sign_up_as(likelihood_of_being_a_hacker: 1.0)
-    assert_user_blocked(ip: '127.0.0.1')
   end
 
   private
@@ -197,11 +185,10 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 
   def assert_fraud_detection_notified_of_registration_failed_with(properties)
     signatures = WebMock::RequestRegistry.instance.requested_signatures.select do |request|
+      uri_matches = request.uri.to_s == 'https://api.castle.io:443/v1/filter' 
       parsed_body = JSON.parse(request.body).deep_symbolize_keys
-      request.uri.to_s == 'https://api.castle.io:443/v1/filter' && parsed_body.slice(:type,
-                                                                                     :status) == ({
-                                                                                       type: '$registration', status: '$failed'
-                                                                                     })
+      body_matches = parsed_body.slice(:type, :status) == ({ type: '$registration', status: '$failed' })
+      uri_matches && body_matches
     end
     assert_equal 1, signatures.size, 'Expected to find one request to notify fraud detection of registration failed'
     assert_equal properties.deep_symbolize_keys,
@@ -210,11 +197,10 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 
   def assert_fraud_detection_notified_of_registration_succeeded_with(properties)
     signatures = WebMock::RequestRegistry.instance.requested_signatures.select do |request|
+      uri_matches = request.uri.to_s == 'https://api.castle.io:443/v1/risk'
       parsed_body = JSON.parse(request.body).deep_symbolize_keys
-      request.uri.to_s == 'https://api.castle.io:443/v1/risk' && parsed_body.slice(:type,
-                                                                                   :status) == ({
-                                                                                     type: '$registration', status: '$succeeded'
-                                                                                   })
+      body_matches = parsed_body.slice(:type, :status) == ({ type: '$registration', status: '$succeeded' })
+      uri_matches && body_matches
     end
     assert_equal 1, signatures.size, 'Expected to find one request to notify fraud detection of registration succeeded'
     assert_equal properties.deep_symbolize_keys,
@@ -226,7 +212,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
       parsed_body = JSON.parse(request.body).deep_symbolize_keys
       return false if parsed_body.slice(:type, :status) != ({ type: '$registration', status: '$attempted' })
 
-      assert_equal parsed_body.slice(*properties.keys), properties.deep_symbolize_keys
+      assert_equal properties.deep_symbolize_keys, parsed_body.slice(*properties.keys)
     end
   end
 
@@ -244,5 +230,26 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
       'https://api.cloudflare.com/client/v4/accounts/a4bedc9e66fe2e421c76b068531a75a2/firewall/access_rules/rules',
       body: JSON.generate({ configuration: { target: 'ip', value: ip }, mode: 'challenge' })
     )
+  end
+
+  def assert_not_blocked_or_challenged
+    assert_not_requested(
+      :post,
+      'https://api.cloudflare.com/client/v4/accounts/a4bedc9e66fe2e421c76b068531a75a2/firewall/access_rules/rules'
+    )
+  end
+
+  def expected_request_context(content_length_header:)
+    {
+      ip: '127.0.0.1',
+      headers: {
+        "Content-Length": content_length_header.to_s,
+        "Remote-Addr": '127.0.0.1',
+        Version: 'HTTP/1.0',
+        Host: 'www.example.com',
+        Accept: 'text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5',
+        Cookie: true
+      }
+    }
   end
 end
