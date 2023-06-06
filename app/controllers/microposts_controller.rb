@@ -4,7 +4,7 @@ class MicropostsController < ApplicationController
   before_action :correct_user,   only: :destroy
 
   def create
-    risk_score = assess_risk_of_a_bad_actor_creating_a_micropost(user: current_user)
+    risk_score = assess_risk_of_a_bad_actor_creating_a_micropost(user: current_user) 
 
     # [^8]
     if risk_score.high?

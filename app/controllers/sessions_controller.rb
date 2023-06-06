@@ -9,16 +9,14 @@ class SessionsController < ApplicationController
     user = User.find_by(email: params[:session][:email].downcase)
 
     if user && user.authenticate(params[:session][:password]) && user.activated?
-      risk_score = assess_risk_of_a_bad_actor_logging_in(user: user)
+      policy = match_actor_against_policy_for_logging_in(user: user)
 
-      # [^8]
-      if risk_score.high?
+      if policy.deny?
         block_ip_address(request.remote_ip)
         head :internal_server_error and return
       end
 
-      # [^8]
-      if risk_score.medium?
+      if policy.challenge?
         challenge_ip_address(request.remote_ip) 
       end
 

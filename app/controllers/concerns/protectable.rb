@@ -54,6 +54,11 @@ module Protectable
       RiskScore.new(response[:risk])
     end
 
+    def match_actor_against_policy_for_logging_in(user:)
+      response = fetch_hacker_likelihood(user: user, type: '$login', status: '$succeeded')
+      RiskPolicy.new(response[:policy])
+    end
+
     def match_actor_against_policy_for_registration(user:)
       response = fetch_hacker_likelihood(user: user, type: '$registration', status: '$succeeded')
       RiskPolicy.new(response[:policy])
