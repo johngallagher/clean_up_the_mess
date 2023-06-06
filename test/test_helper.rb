@@ -19,12 +19,11 @@ class ActionDispatch::IntegrationTest
     user,
     password: 'password',
     remember_me: '1',
-    likelihood_of_being_a_hacker: 0.0,
     matching_policy: :allow
   )
-    VCR.use_cassette("log_in_user_policy_action_#{matching_policy}_#{likelihood_of_being_a_hacker}_with_email_#{user.email}") do
+    VCR.use_cassette("log_in_user_policy_action_#{matching_policy}_email_#{user.email}") do
       post login_path, params: {
-        castle_request_token: "test|device:chrome_on_mac|risk:#{likelihood_of_being_a_hacker}|policy.action:#{matching_policy}",
+        castle_request_token: "test|device:chrome_on_mac|policy.action:#{matching_policy}",
         session: {
           email: user.email,
           password: password,

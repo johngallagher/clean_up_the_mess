@@ -61,7 +61,6 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     log_in_as(
       user,
       password: 'invalid',
-      likelihood_of_being_a_hacker: 0.0,
       matching_policy: :allow
     )
     assert_fraud_detection_notified_of_failed_login_with(
@@ -93,7 +92,6 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     )
     log_in_as(
       inactive_user,
-      likelihood_of_being_a_hacker: 0.0,
       matching_policy: :allow
     )
     assert_fraud_detection_not_called
@@ -103,7 +101,6 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
        'allow them to log in' do
     log_in_as(
       @user,
-      likelihood_of_being_a_hacker: 0.0,
       matching_policy: :allow
     )
     assert is_logged_in?, 'Expected to be logged in'
@@ -121,7 +118,6 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     )
     log_in_as(
       user,
-      likelihood_of_being_a_hacker: 0.0,
       matching_policy: :allow
     )
     assert_fraud_detection_notified_of_login_succeeded_with(
@@ -148,7 +144,6 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
        'so that the fraud detection has more information to learn from' do
     log_in_as(
       @user,
-      likelihood_of_being_a_hacker: 0.0,
       matching_policy: :allow
     )
     assert_fraud_detection_notified_of_login_attempted_with(
@@ -173,7 +168,6 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
        'allow them to log in' do
     log_in_as(
       @user,
-      likelihood_of_being_a_hacker: 0.7,
       matching_policy: :challenge
     )
     assert is_logged_in?, 'Expected to be logged in'
@@ -184,7 +178,6 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
        'challenge them the next time they log in' do
     log_in_as(
       @user,
-      likelihood_of_being_a_hacker: 0.7,
       matching_policy: :challenge
     )
     assert_user_challenged(ip: '127.0.0.1')
@@ -195,7 +188,6 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
        'block them from logging in' do
     log_in_as(
       @user,
-      likelihood_of_being_a_hacker: 1.0,
       matching_policy: :deny
     )
     assert_not is_logged_in?, 'Expected not to be logged in'
@@ -207,7 +199,6 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
        'so that other hackers with valid passwords are recognised' do
     log_in_as(
       @user,
-      likelihood_of_being_a_hacker: 1.0,
       matching_policy: :deny
     )
     assert_fraud_detection_notified_of_login_succeeded_with(
@@ -234,7 +225,6 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
        'block their IP address' do
     log_in_as(
       @user,
-      likelihood_of_being_a_hacker: 1.0,
       matching_policy: :deny
     )
     assert_user_blocked(ip: '127.0.0.1')
@@ -246,7 +236,6 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     log_in_as(
       user,
       password: 'invalid',
-      likelihood_of_being_a_hacker: 1.0,
       matching_policy: :deny
     )
     assert_not is_logged_in?, 'Expected to be logged out'
