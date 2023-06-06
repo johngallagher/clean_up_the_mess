@@ -1,0 +1,100 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.castle.io/v1/filter
+    body:
+      encoding: UTF-8
+      string: '{"type":"$login","status":"$attempted","request_token":"test|device:chrome_on_mac|risk:0.0|policy.action:allow","params":{"email":"joe@example.org"},"context":{"ip":"127.0.0.1","headers":{"Content-Length":"170","Remote-Addr":"127.0.0.1","Version":"HTTP/1.0","Host":"www.example.com","Accept":"text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5","Cookie":true}},"timestamp":"2023-06-06T21:18:33.363Z","sent_at":"2023-06-06T21:18:33.363Z"}'
+    headers:
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Authorization:
+      - Basic <BASIC_AUTH_ENCODED_CASTLE_API_SECRET>
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Date:
+      - Tue, 06 Jun 2023 21:18:09 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Ratelimit-Limit:
+      - '10'
+      X-Ratelimit-Remaining:
+      - '9'
+      X-Ratelimit-Reset:
+      - '1'
+      Etag:
+      - W/"9ab51eb549876a3706a9aa1caa635793"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - cef7ebd6-a73b-4c7f-b188-479ed14379b3
+      Server:
+      - castle.io
+    body:
+      encoding: UTF-8
+      string: '{"risk":0.0,"scores":{"account_abuse":{"score":0.0},"account_takeover":{"score":0.22},"bot":{"score":0.13}},"signals":{},"policy":{"action":"allow","id":"eda1af7b-62c0-476f-9d4e-09214fd9c729","revision_id":"","name":"test-84198287-6e34-48bc-bb03-802f7249bf08"},"device":{"token":null,"fingerprint":null}}'
+  recorded_at: Tue, 06 Jun 2023 21:18:33 GMT
+- request:
+    method: post
+    uri: https://api.castle.io/v1/risk
+    body:
+      encoding: UTF-8
+      string: '{"type":"$login","status":"$succeeded","name":"","request_token":"test|device:chrome_on_mac|risk:0.0|policy.action:allow","user":{"id":"1046959425","email":"joe@example.org","name":"Joe
+        Bloggs","registered_at":"2012-12-02T00:30:08Z"},"context":{"ip":"127.0.0.1","headers":{"Content-Length":"170","Remote-Addr":"127.0.0.1","Version":"HTTP/1.0","Host":"www.example.com","Accept":"text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5","Cookie":true}},"timestamp":"2023-06-06T21:18:33.996Z","sent_at":"2023-06-06T21:18:33.997Z"}'
+    headers:
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Authorization:
+      - Basic <BASIC_AUTH_ENCODED_CASTLE_API_SECRET>
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Date:
+      - Tue, 06 Jun 2023 21:18:10 GMT
+      Content-Type:
+      - application/json
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Ratelimit-Limit:
+      - '10'
+      X-Ratelimit-Remaining:
+      - '9'
+      X-Ratelimit-Reset:
+      - '1'
+      Etag:
+      - W/"4d097c57fd71ea84f16e6389e793d956"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - f80dab39-367b-4eee-a5f0-173c419dad43
+      Server:
+      - castle.io
+    body:
+      encoding: UTF-8
+      string: '{"risk":0.0,"scores":{"account_abuse":{"score":0.0},"account_takeover":{"score":0.26},"bot":{"score":0.13}},"signals":{},"policy":{"action":"allow","id":"c9a58b5d-c392-48bc-897b-ad1356dd521f","revision_id":"","name":"test-bec75129-11f9-4327-8893-7b9aaec1ae45"},"device":{"token":"eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlbiI6InRxM3A5QnNReEFOSGt0RERWOUxiMFJlQW03aWgiLCJxdWFsaWZpZXIiOiJBUUlEQ2pJeE5UYzJORE15T0RjIiwiYW5vbnltb3VzIjpmYWxzZSwidmVyc2lvbiI6MC4zfQ.A5Ap-hp6h70kUZwGPYTDdQooqY_ByEN2EVVqwlSbZbI","fingerprint":null}}'
+  recorded_at: Tue, 06 Jun 2023 21:18:34 GMT
+recorded_with: VCR 6.1.0

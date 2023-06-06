@@ -11,7 +11,8 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
   test 'login with valid email/invalid password' do
     get login_path
     assert_template 'sessions/new'
-    log_in_as(@user, password: 'invalid')
+    user = FactoryBot.create(:user, :activated, email: 'john@example.com')
+    log_in_as(user, password: 'invalid')
     assert_not is_logged_in?
     assert_template 'sessions/new'
     assert_not flash.empty?
@@ -56,19 +57,19 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
   # Genuine users
   test 'notifies fraud detection when a genuinue user has failed login ' \
        'so that the fraud detection learns about hackers' do
+    user = FactoryBot.create(:user, :activated, email: 'james@example.org')
     log_in_as(
-      @user,
+      user,
       password: 'invalid',
       likelihood_of_being_a_hacker: 0.0
     )
     assert_fraud_detection_notified_of_failed_login_with(
       params: {
-        email: @user.email
+        email: user.email
       },
       context: {
         ip: '127.0.0.1',
         headers: {
-          "Content-Length": '149',
           "Remote-Addr": '127.0.0.1',
           Version: 'HTTP/1.0',
           Host: 'www.example.com',
@@ -85,9 +86,9 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     inactive_user = FactoryBot.create(
       :user,
       name: 'Joe Bloggs',
-      email: 'joe@example.org',
+      email: 'joeinactive@example.org',
       activated: false,
-      activated_at: nil,
+      activated_at: nil
     )
     log_in_as(
       inactive_user,
@@ -129,7 +130,6 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
       context: {
         ip: '127.0.0.1',
         headers: {
-          "Content-Length": '146',
           "Remote-Addr": '127.0.0.1',
           Version: 'HTTP/1.0',
           Host: 'www.example.com',
@@ -153,7 +153,6 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
       context: {
         ip: '127.0.0.1',
         headers: {
-          "Content-Length": '150',
           "Remote-Addr": '127.0.0.1',
           Version: 'HTTP/1.0',
           Host: 'www.example.com',
@@ -212,7 +211,6 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
       context: {
         ip: '127.0.0.1',
         headers: {
-          "Content-Length": '150',
           "Remote-Addr": '127.0.0.1',
           Version: 'HTTP/1.0',
           Host: 'www.example.com',
@@ -234,8 +232,9 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
 
   test 'when the hacker has the wrong password ' \
        "render new and don't log them in" do
+    user = FactoryBot.create(:user, :activated, email: 'jane@example.org')
     log_in_as(
-      @user,
+      user,
       password: 'invalid',
       likelihood_of_being_a_hacker: 1.0
     )
@@ -250,7 +249,8 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
       parsed_body = JSON.parse(request.body).deep_symbolize_keys
       return false if parsed_body.slice(:type, :status) != ({ type: '$login', status: '$succeeded' })
 
-      assert_equal parsed_body.slice(*properties.keys), properties.deep_symbolize_keys
+      assert_equal remove_content_length(parsed_body.slice(*properties.keys)),
+                   remove_content_length(properties.deep_symbolize_keys)
     end
   end
 
@@ -259,7 +259,8 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
       parsed_body = JSON.parse(request.body).deep_symbolize_keys
       return false if parsed_body.slice(:type, :status) != ({ type: '$login', status: '$failed' })
 
-      assert_equal parsed_body.slice(*properties.keys), properties.deep_symbolize_keys
+      assert_equal remove_content_length(parsed_body.slice(*properties.keys)),
+                   remove_content_length(properties.deep_symbolize_keys)
     end
   end
 
@@ -268,12 +269,17 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
       parsed_body = JSON.parse(request.body).deep_symbolize_keys
       return false if parsed_body.slice(:type, :status) != ({ type: '$login', status: '$attempted' })
 
-      assert_equal parsed_body.slice(*properties.keys), properties.deep_symbolize_keys
+      assert_equal remove_content_length(parsed_body.slice(*properties.keys)),
+                   remove_content_length(properties.deep_symbolize_keys)
     end
   end
 
   def assert_fraud_detection_not_called
     assert_not_requested(:post, 'https://api.castle.io/v1/risk')
+  end
+
+  def remove_content_length(hash)
+    hash.deep_merge(context: { headers: { 'Content-Length': '' } }).compact_blank
   end
 
   def assert_user_blocked(ip:)

@@ -17,14 +17,21 @@ class ActiveSupport::TestCase
 end
 
 class ActionDispatch::IntegrationTest
-  # Log in as a particular user.
-  def log_in_as(user, password: 'password', remember_me: '1', likelihood_of_being_a_hacker: 0.0)
-    VCR.use_cassette("user_with_hacker_risk_#{likelihood_of_being_a_hacker}_valid_password_#{password == 'password'}_with_email_#{user.email}") do
+  def log_in_as(
+    user,
+    password: 'password',
+    remember_me: '1',
+    likelihood_of_being_a_hacker: 0.0,
+    matching_policy: :allow
+  )
+    VCR.use_cassette("log_in_user_policy_action_#{matching_policy}_#{likelihood_of_being_a_hacker}_with_email_#{user.email}") do
       post login_path, params: {
-        castle_request_token: "test|device:chrome_on_mac|risk:#{likelihood_of_being_a_hacker}",
-        session: { email: user.email,
-                  password: password,
-                  remember_me: remember_me }
+        castle_request_token: "test|device:chrome_on_mac|risk:#{likelihood_of_being_a_hacker}|policy.action:#{matching_policy}",
+        session: {
+          email: user.email,
+          password: password,
+          remember_me: remember_me
+        }
       }
     end
   end
@@ -35,9 +42,11 @@ Webdrivers::Chromedriver.update
 
 VCR.configure do |config|
   config.ignore_hosts '127.0.0.1'
-  config.cassette_library_dir = "test/vcr"
+  config.cassette_library_dir = 'test/vcr'
   config.hook_into :webmock
-  config.filter_sensitive_data('<BASIC_AUTH_ENCODED_CASTLE_API_SECRET>') { Base64::encode64(":#{ENV.fetch('CASTLE_API_SECRET')}").chomp }
+  config.filter_sensitive_data('<BASIC_AUTH_ENCODED_CASTLE_API_SECRET>') do
+    Base64.encode64(":#{ENV.fetch('CASTLE_API_SECRET')}").chomp
+  end
   config.filter_sensitive_data('<CLOUDFLARE_API_TOKEN>') { ENV.fetch('CLOUDFLARE_API_TOKEN') }
   config.filter_sensitive_data('<CLOUDFLARE_API_EMAIL>') { ENV.fetch('CLOUDFLARE_API_EMAIL') }
   config.allow_http_connections_when_no_cassette = false
