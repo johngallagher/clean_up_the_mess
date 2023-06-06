@@ -9,16 +9,9 @@ class SessionsController < ApplicationController
     user = User.find_by(email: params[:session][:email].downcase)
 
     if user && user.authenticate(params[:session][:password]) && user.activated?
-      # [^11]
-      policy = match_actor_against_policy_for_logging_in(user: user)
-
-      if policy.deny?
-        block_ip_address(request.remote_ip)
+      result = protect_login_from_bad_actors(user: user, request: request)
+      result.on_deny do
         head :internal_server_error and return
-      end
-
-      if policy.challenge?
-        challenge_ip_address(request.remote_ip) 
       end
 
       log_in user

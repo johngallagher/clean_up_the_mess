@@ -84,7 +84,21 @@ module Protectable
     end
 
     def protect_creating_a_micropost_from_bad_actors(user:, request:)
-      policy =  match_actor_against_policy_for_creating_a_micropost(user: user)
+      policy = match_actor_against_policy_for_creating_a_micropost(user: user)
+      block_or_challenge_bad_actors(policy: policy, request: request)
+    end
+
+    def protect_login_from_bad_actors(user:, request:)
+      policy =  match_actor_against_policy_for_logging_in(user: user)
+      block_or_challenge_bad_actors(policy: policy, request: request)
+    end
+
+    def protect_registration_from_bad_actors(user:, request:)
+      policy =  match_actor_against_policy_for_registration(user: user)
+      block_or_challenge_bad_actors(policy: policy, request: request)
+    end
+
+    def block_or_challenge_bad_actors(policy:, request:)
       action = PolicyAction.new(policy: policy)
       action.on_deny { block_ip_address(request.remote_ip) }
       action.on_challenge { challenge_ip_address(request.remote_ip) }
