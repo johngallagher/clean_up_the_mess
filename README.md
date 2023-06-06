@@ -275,6 +275,16 @@ This is what good design looks like. You're minimising the things that change.
 
 Any time lots of tests break, it's telling you something.
 
+[^11]
+
+We've replaced our risk level with policy.
+
+This was pretty quick - it took about 15 minutes.
+
+That's because we'd encapsulated all the logic. It was nice and neat.
+
+Next step - get rid of the likelihood arguments in the test.
+
 ## Change 3: Change to using AWS for firewall blocking and fraud detection
 
 
