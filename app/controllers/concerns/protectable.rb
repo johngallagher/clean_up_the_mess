@@ -64,6 +64,11 @@ module Protectable
       RiskPolicy.new(response[:policy])
     end
 
+    def match_actor_against_policy_for_creating_a_micropost(user:)
+      response = fetch_hacker_likelihood(user: user, type: '$custom', name: 'Created a micropost')
+      RiskPolicy.new(response[:policy])
+    end
+
     def fetch_hacker_likelihood(user:, type:, status: '', name: '')
       castle = ::Castle::Client.new
       token = params[:castle_request_token]

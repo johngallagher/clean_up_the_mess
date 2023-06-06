@@ -4,16 +4,16 @@ class MicropostsController < ApplicationController
   before_action :correct_user,   only: :destroy
 
   def create
-    risk_score = assess_risk_of_a_bad_actor_creating_a_micropost(user: current_user) 
+    policy = match_actor_against_policy_for_creating_a_micropost(user: current_user) 
 
     # [^8]
-    if risk_score.high?
+    if policy.deny?
       block_ip_address(request.remote_ip)
       head :internal_server_error and return
     end
 
     # [^8]
-    if risk_score.medium?
+    if policy.challenge?
       challenge_ip_address(request.remote_ip)
     end
 

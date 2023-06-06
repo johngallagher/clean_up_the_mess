@@ -38,13 +38,13 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
   test "allows microposts to be created by possible hackers" do
     log_in_as(@user)
     assert_difference 'Micropost.count', 1 do
-      create_micropost('Content', likelihood_of_being_a_hacker: 0.7)
+      create_micropost('Content', matching_policy: :challenge)
     end
   end
 
   test "challenges when microposts are being created by a possible hacker" do
     log_in_as(@user)
-    create_micropost('Content', likelihood_of_being_a_hacker: 0.7)
+    create_micropost('Content', matching_policy: :challenge)
     assert_user_challenged(ip: '127.0.0.1')
   end
 
@@ -52,22 +52,22 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
   test "prevents microposts from being created by hackers" do
     log_in_as(@user)
     assert_no_difference 'Micropost.count' do
-      create_micropost('Content', likelihood_of_being_a_hacker: 1.0)
+      create_micropost('Content', matching_policy: :deny)
     end
   end
 
   test "challenges when microposts are being created by a hacker" do
     log_in_as(@user)
-    create_micropost('Content', likelihood_of_being_a_hacker: 1.0)
+    create_micropost('Content', matching_policy: :deny)
     assert_user_blocked(ip: '127.0.0.1')
   end
 
   private
 
-  def create_micropost(content, likelihood_of_being_a_hacker: 0.0)
-    VCR.use_cassette("create_micropost_with_hacker_risk_#{likelihood_of_being_a_hacker}") do
+  def create_micropost(content, matching_policy: :allow)
+    VCR.use_cassette("create_micropost_with_policy_#{matching_policy}") do
       post microposts_path, params: {
-        castle_request_token: "test|device:chrome_on_mac|risk:#{likelihood_of_being_a_hacker}",
+        castle_request_token: "test|device:chrome_on_mac|policy.action:#{matching_policy}",
         micropost: { content: content }
       }
     end
