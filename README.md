@@ -285,6 +285,36 @@ That's because we'd encapsulated all the logic. It was nice and neat.
 
 Next step - get rid of the likelihood arguments in the test.
 
+[^12]
+
+We've now swapped out microposts to use policies too.
+
+This took all of 5 minutes. The pattern has been established.
+
+[^13]
+
+We want to remove the duplication. So first we program by intent.
+
+What's the interface we wish we had?
+
+We don't want to continually be asking questions.
+
+We also *always* want to block and challenge when a policy says so.
+
+If we keep this duplication, there's a chance we might forget to do that one day.
+
+That makes things fragile.
+
+So instead, we should just build that functionality once.
+
+Then we can pass back control of the program using `#on_deny` and `#on_challenge`
+
+This gives us a nice mechanism for the controller to decide what to do.
+
+This is dependency inversion.
+
+It's about giving control back to the caller when it matters.
+
 ## Change 3: Change to using AWS for firewall blocking and fraud detection
 
 

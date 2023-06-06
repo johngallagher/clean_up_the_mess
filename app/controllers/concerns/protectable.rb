@@ -38,6 +38,20 @@ module Protectable
     end
   end
 
+  class PolicyAction
+    def initialize(policy:)
+      @policy = policy
+    end
+
+    def on_deny
+      yield if @policy.deny?
+    end
+
+    def on_challenge
+      yield if @policy.challenge?
+    end
+  end
+
   included do
     def assess_risk_of_a_bad_actor_logging_in(user:)
       response = fetch_hacker_likelihood(user: user, type: '$login', status: '$succeeded')
@@ -67,6 +81,14 @@ module Protectable
     def match_actor_against_policy_for_creating_a_micropost(user:)
       response = fetch_hacker_likelihood(user: user, type: '$custom', name: 'Created a micropost')
       RiskPolicy.new(response[:policy])
+    end
+
+    def protect_creating_a_micropost_from_bad_actors(user:, request:)
+      policy =  match_actor_against_policy_for_creating_a_micropost(user: user)
+      action = PolicyAction.new(policy: policy)
+      action.on_deny { block_ip_address(request.remote_ip) }
+      action.on_challenge { challenge_ip_address(request.remote_ip) }
+      action
     end
 
     def fetch_hacker_likelihood(user:, type:, status: '', name: '')

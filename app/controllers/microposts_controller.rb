@@ -4,17 +4,10 @@ class MicropostsController < ApplicationController
   before_action :correct_user,   only: :destroy
 
   def create
-    policy = match_actor_against_policy_for_creating_a_micropost(user: current_user) 
-
-    # [^8]
-    if policy.deny?
-      block_ip_address(request.remote_ip)
+    # [^13]
+    result = protect_creating_a_micropost_from_bad_actors(user: current_user, request: request) 
+    result.on_deny do
       head :internal_server_error and return
-    end
-
-    # [^8]
-    if policy.challenge?
-      challenge_ip_address(request.remote_ip)
     end
 
     @micropost = current_user.microposts.build(micropost_params)
