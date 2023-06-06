@@ -9,8 +9,7 @@ class SessionsController < ApplicationController
     user = User.find_by(email: params[:session][:email].downcase)
 
     if user && user.authenticate(params[:session][:password]) && user.activated?
-      result = protect_login_from_bad_actors(user: user, request: request)
-      result.on_deny do
+      protect_login_from_bad_actors(user: user, request: request).on_deny do
         head :internal_server_error and return
       end
 
