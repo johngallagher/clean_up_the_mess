@@ -5,7 +5,7 @@ http_interactions:
     uri: https://api.castle.io/v1/filter
     body:
       encoding: UTF-8
-      string: '{"type":"$login","status":"$attempted","request_token":"test|device:chrome_on_mac|risk:0.0|policy.action:allow","params":{"email":"joeinactive@example.org"},"context":{"ip":"127.0.0.1","headers":{"Content-Length":"178","Remote-Addr":"127.0.0.1","Version":"HTTP/1.0","Host":"www.example.com","Accept":"text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5","Cookie":true}},"timestamp":"2023-06-06T21:22:58.702Z","sent_at":"2023-06-06T21:22:58.702Z"}'
+      string: '{"type":"$login","status":"$attempted","request_token":"test|device:chrome_on_mac|risk:0.0|policy.action:allow","params":{"email":"joeinactive@example.org"},"context":{"ip":"127.0.0.1","headers":{"Content-Length":"178","Remote-Addr":"127.0.0.1","Version":"HTTP/1.0","Host":"www.example.com","Accept":"text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5","Cookie":true}},"timestamp":"2023-06-06T21:38:00.433Z","sent_at":"2023-06-06T21:38:00.434Z"}'
     headers:
       Content-Type:
       - application/json
@@ -23,7 +23,7 @@ http_interactions:
       message: Created
     headers:
       Date:
-      - Tue, 06 Jun 2023 21:22:35 GMT
+      - Tue, 06 Jun 2023 21:37:37 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
@@ -37,15 +37,15 @@ http_interactions:
       X-Ratelimit-Reset:
       - '1'
       Etag:
-      - W/"2243318e9e848f9918307f5d01f0ed35"
+      - W/"44fddeee126a1a788a36ebd559aa5ef6"
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - ffcbb0e3-335e-4186-821a-068944aad79c
+      - 81cc8ee3-a5ba-4b00-b319-43e393ae1c4e
       Server:
       - castle.io
     body:
       encoding: UTF-8
-      string: '{"risk":0.0,"scores":{"account_abuse":{"score":0.0},"account_takeover":{"score":0.22},"bot":{"score":0.13}},"signals":{},"policy":{"action":"allow","id":"2644f677-7c3e-4dc9-9c6a-2a8600aa5c92","revision_id":"","name":"test-f5c06412-7311-49a6-b824-6e7470772872"},"device":{"token":null,"fingerprint":null}}'
-  recorded_at: Tue, 06 Jun 2023 21:22:59 GMT
+      string: '{"risk":0.0,"scores":{"account_abuse":{"score":0.0},"account_takeover":{"score":0.22},"bot":{"score":0.13}},"signals":{},"policy":{"action":"allow","id":"b3b79cce-ed4e-44d4-8f89-154e96fb5c9c","revision_id":"","name":"test-a778bc08-1c39-4693-a311-873660dc3c03"},"device":{"token":null,"fingerprint":null}}'
+  recorded_at: Tue, 06 Jun 2023 21:38:01 GMT
 recorded_with: VCR 6.1.0

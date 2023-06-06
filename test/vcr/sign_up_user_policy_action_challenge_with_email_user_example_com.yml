@@ -5,7 +5,7 @@ http_interactions:
     uri: https://api.castle.io/v1/filter
     body:
       encoding: UTF-8
-      string: '{"type":"$registration","status":"$attempted","request_token":"test|device:chrome_on_mac|policy.action:challenge","params":{"email":"user@example.com"},"context":{"ip":"127.0.0.1","headers":{"Content-Length":"194","Remote-Addr":"127.0.0.1","Version":"HTTP/1.0","Host":"www.example.com","Accept":"text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5","Cookie":true}},"timestamp":"2023-06-05T22:09:17.510Z","sent_at":"2023-06-05T22:09:17.510Z"}'
+      string: '{"type":"$registration","status":"$attempted","request_token":"test|device:chrome_on_mac|policy.action:challenge","params":{"email":"user@example.com"},"context":{"ip":"127.0.0.1","headers":{"Content-Length":"194","Remote-Addr":"127.0.0.1","Version":"HTTP/1.0","Host":"www.example.com","Accept":"text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5","Cookie":true}},"timestamp":"2023-06-06T21:37:46.876Z","sent_at":"2023-06-06T21:37:46.877Z"}'
     headers:
       Content-Type:
       - application/json
@@ -23,7 +23,7 @@ http_interactions:
       message: Created
     headers:
       Date:
-      - Mon, 05 Jun 2023 22:08:54 GMT
+      - Tue, 06 Jun 2023 21:37:23 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
@@ -37,24 +37,24 @@ http_interactions:
       X-Ratelimit-Reset:
       - '1'
       Etag:
-      - W/"5236c990c6527dfc2826cc328a66107b"
+      - W/"94af87bc5674e97f04aef2acba352ba1"
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - 4ba12c39-f2ac-4b16-aa52-0f4c22143ef1
+      - ee65c96b-ac3c-4a5d-b1d4-e6cf2c115762
       Server:
       - castle.io
     body:
       encoding: UTF-8
-      string: '{"risk":0.32,"scores":{"account_abuse":{"score":0.32},"account_takeover":{"score":0.22},"bot":{"score":0.79}},"signals":{},"policy":{"action":"challenge","id":"45dadec6-b61c-42dc-b3a1-8acb4ad1912c","revision_id":"","name":"test-613e726a-d1d4-4338-9558-9941a8d70063"},"device":{"token":null,"fingerprint":null}}'
-  recorded_at: Mon, 05 Jun 2023 22:09:18 GMT
+      string: '{"risk":0.32,"scores":{"account_abuse":{"score":0.32},"account_takeover":{"score":0.22},"bot":{"score":0.13}},"signals":{},"policy":{"action":"challenge","id":"1d044d56-94ad-4055-8a2b-7ea8ac5928c2","revision_id":"","name":"test-6a2ba38b-0e1d-4ed8-927e-7d35dce172f0"},"device":{"token":null,"fingerprint":null}}'
+  recorded_at: Tue, 06 Jun 2023 21:37:47 GMT
 - request:
     method: post
     uri: https://api.castle.io/v1/risk
     body:
       encoding: UTF-8
       string: '{"type":"$registration","status":"$succeeded","name":"","request_token":"test|device:chrome_on_mac|policy.action:challenge","user":{"id":"1046959425","email":"user@example.com","name":"Example
-        User"},"context":{"ip":"127.0.0.1","headers":{"Content-Length":"194","Remote-Addr":"127.0.0.1","Version":"HTTP/1.0","Host":"www.example.com","Accept":"text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5","Cookie":true}},"timestamp":"2023-06-05T22:09:18.087Z","sent_at":"2023-06-05T22:09:18.088Z"}'
+        User"},"context":{"ip":"127.0.0.1","headers":{"Content-Length":"194","Remote-Addr":"127.0.0.1","Version":"HTTP/1.0","Host":"www.example.com","Accept":"text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5","Cookie":true}},"timestamp":"2023-06-06T21:37:47.466Z","sent_at":"2023-06-06T21:37:47.466Z"}'
     headers:
       Content-Type:
       - application/json
@@ -72,7 +72,7 @@ http_interactions:
       message: Created
     headers:
       Date:
-      - Mon, 05 Jun 2023 22:08:54 GMT
+      - Tue, 06 Jun 2023 21:37:24 GMT
       Content-Type:
       - application/json
       Transfer-Encoding:
@@ -86,17 +86,17 @@ http_interactions:
       X-Ratelimit-Reset:
       - '1'
       Etag:
-      - W/"12abfad5a09cfb73f6642e8fa28ca295"
+      - W/"ae9b45de02af206d54788bce2ab1b0c5"
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - b3489197-788d-4878-b83a-cd31c7cf80e4
+      - 1d7cffb8-d208-4cc8-820e-7dcccd07442e
       Server:
       - castle.io
     body:
       encoding: UTF-8
-      string: '{"risk":0.46,"scores":{"account_abuse":{"score":0.46},"account_takeover":{"score":0.26},"bot":{"score":0.13}},"signals":{},"policy":{"action":"challenge","id":"ea893894-6d88-4452-8e32-261abff9bf01","revision_id":"","name":"test-3dc5bf16-62e1-4e84-b203-02915b8b2da6"},"device":{"token":"eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlbiI6InRxM3A5QnNReEFOSGt0RERWOUxiMFJlQW03aWgiLCJxdWFsaWZpZXIiOiJBUUlEQ2pJeE5UYzJORE15T0RjIiwiYW5vbnltb3VzIjpmYWxzZSwidmVyc2lvbiI6MC4zfQ.A5Ap-hp6h70kUZwGPYTDdQooqY_ByEN2EVVqwlSbZbI","fingerprint":null}}'
-  recorded_at: Mon, 05 Jun 2023 22:09:18 GMT
+      string: '{"risk":0.45,"scores":{"account_abuse":{"score":0.45},"account_takeover":{"score":0.26},"bot":{"score":0.13}},"signals":{},"policy":{"action":"challenge","id":"4fdc4300-c0a6-468f-ac02-e8a69da511b4","revision_id":"","name":"test-8c6c223b-1f55-471e-ba3a-549628f58882"},"device":{"token":"eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlbiI6InRxM3A5QnNReEFOSGt0RERWOUxiMFJlQW03aWgiLCJxdWFsaWZpZXIiOiJBUUlEQ2pJeE5UYzJORE15T0RjIiwiYW5vbnltb3VzIjpmYWxzZSwidmVyc2lvbiI6MC4zfQ.A5Ap-hp6h70kUZwGPYTDdQooqY_ByEN2EVVqwlSbZbI","fingerprint":null}}'
+  recorded_at: Tue, 06 Jun 2023 21:37:48 GMT
 - request:
     method: post
     uri: https://api.cloudflare.com/client/v4/accounts/a4bedc9e66fe2e421c76b068531a75a2/firewall/access_rules/rules
@@ -124,7 +124,7 @@ http_interactions:
       message: Bad Request
     headers:
       Date:
-      - Mon, 05 Jun 2023 22:08:55 GMT
+      - Tue, 06 Jun 2023 21:37:25 GMT
       Content-Type:
       - application/json; charset=UTF-8
       Transfer-Encoding:
@@ -132,18 +132,18 @@ http_interactions:
       Connection:
       - keep-alive
       Cf-Ray:
-      - 7d2bbca8897221d0-MAN
+      - 7d33cbde7c5e188f-MAN
       Cf-Cache-Status:
       - DYNAMIC
       Set-Cookie:
-      - __cflb=0H28vgHxwvgAQtjUGU56Rb8iNWZVUvXhehCjs3b2PU9; SameSite=Lax; path=/;
-        expires=Tue, 06-Jun-23 00:38:56 GMT; HttpOnly
-      - __cfruid=7a91a73c26a83c4bf4537d31ec1d336b3b4eb329-1686002935; path=/; domain=.api.cloudflare.com;
+      - __cflb=0H28vgHxwvgAQtjUGU56Rb8iNWZVUvXhjZJFNGoEowB; SameSite=Lax; path=/;
+        expires=Wed, 07-Jun-23 00:07:26 GMT; HttpOnly
+      - __cfruid=3cf6d0ea31cb105a207c20d602e1e549add5ca42-1686087445; path=/; domain=.api.cloudflare.com;
         HttpOnly; Secure; SameSite=None
       Vary:
       - Accept-Encoding
       X-Envoy-Upstream-Service-Time:
-      - '5'
+      - '45'
       Server:
       - cloudflare
     body:
@@ -160,5 +160,5 @@ http_interactions:
           ],
           "messages": []
         }
-  recorded_at: Mon, 05 Jun 2023 22:09:19 GMT
+  recorded_at: Tue, 06 Jun 2023 21:37:49 GMT
 recorded_with: VCR 6.1.0
