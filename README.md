@@ -377,6 +377,28 @@ Next step - I can see some pretty easy tidy up here.
 
 There are some methods that can be compressed together in a way that doesn't hurt our concerns very much.
 
+[^14]
+
+Let's go through the four rules again.
+
+1. Works
+2. Good names
+3. Remove duplication
+4. No dead code
+
+Let's improve the names. The hacker_likelihood isn't a good name now.
+
+```
+Tip: constantly be looking for better names. Names are the single biggest driver of better design.
+```
+
+Let's go with `evaluate_policy`.
+
+And since this has `policy` in the name, we can return a policy.
+
+We can do this because nothing else depends on the `RiskPolicy` class. Nice.
+
+That's the benefit of loose coupling. We can move things around.
 
 
 
