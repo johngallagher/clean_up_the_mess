@@ -561,6 +561,12 @@ Look at how nicely this cleans things up.
 
 No more clumsy methods with duplication.
 
+Next job - we need to refactor the tests.
+
+When we swap out Castle for AWS, these tests will all break.
+
+Let's encapsulate this behaviour too.
+
 
 
 ### Act 2A - The Normal Way
