@@ -2,24 +2,6 @@ module Protectable
   extend ActiveSupport::Concern
 
   # [^3]
-  class RiskScore
-    def initialize(score)
-      @score = score
-    end
-
-    def low?
-      @score < 0.6
-    end
-
-    def medium?
-      @score >= 0.6 && @score < 0.8
-    end
-
-    def high?
-      @score >= 0.8
-    end
-  end
-
   class RiskPolicy
     def initialize(policy)
       @policy = policy[:action]
