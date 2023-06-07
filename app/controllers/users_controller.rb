@@ -23,7 +23,7 @@ class UsersController < ApplicationController
     notify_fraud_detection_system_of('registration.attempted')
     @user = User.new(user_params)
     if @user.save
-      protect_from_bad_actors(user: @user, event: 'registration.succeeded', request: request).on_deny do
+      protect_from_bad_actors(user: @user, event: 'registration.succeeded').on_deny do
         render 'new' and return
       end
 

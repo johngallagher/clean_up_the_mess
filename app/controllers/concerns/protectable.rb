@@ -96,7 +96,7 @@ module Protectable
   end
 
   included do
-    def protect_from_bad_actors(user:, event:, request:)
+    def protect_from_bad_actors(user:, event:)
       policy = FraudDetection::CastlePolicyEvaluator.new.evaluate_policy(
         user: user,
         event: event,
@@ -105,18 +105,18 @@ module Protectable
       block_or_challenge_bad_actors(policy: policy, request: request)
     end
 
-    def block_or_challenge_bad_actors(policy:, request:)
-      action = PolicyAction.new(policy: policy)
-      action.on_deny { block_ip_address(request.remote_ip) }
-      action.on_challenge { challenge_ip_address(request.remote_ip) }
-      action
-    end
-
     def notify_fraud_detection_system_of(event)
       FraudDetection::CastlePolicyEvaluator.new.notify_fraud_detection_system_of(
         event,
         request: request
       )
+    end
+
+    def block_or_challenge_bad_actors(policy:, request:)
+      action = PolicyAction.new(policy: policy)
+      action.on_deny { block_ip_address(request.remote_ip) }
+      action.on_challenge { challenge_ip_address(request.remote_ip) }
+      action
     end
 
     # firewall, IP address
