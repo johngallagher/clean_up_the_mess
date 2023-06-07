@@ -490,6 +490,39 @@ This is the piece of OO design that took me 10 years to understand!
 
 Understand this, and a world of opportunities open up to you.
 
+[^15]
+
+Now we push these methods into a class.
+
+I see many engineers seeming afraid of creating classes.
+
+My rule of thumb - if something is an unrelated concern, it's fine to split it out into a class.
+
+Note - the timing of this is crucial. If we'd done this much sooner than now, we'd have ended up with a poor abstraction.
+
+But now is the right time - we've completed the feature, and the code is neatly encapsulated in two places.
+
+[^16]
+
+Extracting these into a class also had another beneficial effect.
+
+It turns out there were some hidden dependencies.
+
+This is partly why I'm not keen on concerns - they hide all sorts of sneaky coupling that rears it's ugly head when you try to split it apart.
+
+We've now split those things out to live in method arguments.
+
+Turns out adding `request` was good enough.
+
+I will say that four method arguments is quite a lot. But we'll tackle that later.
+
+Another design weakness - now that it's split out, we can see that the `$registration` string that has a special meaning in Castle is leaking out into the main methods.
+
+That's a problem. Not a big one, we can abstract it away.
+
+Let's do that now.
+
+
 
 
 ### Act 2A - The Normal Way

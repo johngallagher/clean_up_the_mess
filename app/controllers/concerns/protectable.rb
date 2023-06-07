@@ -34,22 +34,72 @@ module Protectable
     end
   end
 
+  # [^15]
+  module FraudDetection
+    class CastlePolicyEvaluator
+      # [^16]
+      def evaluate_policy(user:, type:, status: '', name: '', request:)
+        castle = ::Castle::Client.new
+        token = request.params[:castle_request_token]
+        context = Castle::Context::Prepare.call(request)
+        response = castle.risk(
+          type: type,
+          status: status,
+          name: name,
+          request_token: token,
+          user: {
+            id: user.id.to_s,
+            email: user.email,
+            name: user.name
+          }.merge(user.activated? ? { registered_at: user.activated_at.iso8601 } : {}),
+          context: {
+            ip: context[:ip],
+            headers: context[:headers]
+          }.compact_blank
+        )
+        RiskPolicy.new(response[:policy])
+      end
+
+      # [^17]
+      def notify_fraud_detection_system_of(type:, status:, request:)
+        email = request.params[:user][:email] if type == '$registration'
+        email = request.params[:session][:email] if type == '$login'
+
+        castle = ::Castle::Client.new
+        token = request.params[:castle_request_token]
+        context = Castle::Context::Prepare.call(request)
+        castle.filter(
+          type: type,
+          status: status,
+          request_token: token,
+          params: {
+            email: email
+          },
+          context: {
+            ip: context[:ip],
+            headers: context[:headers]
+          }
+        )
+      end
+    end
+  end
+
   included do
     # Protecting, micropost
     def protect_creating_a_micropost_from_bad_actors(user:, request:)
-      policy = evaluate_policy(user: user, type: '$custom', name: 'Created a micropost')
+      policy = FraudDetection::CastlePolicyEvaluator.new.evaluate_policy(user: user, type: '$custom', name: 'Created a micropost', request: request)
       block_or_challenge_bad_actors(policy: policy, request: request)
     end
 
     # Protecting, login
     def protect_login_from_bad_actors(user:, request:)
-      policy = evaluate_policy(user: user, type: '$login', status: '$succeeded')
+      policy = FraudDetection::CastlePolicyEvaluator.new.evaluate_policy(user: user, type: '$login', status: '$succeeded', request: request)
       block_or_challenge_bad_actors(policy: policy, request: request)
     end
 
     # Protecting, registration
     def protect_registration_from_bad_actors(user:, request:)
-      policy = evaluate_policy(user: user, type: '$registration', status: '$succeeded')
+      policy = FraudDetection::CastlePolicyEvaluator.new.evaluate_policy(user: user, type: '$registration', status: '$succeeded', request: request)
       block_or_challenge_bad_actors(policy: policy, request: request)
     end
 
@@ -61,69 +111,24 @@ module Protectable
       action
     end
 
-    # Castle
-    def evaluate_policy(user:, type:, status: '', name: '')
-      castle = ::Castle::Client.new
-      token = params[:castle_request_token]
-      context = Castle::Context::Prepare.call(request)
-      response = castle.risk(
-        type: type,
-        status: status,
-        name: name,
-        request_token: token,
-        user: {
-          id: user.id.to_s,
-          email: user.email,
-          name: user.name
-        }.merge(user.activated? ? { registered_at: user.activated_at.iso8601 } : {}),
-        context: {
-          ip: context[:ip],
-          headers: context[:headers]
-        }.compact_blank
-      )
-      RiskPolicy.new(response[:policy])
-    end
-
     # Fraud, registration
     def notify_fraud_detection_system_of_registration_failed
-      notify_fraud_detection_system_of(type: '$registration', status: '$failed')
+      FraudDetection::CastlePolicyEvaluator.new.notify_fraud_detection_system_of(type: '$registration', status: '$failed', request: request)
     end
 
     # Fraud, registration
     def notify_fraud_detection_system_of_registration_attempted
-      notify_fraud_detection_system_of(type: '$registration', status: '$attempted')
+      FraudDetection::CastlePolicyEvaluator.new.notify_fraud_detection_system_of(type: '$registration', status: '$attempted', request: request)
     end
 
     # Fraud, login
     def notify_fraud_detection_system_of_login_attempted
-      notify_fraud_detection_system_of(type: '$login', status: '$attempted')
+      FraudDetection::CastlePolicyEvaluator.new.notify_fraud_detection_system_of(type: '$login', status: '$attempted', request: request)
     end
 
     # Fraud, login
     def notify_fraud_detection_system_of_failed_login_attempt
-      notify_fraud_detection_system_of(type: '$login', status: '$failed')
-    end
-
-    # Castle
-    def notify_fraud_detection_system_of(type:, status:)
-      email = user_params[:email] if type == '$registration'
-      email = params[:session][:email] if type == '$login'
-
-      castle = ::Castle::Client.new
-      token = params[:castle_request_token]
-      context = Castle::Context::Prepare.call(request)
-      castle.filter(
-        type: type,
-        status: status,
-        request_token: token,
-        params: {
-          email: email
-        },
-        context: {
-          ip: context[:ip],
-          headers: context[:headers]
-        }
-      )
+      FraudDetection::CastlePolicyEvaluator.new.notify_fraud_detection_system_of(type: '$login', status: '$failed', request: request)
     end
 
     # firewall, IP address
