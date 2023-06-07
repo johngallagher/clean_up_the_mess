@@ -317,6 +317,50 @@ It's about giving control back to the caller when it matters.
 
 ## Change 3: Change to using AWS for firewall blocking and fraud detection
 
+Now let's attempt a bigger change.
+
+Let's say Castle is getting too expensive.
+
+There's another driver though - the organisation has grown a lot. 
+
+They've decided to move onto AWS for the majority of their IT infrastructure.
+
+Castle is still one of the apps that we need to provide our staff with a special login for.
+
+AWS has a fraud detection API.
+
+We'd like to use it instead of Castle.
+
+The normal way of approaching this - change the code in every method in `Protectable` until it works with AWS.
+
+We could actually do this.
+
+We've encapsulated the "what" behind methods.
+
+And the controllers don't need to know how it works.
+
+The weaknesses of "change the code to make it work":
+
+1. Tests will break and remain broken for a while
+2. The "blast radius" of changes will be wide, leading to large PRs
+3. The risk we'll miss something is increased, because we're changing a lot all at once
+
+We can do better.
+
+Whenever it comes to a big change like this, go through the code line by line and label it with the concern.
+
+What's a concern?
+
+... examples here ...
+
+OK, so let's do this for `Protectable`.
+
+We want to see which areas are related to Castle. That'll give us an idea of which bits we need to swap out.
+
+If you do this process for the controllers, you'll see they're totally isolated from anything related to Castle.
+
+Note I've deleted some dead code.
+
 
 ### Act 2A - The Normal Way
 
