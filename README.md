@@ -545,6 +545,13 @@ A few unintended consequences showing us that this is moving in the right direct
 Let's go one step further and remove some more duplication.
 
 
+[^20]
+
+Cautiously, let's swap this out small piece at a time.
+
+First microposts. Tests pass. Great!
+
+
 
 
 

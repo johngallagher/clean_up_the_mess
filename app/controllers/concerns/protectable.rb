@@ -96,6 +96,15 @@ module Protectable
   end
 
   included do
+    def protect_from_bad_actors(user:, event:, request:)
+      policy = FraudDetection::CastlePolicyEvaluator.new.evaluate_policy(
+        user: user,
+        event: event,
+        request: request
+      )
+      block_or_challenge_bad_actors(policy: policy, request: request)
+    end
+
     # Protecting, micropost
     def protect_creating_a_micropost_from_bad_actors(user:, request:)
       policy = FraudDetection::CastlePolicyEvaluator.new.evaluate_policy(
