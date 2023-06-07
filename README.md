@@ -522,6 +522,29 @@ That's a problem. Not a big one, we can abstract it away.
 
 Let's do that now.
 
+[^18]
+
+As usual with evolutionary design, we end up somewhere I didn't expect.
+
+You can see we replaced the different arguments for events with one concise one - registration.attempted for example.
+
+Then in [^19] you can see all the Castle specific strings are, once again, encapsulated inside the Castle object.
+
+Note that, once again, we're going way more generic in the calling code and more Castle specific.
+
+Separating out the "what" from the "how" once again. Reducing coupling.
+
+A few unintended consequences showing us that this is moving in the right direction:
+
+1. All Castle events are neatly listed out inside the castle class. Great for documentation!
+2. The calling code becomes more compact
+3. The calling code is more readable -  event: 'login.succeeded' - got it! gives us options and is way better a name than "type" and "status" - what do they even mean? An event is something anyone can understand.
+4. We've introduced a new idea to the domain - an "event" name. Which could turn into an "event" object? Maybe.
+5. A pattern is emerging. You can see how all these methods are taking the same shape.
+
+Let's go one step further and remove some more duplication.
+
+
 
 
 
