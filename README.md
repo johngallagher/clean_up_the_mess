@@ -400,6 +400,96 @@ We can do this because nothing else depends on the `RiskPolicy` class. Nice.
 
 That's the benefit of loose coupling. We can move things around.
 
+Why am I moving `RiskPolicy` into that method?
+
+What were we returning before? A response.
+
+That response is **coupled to Castle**. It was structured in the way Castle wants to structure it.
+
+But that tiny bit of knowledge is leaking out into the rest of the method.
+
+We're going to swap out Castle for AWS Fraud Detection.
+
+So we need a higher level concept at this interface. And once again, the names communicate what that higher level concept is.
+
+It's a **policy**.
+
+This is super cool, because it moves us *away* from the specific nuts and bolts and details of Castle.
+
+It abstracts these details away by giving us a concept that **any** fraud detection system can understand and return - a policy.
+
+```
+Tip: when swapping out behaviour, focus on the interface between the pieces. Make sure the interface is talking at a high enough level and you'll be isolated from the specific mechanisms.
+```
+
+So to recap:
+
+-> evaluate_policy
+<- policy
+
+Makes sense!
+
+Test - can you imagine a different fraud detection service giving back a response shaped with a `:policy` key at the root?
+
+Hmmm. Maybe not. It'd depend on the imlementation.
+
+Look at what comes back from AWS:
+
+```json
+{
+   "externalModelOutputs": [ 
+      { 
+         "externalModel": { 
+            "modelEndpoint": "string",
+            "modelSource": "string"
+         },
+         "outputs": { 
+            "string" : "string" 
+         }
+      }
+   ],
+   "modelScores": [ 
+      { 
+         "modelVersion": { 
+            "arn": "string",
+            "modelId": "string",
+            "modelType": "string",
+            "modelVersionNumber": "string"
+         },
+         "scores": { 
+            "string" : 578
+         }
+      }
+   ],
+   "ruleResults": [ 
+      { 
+         "outcomes": ["deny"],
+         "ruleId": "rule_id"
+      }
+   ]
+}
+```
+
+Does this look remotely like the Castle response?
+
+```json
+{
+  "policy": "deny",
+  "risk": 0.9
+}
+
+Nope.
+
+But can you imagine a fraud detection service being able to return a policy? Sure!
+
+It's a **shared language** within the domain.
+
+We want objects to be swappable for different behaviours.
+
+This is the piece of OO design that took me 10 years to understand!
+
+Understand this, and a world of opportunities open up to you.
+
 
 
 ### Act 2A - The Normal Way
