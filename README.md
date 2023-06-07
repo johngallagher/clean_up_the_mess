@@ -361,6 +361,24 @@ If you do this process for the controllers, you'll see they're totally isolated 
 
 Note I've deleted some dead code.
 
+Now we've done that, we can see there are two methods that related entirely to Castle.
+
+This is great news. We've cleanly isolated these parts from everything else.
+
+Sure, all these concerns are in one file, which isn't great.
+
+But they're pretty self contained. I've seen instances where the concerns are spread out between 10 different methods.
+
+```
+Tip: keep concerns encapsulated in as few methods as possible
+```
+
+Next step - I can see some pretty easy tidy up here.
+
+There are some methods that can be compressed together in a way that doesn't hurt our concerns very much.
+
+
+
 
 ### Act 2A - The Normal Way
 
