@@ -551,7 +551,9 @@ Cautiously, let's swap this out small piece at a time.
 
 First microposts. Tests pass. Great!
 
+And now, as if by magic, we can get rid of these methods.
 
+Wow. Duplication begone! Look how much cleaner this looks.
 
 
 

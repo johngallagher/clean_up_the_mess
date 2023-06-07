@@ -105,36 +105,6 @@ module Protectable
       block_or_challenge_bad_actors(policy: policy, request: request)
     end
 
-    # Protecting, micropost
-    def protect_creating_a_micropost_from_bad_actors(user:, request:)
-      policy = FraudDetection::CastlePolicyEvaluator.new.evaluate_policy(
-        user: user,
-        event: 'micropost.created', # [^18]
-        request: request
-      )
-      block_or_challenge_bad_actors(policy: policy, request: request)
-    end
-
-    # Protecting, login
-    def protect_login_from_bad_actors(user:, request:)
-      policy = FraudDetection::CastlePolicyEvaluator.new.evaluate_policy(
-        user: user,
-        event: 'login.succeeded',
-        request: request
-      )
-      block_or_challenge_bad_actors(policy: policy, request: request)
-    end
-
-    # Protecting, registration
-    def protect_registration_from_bad_actors(user:, request:)
-      policy = FraudDetection::CastlePolicyEvaluator.new.evaluate_policy(
-        user: user,
-        event: 'registration.succeeded',
-        request: request
-      )
-      block_or_challenge_bad_actors(policy: policy, request: request)
-    end
-
     # blocking or challenging
     def block_or_challenge_bad_actors(policy:, request:)
       action = PolicyAction.new(policy: policy)
