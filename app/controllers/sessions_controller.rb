@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
   def new; end
 
   def create
-    notify_fraud_detection_system_of_login_attempted
+    notify_fraud_detection_system_of('login.attempted')
 
     user = User.find_by(email: params[:session][:email].downcase)
 
@@ -22,7 +22,7 @@ class SessionsController < ApplicationController
       flash[:warning] = message
       redirect_to root_url
     else
-      notify_fraud_detection_system_of_failed_login_attempt
+      notify_fraud_detection_system_of('login.failed')
       flash.now[:danger] = 'Invalid email/password combination'
       render 'new'
     end

@@ -105,7 +105,6 @@ module Protectable
       block_or_challenge_bad_actors(policy: policy, request: request)
     end
 
-    # blocking or challenging
     def block_or_challenge_bad_actors(policy:, request:)
       action = PolicyAction.new(policy: policy)
       action.on_deny { block_ip_address(request.remote_ip) }
@@ -113,34 +112,9 @@ module Protectable
       action
     end
 
-    # Fraud, registration
-    def notify_fraud_detection_system_of_registration_failed
+    def notify_fraud_detection_system_of(event)
       FraudDetection::CastlePolicyEvaluator.new.notify_fraud_detection_system_of(
-        'registration.failed',
-        request: request
-      )
-    end
-
-    # Fraud, registration
-    def notify_fraud_detection_system_of_registration_attempted
-      FraudDetection::CastlePolicyEvaluator.new.notify_fraud_detection_system_of(
-        'registration.attempted',
-        request: request
-      )
-    end
-
-    # Fraud, login
-    def notify_fraud_detection_system_of_login_attempted
-      FraudDetection::CastlePolicyEvaluator.new.notify_fraud_detection_system_of(
-        'login.attempted',
-        request: request
-      )
-    end
-
-    # Fraud, login
-    def notify_fraud_detection_system_of_failed_login_attempt
-      FraudDetection::CastlePolicyEvaluator.new.notify_fraud_detection_system_of(
-        'login.failed',
+        event,
         request: request
       )
     end

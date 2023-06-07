@@ -555,6 +555,12 @@ And now, as if by magic, we can get rid of these methods.
 
 Wow. Duplication begone! Look how much cleaner this looks.
 
+I'll be honest - this is why I'm still obsessed with this game after 10 years.
+
+Look at how nicely this cleans things up.
+
+No more clumsy methods with duplication.
+
 
 
 ### Act 2A - The Normal Way

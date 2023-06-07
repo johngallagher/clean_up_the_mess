@@ -20,7 +20,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    notify_fraud_detection_system_of_registration_attempted
+    notify_fraud_detection_system_of('registration.attempted')
     @user = User.new(user_params)
     if @user.save
       protect_from_bad_actors(user: @user, event: 'registration.succeeded', request: request).on_deny do
@@ -31,7 +31,7 @@ class UsersController < ApplicationController
       flash[:info] = 'Please check your email to activate your account.'
       redirect_to root_url
     else
-      notify_fraud_detection_system_of_registration_failed
+      notify_fraud_detection_system_of('registration.failed')
       render 'new'
     end
   end
