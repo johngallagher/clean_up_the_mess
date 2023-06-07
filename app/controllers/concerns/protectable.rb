@@ -35,39 +35,21 @@ module Protectable
   end
 
   included do
-    # Match policy, login
-    def match_actor_against_policy_for_logging_in(user:)
-      response = fetch_hacker_likelihood(user: user, type: '$login', status: '$succeeded')
-      RiskPolicy.new(response[:policy])
-    end
-
-    # Match policy, registration
-    def match_actor_against_policy_for_registration(user:)
-      response = fetch_hacker_likelihood(user: user, type: '$registration', status: '$succeeded')
-      RiskPolicy.new(response[:policy])
-    end
-
-    # Match policy, micropost
-    def match_actor_against_policy_for_creating_a_micropost(user:)
-      response = fetch_hacker_likelihood(user: user, type: '$custom', name: 'Created a micropost')
-      RiskPolicy.new(response[:policy])
-    end
-
     # Protecting, micropost
     def protect_creating_a_micropost_from_bad_actors(user:, request:)
-      policy = match_actor_against_policy_for_creating_a_micropost(user: user)
+      policy = evaluate_policy(user: user, type: '$custom', name: 'Created a micropost')
       block_or_challenge_bad_actors(policy: policy, request: request)
     end
 
     # Protecting, login
     def protect_login_from_bad_actors(user:, request:)
-      policy =  match_actor_against_policy_for_logging_in(user: user)
+      policy = evaluate_policy(user: user, type: '$login', status: '$succeeded')
       block_or_challenge_bad_actors(policy: policy, request: request)
     end
 
     # Protecting, registration
     def protect_registration_from_bad_actors(user:, request:)
-      policy =  match_actor_against_policy_for_registration(user: user)
+      policy = evaluate_policy(user: user, type: '$registration', status: '$succeeded')
       block_or_challenge_bad_actors(policy: policy, request: request)
     end
 
@@ -80,7 +62,7 @@ module Protectable
     end
 
     # Castle
-    def fetch_hacker_likelihood(user:, type:, status: '', name: '')
+    def evaluate_policy(user:, type:, status: '', name: '')
       castle = ::Castle::Client.new
       token = params[:castle_request_token]
       context = Castle::Context::Prepare.call(request)
@@ -99,7 +81,7 @@ module Protectable
           headers: context[:headers]
         }.compact_blank
       )
-      response
+      RiskPolicy.new(response[:policy])
     end
 
     # Fraud, registration
