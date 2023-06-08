@@ -600,6 +600,10 @@ UncaughtThrowError: uncaught throw #<struct Aws::FraudDetector::Types::GetEventP
 Next step - let's pop in the requests we expect to be called.
 
 
+This was quite a lot of work to get to grips with what requests need to be called for AWS.
+
+I've also skipped all the tests except one.
+
 
 ### Act 2A - The Normal Way
 

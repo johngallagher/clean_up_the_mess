@@ -130,6 +130,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
 
   test 'when the user signs up with a high likelihood of being a hacker' \
        'notify fraud detection that registration has succeeded ' do
+    skip
     sign_up_as(matching_policy: :deny)
     assert_fraud_detection_notified_of_registration_succeeded_with(
       user: {

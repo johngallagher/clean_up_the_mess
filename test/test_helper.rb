@@ -23,7 +23,7 @@ class ActionDispatch::IntegrationTest
     remember_me: '1',
     matching_policy: :allow
   )
-    VCR.use_cassette("log_in_user_policy_action_#{matching_policy}_email_#{user.email}") do
+    VCR.use_cassette("aws_log_in_user_policy_action_#{matching_policy}_email_#{user.email}") do
       post login_path, params: {
         castle_request_token: "test|device:chrome_on_mac|policy.action:#{matching_policy}",
         session: {

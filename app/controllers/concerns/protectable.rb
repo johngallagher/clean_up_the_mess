@@ -95,6 +95,31 @@ module Protectable
     end
   end
 
+  module FraudDetection
+    class AWSPolicyEvaluator
+      def evaluate_policy(user:, event:, request:); end
+
+      def notify_fraud_detection_system_of(event, request:)
+        email = request.params[:user][:email] if event.include? 'registration'
+        email = request.params[:session][:email] if event.include? 'login'
+
+        fraud_detector = Aws::FraudDetector::Client.new
+        fraud_detector.send_event(
+          event_id: request.request_id,
+          event_type_name: 'registration',
+          event_timestamp: 1.minute.ago.iso8601,
+          event_variables: {
+            email: email,
+            ip_address: request.remote_ip
+          },
+          assigned_label: 'legitimate',
+          label_timestamp: 1.minute.ago.iso8601,
+          entities: [{ entity_type: 'user', entity_id: email }]
+        )
+      end
+    end
+  end
+
   included do
     def protect_from_bad_actors(user:, event:)
       policy = FraudDetection::CastlePolicyEvaluator.new.evaluate_policy(
@@ -103,6 +128,13 @@ module Protectable
         request: request
       )
       block_or_challenge_bad_actors(policy: policy, request: request)
+    end
+
+    def aws_notify_fraud_detection_system_of(event)
+      FraudDetection::AWSPolicyEvaluator.new.notify_fraud_detection_system_of(
+        event,
+        request: request
+      )
     end
 
     def notify_fraud_detection_system_of(event)

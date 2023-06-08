@@ -22,7 +22,7 @@ class SessionsController < ApplicationController
       flash[:warning] = message
       redirect_to root_url
     else
-      notify_fraud_detection_system_of('login.failed')
+      aws_notify_fraud_detection_system_of('login.failed')
       flash.now[:danger] = 'Invalid email/password combination'
       render 'new'
     end
