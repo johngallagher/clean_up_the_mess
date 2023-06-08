@@ -4,7 +4,6 @@ class MicropostsController < ApplicationController
   before_action :correct_user,   only: :destroy
 
   def create
-    # [^20]
     protect_from_bad_actors(user: current_user, event: 'micropost.created').on_deny do
       head :internal_server_error and return
     end

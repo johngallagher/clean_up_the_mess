@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
+  include CloudflareAssertions
+
   def setup
     @user = users(:michael)
   end
@@ -35,28 +37,28 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
   end
 
   # Possible hackers
-  test "allows microposts to be created by possible hackers" do
+  test 'allows microposts to be created by possible hackers' do
     log_in_as(@user)
     assert_difference 'Micropost.count', 1 do
       create_micropost('Content', matching_policy: :challenge)
     end
   end
 
-  test "challenges when microposts are being created by a possible hacker" do
+  test 'challenges when microposts are being created by a possible hacker' do
     log_in_as(@user)
     create_micropost('Content', matching_policy: :challenge)
     assert_user_challenged(ip: '127.0.0.1')
   end
 
   # Hackers
-  test "prevents microposts from being created by hackers" do
+  test 'prevents microposts from being created by hackers' do
     log_in_as(@user)
     assert_no_difference 'Micropost.count' do
       create_micropost('Content', matching_policy: :deny)
     end
   end
 
-  test "challenges when microposts are being created by a hacker" do
+  test 'challenges when microposts are being created by a hacker' do
     log_in_as(@user)
     create_micropost('Content', matching_policy: :deny)
     assert_user_blocked(ip: '127.0.0.1')
@@ -71,21 +73,5 @@ class MicropostsInterfaceTest < ActionDispatch::IntegrationTest
         micropost: { content: content }
       }
     end
-  end
-
-  def assert_user_challenged(ip:)
-    assert_requested(
-      :post,
-      'https://api.cloudflare.com/client/v4/accounts/a4bedc9e66fe2e421c76b068531a75a2/firewall/access_rules/rules',
-      body: JSON.generate({ configuration: { target: 'ip', value: ip }, mode: 'challenge' })
-    )
-  end
-
-  def assert_user_blocked(ip:)
-    assert_requested(
-      :post,
-      'https://api.cloudflare.com/client/v4/accounts/a4bedc9e66fe2e421c76b068531a75a2/firewall/access_rules/rules',
-      body: JSON.generate({ configuration: { target: 'ip', value: ip }, mode: 'block' })
-    )
   end
 end

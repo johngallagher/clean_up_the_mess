@@ -2,6 +2,9 @@ require 'test_helper'
 require 'webmock/minitest'
 
 class UsersLoginTest < ActionDispatch::IntegrationTest
+  include CastleFraudDetectionAssertions
+  include CloudflareAssertions
+
   make_my_diffs_pretty!
 
   def setup
@@ -240,61 +243,5 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     )
     assert_not is_logged_in?, 'Expected to be logged out'
     assert response.status == 200, 'Expected 200, got ' + response.status.to_s
-  end
-
-  private
-
-  def assert_fraud_detection_notified_of_login_succeeded_with(properties)
-    assert_requested(:post, 'https://api.castle.io/v1/risk') do |request|
-      parsed_body = JSON.parse(request.body).deep_symbolize_keys
-      return false if parsed_body.slice(:type, :status) != ({ type: '$login', status: '$succeeded' })
-
-      assert_equal remove_content_length(parsed_body.slice(*properties.keys)),
-                   remove_content_length(properties.deep_symbolize_keys)
-    end
-  end
-
-  def assert_fraud_detection_notified_of_failed_login_with(properties)
-    assert_requested(:post, 'https://api.castle.io/v1/filter') do |request|
-      parsed_body = JSON.parse(request.body).deep_symbolize_keys
-      return false if parsed_body.slice(:type, :status) != ({ type: '$login', status: '$failed' })
-
-      assert_equal remove_content_length(parsed_body.slice(*properties.keys)),
-                   remove_content_length(properties.deep_symbolize_keys)
-    end
-  end
-
-  def assert_fraud_detection_notified_of_login_attempted_with(properties)
-    assert_requested(:post, 'https://api.castle.io/v1/filter') do |request|
-      parsed_body = JSON.parse(request.body).deep_symbolize_keys
-      return false if parsed_body.slice(:type, :status) != ({ type: '$login', status: '$attempted' })
-
-      assert_equal remove_content_length(parsed_body.slice(*properties.keys)),
-                   remove_content_length(properties.deep_symbolize_keys)
-    end
-  end
-
-  def assert_fraud_detection_not_called
-    assert_not_requested(:post, 'https://api.castle.io/v1/risk')
-  end
-
-  def remove_content_length(hash)
-    hash.deep_merge(context: { headers: { 'Content-Length': '' } }).compact_blank
-  end
-
-  def assert_user_blocked(ip:)
-    assert_requested(
-      :post,
-      'https://api.cloudflare.com/client/v4/accounts/a4bedc9e66fe2e421c76b068531a75a2/firewall/access_rules/rules',
-      body: JSON.generate({ configuration: { target: 'ip', value: ip }, mode: 'block' })
-    )
-  end
-
-  def assert_user_challenged(ip:)
-    assert_requested(
-      :post,
-      'https://api.cloudflare.com/client/v4/accounts/a4bedc9e66fe2e421c76b068531a75a2/firewall/access_rules/rules',
-      body: JSON.generate({ configuration: { target: 'ip', value: ip }, mode: 'challenge' })
-    )
   end
 end

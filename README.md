@@ -568,6 +568,17 @@ When we swap out Castle for AWS, these tests will all break.
 Let's encapsulate this behaviour too.
 
 
+We encapsulated the assertions by sharing them across files.
+
+I'm not a fan of modules in general - I find them to introduce high levels of coupling.
+
+But for sharing test setup details or assertions I find them handy.
+
+You can see here we've eliminated duplicaton and meant that we can switch out the castle assertoins for the AWS assertions pretty easily.
+
+Many tests will fail, but that's OK - we're changing the behaviour after all.
+
+First class to tackle is probably the sessions controller.
 
 ### Act 2A - The Normal Way
 
