@@ -48,5 +48,7 @@ VCR.configure do |config|
   end
   config.filter_sensitive_data('<CLOUDFLARE_API_TOKEN>') { ENV.fetch('CLOUDFLARE_API_TOKEN') }
   config.filter_sensitive_data('<CLOUDFLARE_API_EMAIL>') { ENV.fetch('CLOUDFLARE_API_EMAIL') }
+  config.filter_sensitive_data('<AWS_SECRET_KEY>') { ENV.fetch('AWS_SECRET_KEY')}
+  config.filter_sensitive_data('<AWS_ACCESS_KEY>') { ENV.fetch('AWS_ACCESS_KEY')}
   config.allow_http_connections_when_no_cassette = false
 end

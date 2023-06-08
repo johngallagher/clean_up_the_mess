@@ -57,6 +57,27 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     assert_empty cookies[:remember_token]
   end
 
+  # [^21]
+  test 'prototype' do
+    VCR.use_cassette('aws_prototype') do
+      fraud_detector = Aws::FraudDetector::Client.new
+      resp = fraud_detector.get_event_prediction(
+        detector_id: 'registration',
+        event_id: '12345678',
+        event_type_name: 'registration',
+        entities: [{entity_type: 'user', entity_id: '1345678'}],
+        event_timestamp: 2.minutes.ago.iso8601,
+        event_variables: {
+          email: 'safe@example.org',
+          ip_address: '1.2.3.4',
+          registered_at: 2.minutes.ago.iso8601
+        }
+      )
+      throw resp
+
+    end
+  end
+
   # Genuine users
   test 'notifies fraud detection when a genuinue user has failed login ' \
        'so that the fraud detection learns about hackers' do

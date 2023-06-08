@@ -580,6 +580,27 @@ Many tests will fail, but that's OK - we're changing the behaviour after all.
 
 First class to tackle is probably the sessions controller.
 
+[^21]
+
+Don't be afraid to hack in some code to test out a new API.
+
+I've found prototyping via tests can give me fast feedback on what the API will and won't allow.
+
+In this case I've learned a few things about the AWS API:
+
+1. It needs a unique event ID (just as well we can feed in the request - we can potentially use the request ID)
+2. It needs a unique entity with ID
+3. I've learned the shape of the request we need to test for
+4. I've learned the shape of the response that I need to map back to a policy. From the error message:
+
+```
+UncaughtThrowError: uncaught throw #<struct Aws::FraudDetector::Types::GetEventPredictionResult model_scores=[], rule_results=[#<struct Aws::FraudDetector::Types::RuleResult rule_id="allow", outcomes=["allow"]>], external_model_outputs=[]>
+```
+
+Next step - let's pop in the requests we expect to be called.
+
+
+
 ### Act 2A - The Normal Way
 
 * "Hack in" each of these changes in the simplest way possible.

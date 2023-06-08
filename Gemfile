@@ -55,3 +55,5 @@ gem "webmock", "~> 3.18"
 gem "vcr", "~> 6.1"
 
 gem "stimulus-rails", "~> 1.2"
+
+gem "aws-sdk-frauddetector", "~> 1.35"
